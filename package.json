@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "dev": "vite",
+    "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -20,5 +21,8 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.6.10"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
