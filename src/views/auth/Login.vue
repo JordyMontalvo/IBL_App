@@ -1,50 +1,68 @@
 <template>
   <Auth>
+    
     <section>
       <span class="separator"></span>
 
-      <img class="person" src="@/assets/img/person.svg">
+      <h1>Iniciar sesion</h1>
+      <p class="forgot-text">¿Olvidaste tu contraseña? <a href="#">Ingresa aquí</a></p>
       <br>
+    
+        
+        <div class="form-group">
+          <label>Correo Electrónico:</label>
+          <div class="input-wrapper">
+            <input 
+              type="email"
+              class="input" 
+              placeholder="Correo Electronico"
+              v-model="dni"
+              :class="{'error': error.dni}"
+              @keydown="reset('dni')"
+            >
+            <i class="fa-solid fa-user icon"></i>
+          </div>
+        </div>
 
-      <!-- <p>Inicia sesión</p> -->
+        <div class="form-group" v-if="!office_id">
+          <label>Contraseña:</label>
+          <div class="input-wrapper">
+            <input 
+              :type="show ? 'text' : 'password'" 
+              class="input" 
+              placeholder="************"
+              v-model="password"
+              :class="{'error': error.password}"
+              @keydown="reset('password')"
+            >
+            <i class="fa-solid fa-lock icon"></i>
+          </div>
+        </div>
 
-      <i class="icon fa-solid fa-user-tie"></i>
-      <input class="input" placeholder="Usuario"
-      oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
-      v-model="dni"
-      :class="{'error': error.dni}"
-      @keydown="reset('dni')"> <br>
+        <p class="forgot-text">¿Olvidaste tu contraseña? <a href="#">Ingresa aquí</a></p>
 
-      <div v-if="!office_id">        
-        <i class="icon fa-solid fa-key"></i>
-        <input :type="show ? 'text' : 'password'" class="input pass" placeholder="Contraseña"
-        v-model="password"
-        :class="{'error': error.password}"
-        @keydown="reset('password')">
-        <i class="show far fa-eye" @click="show = !show"></i> <br>
-      </div>
+        <button class="button" v-show="!sending" @click="submit">Iniciar Sesión</button>
+        <button class="button" v-show="sending" disabled>Validando datos ...</button>
 
-      <p class="alert">{{ alert | alert }}</p>
-
-      <button class="button" v-show="!sending" @click="submit">Ingresar</button>
-      <button class="button" v-show= "sending" disabled>Validando datos ...</button> <br><br>
-
-      <!-- <small>¿Olvidaste tu contraseña?</small> <br><br> -->
+        <!-- Nuevo botón de registro -->
+        <div class="register-container">
+    <span class="register-text">¿No tienes cuenta? <router-link to="/register" class="register-link">Regístrate</router-link></span>
+  </div>
     </section>
     <footer>
-      <router-link to="/welcome" class="route">Regresar</router-link>
+      <!-- <router-link to="/welcome" class="route">Regresar</router-link>-->
       <br>
       <header>
-        <div class="social">
+          <!-- <div class="social">
           <!-- <a class="fab fa-facebook-square" :href="fb" target="_blank"></a>
           <a class="fab fa-instagram"       :href="is" target="_blank"></a>
           <a class="fab fa-tiktok"          :href="tk" target="_blank"></a>
-          <a class="fab fa-youtube"         :href="yt" target="_blank"></a> -->
+          <a class="fab fa-youtube"         :href="yt" target="_blank"></a> 
           <a class="fab fa-facebook-square" :href="fb" target="_blank"></a>
           <a class="fab fa-instagram"       :href="is" target="_blank"></a>
-          <!-- <a class="fab fa-tiktok"          target="_blank"></a> -->
-          <a class="fab fa-youtube"         :href="yt" target="_blank"></a>
-        </div>
+          <!-- <a class="fab fa-tiktok"          target="_blank"></a> 
+          <a class="fab fa-youtube"         :href="yt" target="_blank"></a>  -->
+        
       </header>
 
     </footer>

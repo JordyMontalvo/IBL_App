@@ -1,70 +1,87 @@
 .auth
-  // _grid()
   min-height 100vh
-  background url('assets/img/bg/auth.jpg') no-repeat center center / cover
-  padding 16px
+  position relative
   display flex
+  flex-direction column
   align-items center
-  // justify-content center
+  justify-content center
+  padding 2rem
 
-  .social
-    a
-      padding 4px
-      // color c-main-light-green
-      // color c-main-purple
-      color c-main-green
+ 
+  &:before
+    content ''
+    position absolute
+    top 0
+    left 0
+    right 0
+    bottom 0
+    background url('assets/img/bg/iblback.jpg') no-repeat center center / cover
+    z-index -2
 
-  // >header
-  //   flex 1
-  //   text-align center
-  //   display none
-  //   .social
-  //     a
-  //       background c-main-golden
-  //       color c-main-red
-  //       font-size 20px
-  //       padding 12px
-  //       margin 8px
-  //       border-radius 50%
-  //       width 44px
-  //       height 44px
 
-  >section
-    // width 100%
-    // align-self center
-    flex 1
+  &:after
+    content ''
+    position absolute
+    top 0
+    left 0
+    right 0
+    bottom 0
+    background-color rgba(0, 77, 155, 0.8) // Color azul con opacidad
+    // Alternativa con gradiente:
+    // background linear-gradient(rgba(0, 77, 155, 0.8), rgba(0, 48, 97, 0.9))
+    z-index -1
+  
 
-    .content
-      max-width 350px
-      margin auto
+  .logo-container
+    position absolute
+    left 320px
+    top 50%
+    transform translateY(-50%)
+    width 180px
+    
+    img
+      width 100%
+      height auto
 
-      .form
-        // background c-ligh-gray
-        background white
-        border-radius 4px
-        // border solid 1.5px c-main-blue
-        // border solid 2px c-main-golden
-        // border solid 2px c-main-light-green
-        // border solid 2px c-main-purple
-        border solid 2px c-main-turk
-        padding 16px
-        header
-        section
-          text-align center
+  section
+    width 90%
+    max-width 400px
+    text-align center
 
-        .separator
-          height 2px
-          width 72%
-          // background c-main-blue
-          // background c-main-red
-          background c-main-light-green
-          display block
-          margin 8px auto
+    h1
+      color white
+      font-size 28px
+      margin-bottom 0.5rem
+      font-weight 500
+      padding-right 170px
 
-      .links
-        _flex()
-        justify-content center
-        padding 0 4px
+    .forgot-text
+      margin -0.5rem 0 1rem
+      color white
+      font-size 14px
+      padding-right 90px
+      
+      
+      a
+        color #FFA500
+
+
+.register-container
+  text-align center
+
+.register-text
+  color white
+  font-size 14px
+
+  .register-link
+    color #FFA500
+    text-decoration none
+    margin-left 5px
+    
+    &:hover
+      text-decoration underline
+
+
 
   // >footer
   //   text-align right

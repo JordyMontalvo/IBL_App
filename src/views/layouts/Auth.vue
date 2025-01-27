@@ -11,23 +11,23 @@
       </div>
     </header> -->
     <section>
-      <div class="content">
-        <div class="form">
+     
+        
           <header>
-            <img class="logo" src="@/assets/img/logo/logo.svg"> <br>
+            <img class="logo-container" src="@/assets/img/logo/logoibl.png"> <br>
             <!-- <img class="logo" src="@/assets/img/logo/logo.jpeg"> <br> -->
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg"> -->
           </header>
 
           <slot/>
 
-        </div>
+       
         <!-- <div class="links">
           <a :href="msn"  target="_blank" class="link"><small>Ayuda</small></a>
           <a :href="site" target="_blank" class="link"><small></small></a>
           <a :href="wsp"  target="_blank" class="link"><small>Whatsapp de Ayuda</small></a>
         </div> -->
-      </div>
+     
     </section>
     <!-- <footer>
       <img class="logo--white" src="@/assets/img/logo/logo-white.png">
