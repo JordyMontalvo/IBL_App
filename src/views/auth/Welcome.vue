@@ -1,8 +1,8 @@
 <template>
-  <Auth>
+  <Auth :showLogo="false">
     <section class="welcome-container">
       <div class="logo-container2">
-         <img src="@/assets/img/logo/logoibl.png" alt="Logo IBL">
+        <img class="logo" src="@/assets/img/logo/logoibl.png">
       </div>
       
       <router-link to="/login" class="button">Ingresar a Oficina</router-link>

@@ -13,7 +13,7 @@
     <section>
      
         
-          <header>
+          <header v-if="showLogo">
             <img class="logo-container" src="@/assets/img/logo/logoibl.png"> <br>
             <!-- <img class="logo" src="@/assets/img/logo/logo.jpeg"> <br> -->
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg"> -->
@@ -38,6 +38,13 @@
 <script>
 
 export default {
+  props: {
+    showLogo: {
+      type: Boolean,
+      default: true
+    }
+  },
+  
   computed: {
     // msn()  { return this.$store.state.msn },
     // wsp()  { return this.$store.state.wsp_bo },

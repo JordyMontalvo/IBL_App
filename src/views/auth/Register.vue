@@ -1,5 +1,5 @@
 <template>
-  <Auth>
+  <Auth :showLogo = "false">
     <section>
       <br>
 
@@ -111,7 +111,7 @@
 
 <script>
 import Auth from '@/views/layouts/Auth'
-import api  from '@/api'
+import api  from '@/api'  
 
 export default {
   components: { Auth },
