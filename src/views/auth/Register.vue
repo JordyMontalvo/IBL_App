@@ -1,89 +1,122 @@
 <template>
-  <Auth :showLogo = "false">
+  <Auth>
     <section>
+      <h1>Registro</h1>
+      <p class="forgot-text">¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a></p>
+      
       <br>
 
-      <i class="icon fa fa-flag"></i>
-      <select class="input" v-model="country"
-        :class="{'error': error.country}"
-        @change="reset('country')">
-        <option value="null" disabled>País</option>
-        <option value="Perú"      >🇵🇪 Perú</option>
-        <!-- <option value="Ecuador"   >🇪🇨 Ecuador</option>
-        <option value="Argentina" >🇦🇷 Argentina</option>
-        <option value="Bolivia"   >🇧🇴 Bolivia</option>
-        <option value="Colombia"  >🇨🇴 Colombia</option>
-        <option value="Costa Rica">🇨🇷 Costa Rica</option>
-        <option value="Chile"     >🇨🇱 Chile</option> -->
-      </select> <br>
+      <div >
+       
+        <div class="input-wrapper">
+          <select class="input" v-model="country"
+            :class="{'error': error.country}"
+            @change="reset('country')">
+            <option value="null" disabled>Selecciona un país</option>
+            <option value="Perú">🇵🇪 Perú</option>
+            <!-- <option value="Ecuador"   >🇪🇨 Ecuador</option>
+            <option value="Argentina" >🇦🇷 Argentina</option>
+            <option value="Bolivia"   >🇧🇴 Bolivia</option>
+            <option value="Colombia"  >🇨�� Colombia</option>
+            <option value="Costa Rica">🇨🇷 Costa Rica</option>
+            <option value="Chile"     >🇨🇱 Chile</option> -->
+          </select>
+          <i class="fa-solid fa-flag icon"></i>
+        </div>
+      </div>
 
-      <i class="icon fa fa-id-card"></i>
-      <input class="input" placeholder="Documento de identidad"
-      oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
-      v-model="dni"
-      :class="{'error': error.dni}"
-      @keydown="reset('dni')"> <br>
+      <div >
+        
+        <div class="input-wrapper">
+          <input type="text" class="input" placeholder="Documento de identidad"
+          oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
+          v-model="dni"
+          :class="{'error': error.dni}"
+          @keydown="reset('dni')">
+          <i class="fa-solid fa-id-card icon"></i>
+        </div>
+      </div>
 
-      <label>
-        <small>
-          <input type="checkbox" v-model="younger" />menor de edad / extranjero
-        </small>
-      </label>
+      <div >
+        <label>
+          <small>
+            <input type="checkbox" v-model="younger" />menor de edad / extranjero
+          </small>
+        </label>
+      </div>
       <br />
 
-      <i class="icon fa-solid fa-user-tie"></i>
-      <!-- <input class="input" placeholder="Nombre"
-      v-model="name"
-      :class="{'error': error.name}"
-      @keydown="reset('name')"
-      :disabled="country == 'Perú' && !younger"> <br> -->
-      <input class="input" placeholder="Nombre"
-      v-model="name"
-      :class="{'error': error.name}"
-      @keydown="reset('name')"> <br>
+      <div >
+       
+        <div class="input-wrapper">
+          <input type="text" class="input" placeholder="Nombre"
+          v-model="name"
+          :class="{'error': error.name}"
+          @keydown="reset('name')">
+          <i class="fa-solid fa-user icon"></i>
+        </div>
+      </div>
 
-      <i class="icon fa-solid fa-user-tie"></i>
-      <input class="input" placeholder="Apellidos"
-      v-model="lastName"
-      :class="{'error': error.lastName}"
-      @keydown="reset('lastName')"> <br>
-      <!-- <i class="icon fa-solid fa-user-tie"></i>
-      <input class="input" placeholder="Apellidos"
-      v-model="lastName"
-      :class="{'error': error.lastName}"
-      @keydown="reset('lastName')"
-      :disabled="country == 'Perú' && !younger"> <br> -->
+      <div >
+       
+        <div class="input-wrapper">
+          <input type="text" class="input" placeholder="Apellidos"
+          v-model="lastName"
+          :class="{'error': error.lastName}"
+          @keydown="reset('lastName')">
+          <i class="fa-solid fa-user icon"></i>
+        </div>
+      </div>
 
-      <i class="icon fa fa-calendar"></i>
+      
       <input type="date" class="input" placeholder="Fecha de Nacimiento"
       v-model="date"> <br>
 
-      <i class="icon fa-solid fa-mobile-retro" v-if="!country"></i>
-      <small v-if="country" style="min-width: 25px; margin-right: 8px; display: inline-block;">{{ prefix }}</small>
-      <input class="input" placeholder="Celular" maxlength="12"
-      v-model="phone"> <br>
+      <div >
+        <div class="input-wrapper">
+          <small v-if="country" style="min-width: 25px; margin-right: 8px; display: inline-block;">{{ prefix }}</small>
+          <input type="text" class="input" placeholder="Celular" maxlength="12"
+          v-model="phone">
+          <i class="fa-solid fa-mobile-alt icon" v-if="!country"></i>
+        </div>
+      </div>
 
-      <i class="icon fa-solid fa-envelope-open"></i>
-      <input class="input" placeholder="Correo"
-      v-model.trim="email"> <br>
+      <div >
+       
+        <div class="input-wrapper">
+          <input type="email" class="input" placeholder="Correo"
+          v-model.trim="email">
+          <i class="fa-solid fa-envelope icon"></i>
+        </div>
+      </div>
 
-      <i class="icon fa-solid fa-key"></i>
-      <input :type="show ? 'text' : 'password'" class="input pass" placeholder="Contraseña"
-      v-model="password"
-      :class="{'error': error.password}"
-      @keydown="reset('password')">
-      <i class="show far fa-eye" @click="show = !show"></i> <br>
+      <div >
+        
+        <div class="input-wrapper">
+          <input :type="show ? 'text' : 'password'" class="input" placeholder="Contraseña"
+          v-model="password"
+          :class="{'error': error.password}"
+          @keydown="reset('password')">
+          <i class="fa-solid fa-lock icon"></i>
+          <i class="show far fa-eye" @click="show = !show"></i>
+        </div>
+      </div>
 
-      <i class="icon fa-solid fa-paper-plane"></i>
-      <input class="input" placeholder="Código de patrocinador" :disabled="disabled"
-      v-model="code"
-      :class="{'error': error.code}"
-      @keydown="reset('code')"> <br><br>
+      <div >
+       
+        <div class="input-wrapper">
+          <input type="text" class="input" placeholder="Código de patrocinador" :disabled="disabled"
+          v-model="code"
+          :class="{'error': error.code}"
+          @keydown="reset('code')">
+          <i class="fa-solid fa-paper-plane icon"></i>
+        </div>
+      </div>
 
       <p class="alert">{{ alert | alert }}</p>
 
 
-      <small><input type="checkbox" v-model="check">Acepto los <a href="" target="_blank" style="color: #351251;font-weight: 600;">términos de uso</a></small> <br>
+      <small><input type="checkbox" v-model="check">Acepto los <a href="" target="_blank" style="color: white;font-weight: 600;">términos de uso</a></small> <br>
 
 
       <button class="button" v-show="!sending" @click="submit">Registrarme</button>
@@ -111,7 +144,7 @@
 
 <script>
 import Auth from '@/views/layouts/Auth'
-import api  from '@/api'  
+import api  from '@/api'
 
 export default {
   components: { Auth },
