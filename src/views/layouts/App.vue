@@ -15,7 +15,7 @@
 
       <i class="burger fas fa-bars" @click="opened"></i>
 
-      <h4>{{ name }} {{ lastName }} <i class="avatar fas fa-user"
+      <h4>{{ name }} {{ lastName }} <i class=""
                       :class="{'yellow': affiliated, 'blue': _activated, 'green': activated}"></i>
       </h4>
 
@@ -36,11 +36,11 @@
           <i @click="changeNewPhoto" class="fas fa-check"></i>
         </div>
 
-        <div class="social" style="display: flex;" v-if="office_id == null">
+      <!-- <div class="social" style="display: flex;" v-if="office_id == null">
           <a class="fab fa-facebook-square" :href="fb" target="_blank" style="font-size: 18px;color: #4267B2;"></a>
           <a class="fab fa-instagram"       :href="is" target="_blank" style="font-size: 18px;color: #e95950;"></a>
           <a class="fab fa-youtube"         :href="yt" target="_blank" style="font-size: 18px;color: #ff0050;"></a>
-        </div>
+        </div>--> 
 
         <router-link to="/dashboard" @click.native="close" v-if="office_id == null">
           <i class="fas fa-home"></i> INICIO
