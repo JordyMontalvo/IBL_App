@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <header :class="{ silver: plan == 'business', gold: plan == 'master' }">
+    <header <!-- :class="{ silver: plan == 'business', gold: plan == 'master' }">
 
       <h3 class="slogan">
         <span v-if="country == 'Perú'"       style="font-size: 28px;">🇵🇪</span>
@@ -17,7 +17,7 @@
 
       <h4>{{ name }} {{ lastName }} <i class=""
                       :class="{'yellow': affiliated, 'blue': _activated, 'green': activated}"></i>
-      </h4>
+      </h4>-->
 
     </header>
     <section :class="{ 'open': open }">
@@ -42,7 +42,7 @@
           <a class="fab fa-youtube"         :href="yt" target="_blank" style="font-size: 18px;color: #ff0050;"></a>
         </div>--> 
 
-        <router-link to="/dashboard" @click.native="close" v-if="office_id == null">
+        <router-link to="/dashboard" @click.native="" v-if="office_id == null">
           <i class="fas fa-home"></i> INICIO
         </router-link>
         <!-- <router-link to="/status" @click.native="close">
@@ -50,7 +50,7 @@
         </router-link> -->
 
         <a @click="actived(0)">
-          <i class="fas fa-caret-down"></i> PRODUCTOS
+          <i class="fa fa-cart-plus"></i> PRODUCTOS
         </a>
         <div class="sub-menu" :class="{'active': buys}">
           <router-link to="/activation" @click.native="close" v-if="affiliated">
@@ -63,7 +63,7 @@
 
         <a @click="actived(1)" v-if="tree">
         <!-- <a @click="actived(1)"> -->
-          <i class="fas fa-caret-down"></i> ORGANIZACIÓN
+          <i class="fa fa-users"></i> ORGANIZACIÓN
         </a>
         <div class="sub-menu" :class="{'active': network}">
           <router-link to="/tree" @click.native="close">
@@ -79,7 +79,7 @@
 
         <!-- <a @click="actived(2)" v-if="tree && office_id == null"> -->
         <a @click="actived(2)">
-          <i class="fas fa-caret-down"></i> COMISIONES
+          <i class="fa fa-money"></i> COMISIONES
         </a>
         <div class="sub-menu" :class="{'active': commissions}">
           <!-- <router-link to="/bonuses" @click.native="close">
@@ -97,7 +97,7 @@
         </div>
 
         <a @click="actived(3)" v-if="tree && office_id == null">
-          <i class="fas fa-caret-down"></i> RESUMEN
+          <i class="fa fa-file-text"></i> RESUMEN
         </a>
         <div class="sub-menu" :class="{'active': resume}">
           <router-link to="/bonuses" @click.native="close" v-if="affiliated">
@@ -133,7 +133,9 @@
       <div class="content">
         <header>
           <div style="display: flex; align-items: center;">
-            <img class="logo" src="@/assets/img/logo/logo.svg" style="height: 64px;">
+            <img class="logo" src="" style="height: 64px;">
+            <p>Dashboard</p>
+            <button class="share-button">Compartir Afiliación</button>
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
           </div>
           <!-- <div class="social">
