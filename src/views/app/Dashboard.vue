@@ -14,6 +14,22 @@
     <div class="boxes" v-if="!loading">
 
       <div class="box blue">
+        <h4>Nivel Actual</h4>
+        <p>{{ rank }}</p>
+        <p>Volumen Personal: {{ personalVolume }}</p>
+        <p>Volumen Grupal: {{ groupVolume }}</p>
+        <p>Socios: {{ team }}</p>
+        <p>Frontales: {{ frontales }}</p>
+        </div>
+
+        <div class="box red">
+        <h4>Rango Alcanzado</h4>
+        <p>{{ achievedRank }}</p>
+        <p>Puntos Grupales: {{ groupPoints }}</p>
+        <p>Frontales: {{ frontales }}</p>
+      </div>
+
+      <div class="box blue">
         <i class="fas fa-wallet"></i>
         <div>
           <p>S/. {{ balance }}</p>
@@ -45,13 +61,6 @@
         </div>
       </div>
 
-      <div class="box green" v-if="rank">
-        <i class="fas fa-gem"></i>
-        <div>
-          <p>{{ rank }}</p>
-          <span>RANGO CERRADO</span>
-        </div>
-      </div>
 
       <div class="box green" v-if="node">
         <i class="fas fa-gem"></i>
@@ -61,12 +70,18 @@
         </div>
       </div>
 
+
       <div class="box green" v-if="node">
         <i class="fa fa-tachometer"></i>
         <div>
           <p>{{ node.next_rank.name | _rank }}</p>
           <span>SIGUIENTE RANGO</span>
         </div>
+      </div>
+
+      <div class="box yellow">
+        <h4>Total Ganado</h4>
+        <p>S/. {{ totalEarned }}</p>
       </div>
 
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <header <!-- :class="{ silver: plan == 'business', gold: plan == 'master' }">
+    <header  :class="{ silver: plan == 'business', gold: plan == 'master' }">
 
       <h3 class="slogan">
         <span v-if="country == 'Perú'"       style="font-size: 28px;">🇵🇪</span>
@@ -17,24 +17,24 @@
 
       <h4>{{ name }} {{ lastName }} <i class=""
                       :class="{'yellow': affiliated, 'blue': _activated, 'green': activated}"></i>
-      </h4>-->
+      </h4>
 
     </header>
     <section :class="{ 'open': open }">
 
       <div class="menu">
         
-        <label v-if="office_id == null">
+        <!-- <label v-if="office_id == null">
           <img v-if="photoState == 'default'" class="photo" :src="photo">
           <img v-if="photoState == 'changed'" class="photo" :src="newPhoto">
 
           <input type="file" @change="changePhoto">
         </label>
-
+        
         <div v-if="photoState == 'changed'" class="controls" >
           <i @click="cancelNewPhoto" class="fas fa-times"></i>
           <i @click="changeNewPhoto" class="fas fa-check"></i>
-        </div>
+        </div>-->
 
       <!-- <div class="social" style="display: flex;" v-if="office_id == null">
           <a class="fab fa-facebook-square" :href="fb" target="_blank" style="font-size: 18px;color: #4267B2;"></a>
@@ -49,8 +49,11 @@
           <i class="fas fa-tachometer-alt"></i> ESTADO
         </router-link> -->
 
-        <a @click="actived(0)">
-          <i class="fa fa-cart-plus"></i> PRODUCTOS
+        <a @click="actived(0)" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>
+            <i class="fa fa-cart-plus"></i> PRODUCTOS
+          </span>
+          <i class="fa fa-angle-down" style="margin-left: 16px;"></i>
         </a>
         <div class="sub-menu" :class="{'active': buys}">
           <router-link to="/activation" @click.native="close" v-if="affiliated">
@@ -61,9 +64,11 @@
           </router-link>
         </div>
 
-        <a @click="actived(1)" v-if="tree">
-        <!-- <a @click="actived(1)"> -->
-          <i class="fa fa-users"></i> ORGANIZACIÓN
+        <a @click="actived(1)" v-if="tree" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>
+            <i class="fa fa-users"></i> ORGANIZACIÓN
+          </span>
+          <i class="fa fa-angle-down" style="margin-left: 16px;"></i>
         </a>
         <div class="sub-menu" :class="{'active': network}">
           <router-link to="/tree" @click.native="close">
@@ -77,9 +82,11 @@
           </router-link> -->
         </div>
 
-        <!-- <a @click="actived(2)" v-if="tree && office_id == null"> -->
-        <a @click="actived(2)">
-          <i class="fa fa-money"></i> COMISIONES
+        <a @click="actived(2)" v-if="tree" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>
+            <i class="fa fa-money"></i> COMISIONES
+          </span>
+          <i class="fa fa-angle-down" style="margin-left: 16px;"></i>
         </a>
         <div class="sub-menu" :class="{'active': commissions}">
           <!-- <router-link to="/bonuses" @click.native="close">
@@ -96,8 +103,11 @@
           </router-link>
         </div>
 
-        <a @click="actived(3)" v-if="tree && office_id == null">
-          <i class="fa fa-file-text"></i> RESUMEN
+        <a @click="actived(3)" v-if="tree && office_id == null" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>
+            <i class="fa fa-file-text"></i> RESUMEN
+          </span>
+          <i class="fa fa-angle-down" style="margin-left: 16px;"></i>
         </a>
         <div class="sub-menu" :class="{'active': resume}">
           <router-link to="/bonuses" @click.native="close" v-if="affiliated">
@@ -135,7 +145,9 @@
           <div style="display: flex; align-items: center;">
             <img class="logo" src="" style="height: 64px;">
             <p>Dashboard</p>
-            <button class="share-button">Compartir Afiliación</button>
+            <button class="share-button">
+              <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación
+            </button>
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
           </div>
           <!-- <div class="social">

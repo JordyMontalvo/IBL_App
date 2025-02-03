@@ -7,7 +7,7 @@
   justify-content center
   padding 2rem
 
- 
+
   &:before
     content ''
     position absolute
@@ -81,20 +81,35 @@
     &:hover
       text-decoration underline
 
+.social
+  display flex
+  justify-content center
+  gap 10px
+  margin-top 10px     
+  
 
 
   // >footer
   //   text-align right
 
 
-// @media (min-width: d-break)
-//   .auth
-//     >header
-//       display block
-//       flex 1
-//       text-align center
-//     >section
-//       .content
-//         margin initial
+
+
+
+@media (max-width: d-break)
+  .auth .logo-container
+    position static
+    left auto
+    top auto
+    transform none
+    margin: 1rem 0;
+
+@media (max-width: d-break-2)
+  .auth .logo-container
+    position static
+    left auto
+    top auto
+    transform none
+    margin: 1rem 0;
 
 
