@@ -73,9 +73,9 @@
       v-model="date"> <br>
 
       <div >
-        <div class="input-wrapper">
+        <div class="input-wrapper-error">
           <small v-if="country" style="min-width: 25px; margin-right: 8px; display: inline-block;">{{ prefix }}</small>
-          <input type="text" class="input" placeholder="Celular" maxlength="12"
+          <input type="text" class="input-celular" placeholder="Celular" maxlength="12"
           v-model="phone">
           <i class="fa-solid fa-mobile-alt icon" v-if="!country"></i>
         </div>
