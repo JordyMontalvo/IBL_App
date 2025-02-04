@@ -5,7 +5,6 @@
       <span class="separator"></span>
 
       <h1>Iniciar sesion</h1>
-      <p class="forgot-text">¿Olvidaste tu contraseña? <a href="#">Ingresa aquí</a></p>
       <br>
     
         
