@@ -42,6 +42,8 @@
           <a class="fab fa-youtube"         :href="yt" target="_blank" style="font-size: 18px;color: #ff0050;"></a>
         </div>--> 
 
+        <img  src="../../assets/img/logo/logoibl.png" class= "photo">
+
         <router-link to="/dashboard" @click.native="" v-if="office_id == null">
           <i class="fas fa-home"></i> INICIO
         </router-link>

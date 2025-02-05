@@ -2,9 +2,9 @@
   <App :session="session">
 
     <figure class="slide" style="display: flex; margin: 0;">
-      <img :src="banner.img" style="width: 100%; max-width: 850px; transition: all 2s;" :style="{ opacity: op }" >
-      <img :src="banner.img2" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-100%); opacity:0;" :style="{ opacity: op2 }">
-      <img :src="banner.img3" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-200%); opacity:0;" :style="{ opacity: op3 }">
+      <img src="../../assets/img/banner/banner1ibl.webp" style="width: 100%; max-width: 850px; transition: all 2s;" :style="{ opacity: op }" >
+      <img src="../../assets/img/banner/banner2ibl.webp" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-100%); opacity:0;" :style="{ opacity: op2 }">
+      <img src="../../assets/img/banner/banner3ibl.webp" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-200%); opacity:0;" :style="{ opacity: op3 }">
     </figure> <br>
 
     <h4>INICIO</h4>
@@ -13,7 +13,7 @@
 
     <div class="boxes" v-if="!loading">
 
-      <div class="box blue">
+      <div class="box white">
         <h4>Nivel Actual</h4>
         <p>{{ rank }}</p>
         <p>Volumen Personal: {{ personalVolume }}</p>
@@ -22,14 +22,14 @@
         <p>Frontales: {{ frontales }}</p>
         </div>
 
-        <div class="box red">
+        <div class="box white">
         <h4>Rango Alcanzado</h4>
         <p>{{ achievedRank }}</p>
         <p>Puntos Grupales: {{ groupPoints }}</p>
         <p>Frontales: {{ frontales }}</p>
       </div>
 
-      <div class="box blue">
+      <div class="box white">
         <i class="fas fa-wallet"></i>
         <div>
           <p>S/. {{ balance }}</p>
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="box green">
+      <div class="box white">
         <i class="fas fa-hand-holding-usd"></i>
         <div>
           <p>S/. {{ _balance }}</p>
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <div class="box green">
+      <div class="box white">
         <i class="fas fa-hand-holding-usd"></i>
         <div>
           <p>S/. {{ Number(ins + insVirtual).toFixed(2) }}</p>
@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div class="box green">
+      <div class="box white">
         <i class="fas fa-medal"></i>
         <div>
           <p>{{ points }}</p>
@@ -62,7 +62,7 @@
       </div>
 
 
-      <div class="box green" v-if="node">
+      <div class="box white" v-if="node">
         <i class="fas fa-gem"></i>
         <div>
           <p>{{ node.rank | _rank }}</p>
@@ -71,7 +71,7 @@
       </div>
 
 
-      <div class="box green" v-if="node">
+      <div class="box white" v-if="node">
         <i class="fa fa-tachometer"></i>
         <div>
           <p>{{ node.next_rank.name | _rank }}</p>
@@ -79,9 +79,9 @@
         </div>
       </div>
 
-      <div class="box yellow">
-        <h4>Total Ganado</h4>
-        <p>S/. {{ totalEarned }}</p>
+      <div class="box white">
+        <h4>Pack de Afiliación</h4>
+        <p></p>
       </div>
 
     </div>
