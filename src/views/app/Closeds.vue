@@ -6,16 +6,18 @@
     <i class="load" v-if="loading"></i>
 
     <div class="scroll" v-if="!loading">
-
+<div class="input-wrapper">
       <i class="icon fa-solid fa-briefcase"></i>
       <select class="input" v-model="selec_closed">
         <option disabled :value="null">Periodo de cálculo</option>
         <option v-for="closed in closeds" :value="closed">{{ new Date(closed.date).toLocaleString() }}</option>
       </select>
-      <br>
+    </div>
+      
+      <br
       <br>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button class="button" @click="report">Reporte</button>
+      <button class="button" @click="report">Registrar</button>
       <br>
       <br>
 

@@ -129,12 +129,12 @@
     </a> <br>
 
 
-    <i class="icon fas fa-user-shield"></i>
+    
     <input class="input" readonly @click="copy_token" id="token"
     v-model="token">
     <i class="copy" v-if="c_token">código copiado <i class="fas fa-check"></i></i><br>
 
-    <i class="icon fas fa-share-alt"></i>
+    
     <input class="input" readonly @click="copy_link" id="link"
     v-model="link">
     <i class="copy" v-if="c_link">link copiado <i class="fas fa-check"></i></i>

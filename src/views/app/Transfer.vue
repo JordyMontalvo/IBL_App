@@ -20,12 +20,12 @@
 
         <small>Total disponible: S/. {{ balance }}</small> <br><br>
 
-        <i class="icon fa fa-id-card"></i>
+        
         <input class="input" v-model="dni" placeholder="Usuario receptor"
         oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
         @keydown="error = null"> <br>
 
-        <i class="icon fas fa-hand-holding-usd"></i>
+        
         <input class="input" v-model.number="amount" placeholder="Monto a enviar"
         oninput="this.value=this.value.replace(/(?![0-9, '.'])./gmi,'')"
         @keydown="error = null"> <br>

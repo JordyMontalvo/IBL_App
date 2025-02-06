@@ -7,22 +7,22 @@
 
     <section v-if="!loading">
 
-      <i class="icon fas fa-flag"></i>
+      
       <input class="input" readonly
       placeholder="Pais"
       v-model="country"> <br>
 
-      <i class="icon fas fa-user"></i>
+      
       <input class="input" readonly
       placeholder="Nombre"
       v-model="name"> <br>
 
-      <i class="icon fas fa-user"></i>
+     
       <input class="input" readonly
       placeholder="Apellido"
       v-model="lastName"> <br>
 
-      <i class="icon far fa-id-card"></i>
+      
       <input class="input" readonly
       placeholder="Documento de identidad"
       v-model="dni">&nbsp;
@@ -33,12 +33,12 @@
 
       <div v-if="token">
 
-        <i class="icon fas fa-user-shield"></i>
+        
         <input class="input" readonly @click="copy_token" id="token"
         v-model="token">
         <i class="copy" v-if="c_token">código copiado <i class="fas fa-check"></i></i><br>
 
-        <i class="icon fas fa-share-alt"></i>
+        
         <input class="input" readonly @click="copy_link" id="link"
         v-model="link">
         <i class="copy" v-if="c_link">link copiado <i class="fas fa-check"></i></i>
@@ -48,11 +48,11 @@
       </div>
 
 
-      <i class="icon fas fa-envelope"></i>
+      
       <input class="input" placeholder="Correo electrónico"
       v-model="email"> <br>
 
-      <i class="icon fas fa-mobile-alt"></i>
+      
       <input class="input" placeholder="Teléfono"
       v-model="phone"> <br>
 
@@ -61,11 +61,11 @@
       oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
       v-model="age"> <br> -->
 
-      <i class="icon fa fa-calendar"></i>
+      
       <input type="date" class="input" placeholder="Fecha de Nacimiento" readonly
       v-model="birthdate"> <br>
 
-      <i class="icon fas fa-map-marker-alt"></i>
+      
       <input class="input" placeholder="Dirección"
       v-model="address"> <br>
 
@@ -76,7 +76,7 @@
       <br>
       <a class="route">Datos Bancarios</a> <br>
 
-      <i class="icon fas fa-university"></i>
+      
       <!-- <select class="input"
       v-model="bank" :disabled="bank_disabled"> -->
       <select class="input"
@@ -87,7 +87,7 @@
         <option value="BBVA">BBVA</option>
       </select> <br>
 
-      <i class="icon fas fa-university"></i>
+      
       <!-- <select class="input"
       v-model="account_type" :disabled="account_type_disabled"> -->
       <select class="input"
@@ -97,7 +97,7 @@
         <option value="Corriente">Corriente</option>
       </select> <br>
 
-      <i class="icon fas fa-user-circle"></i>
+    
       <!-- <input class="input" placeholder="Número de cuenta" :disabled="account_disabled"
       v-model="account"> <br> -->
       <input class="input" placeholder="Número de cuenta"

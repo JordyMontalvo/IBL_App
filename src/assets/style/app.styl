@@ -6,7 +6,7 @@
     // background c-blue
     // background c-main-red
     // background c-red
-    background c-main-light-green
+    background linear-gradient(to right, rgba(8, 56, 92, 1), rgba(17, 95, 153, 1), rgba(8, 56, 92, 1))
     color white
     padding 16px
     &.silver
@@ -21,15 +21,15 @@
     .content
       transition all .5s
     .menu
-      min-width 40%
+      min-width 70%
       transform translate(-100%, 0)
     .content
       min-width 100%
-      transform translate(-40%, 0)
+      transform translate(-70%, 0)
       overflow hidden
       position relative
     &.open
-      .menu
+      .menu 
       .content
         transform translate(0, 0)
     // style
@@ -50,6 +50,7 @@
           a
             padding 8px
       >section
+        
         padding 8px 16px
         padding-bottom 72px
   .share-button
@@ -75,11 +76,11 @@
     display: flex;
     justify-content: space-around;
     border-top: solid 1px;
-    background white
+    background linear-gradient(to right, rgba(8, 56, 92, 1), rgba(17, 95, 153, 1), rgba(8, 56, 92, 1))
 
     a
       text-align center
-      color c-main-light-green
+      color white 
       // color c-main-light-purple
       font-size 12px
       padding 10px
@@ -90,10 +91,11 @@
     @media (min-width: d-break)
       display none
 
-
+  
 @media (min-width: d-break)
   .app
     >header
+      display none
       // padding 16px 40px
       padding 12px 40px
     >section
@@ -220,6 +222,7 @@
 .scroll
   overflow auto
   margin 16px 0
+  color rgba(74, 176, 46, 1)
 
 table
   background white

@@ -7,14 +7,14 @@
       <img src="../../assets/img/banner/banner3ibl.webp" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-200%); opacity:0;" :style="{ opacity: op3 }">
     </figure> <br>
 
-    <h4>INICIO</h4>
+    
 
     <i class="load" v-if="loading"></i>
 
     <div class="boxes" v-if="!loading">
 
       <div class="box white">
-        <h4>Nivel Actual</h4>
+        <h2>Nivel Actual</h2>
         <p>{{ rank }}</p>
         <p>Volumen Personal: {{ personalVolume }}</p>
         <p>Volumen Grupal: {{ groupVolume }}</p>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="box white">
-        <h4>Rango Alcanzado</h4>
+        <h3>Rango Alcanzado</h3>
         <p>{{ achievedRank }}</p>
         <p>Puntos Grupales: {{ groupPoints }}</p>
         <p>Frontales: {{ frontales }}</p>
@@ -80,7 +80,7 @@
       </div>
 
       <div class="box white">
-        <h4>Pack de Afiliación</h4>
+        <h3>Pack de Afiliación</h3>
         <p></p>
       </div>
 

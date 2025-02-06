@@ -60,13 +60,13 @@
 
           <small>Impuesto: {{ IGV.toFixed(2) }}</small> <br>
 
-          <i class="icon fas fa-dollar-sign"></i>
+          
           <input class="input" readonly v-model="_price"> <br>
 
-          <i class="icon fas fa-gem"></i>
+          
           <input class="input" readonly v-model="_points"> <br>
 
-          <i class="icon fa-solid fa-briefcase"></i>
+          
           <select class="input" v-model="office" v-if="!pending">
             <option value="null" disabled>Oficina</option>
             <option v-for="office in offices" :value="office">{{ office.name }}</option>

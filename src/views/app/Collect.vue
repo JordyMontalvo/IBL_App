@@ -1,6 +1,6 @@
 <template>
   <App :session="session">
-
+<h4>Retiros</h4>
     <h4 class="tabs">
       <router-link class="tab" to="/collect">
         Nuevo Retiro
@@ -14,12 +14,12 @@
 
     <section v-if="!loading"> <br>
 
-      <label>
+      <label class="cole-label">
         <input type="radio" :value=false v-model="cash">
         <small>Retirar en efectivo</small>
       </label> <br>
 
-      <label>
+      <label class = "cole-label">
         <input type="radio" :value=true v-model="cash">
         <small>Retirar en cuenta bancaria</small>
       </label> <br>
@@ -30,46 +30,54 @@
       </label> <br> -->
 
       <router-link to="/transfer">
-        <label>
+        <label class="cole-label">
           <input type="radio">
           <small>Transferir saldo</small>
         </label> <br>
       </router-link>
 
-      <i class="icon fas fa-university"></i>
+      <div class=" input-wrapper">
       <select class="input" v-model="office" :class="{ 'error': error.office }" @change="reset('office')" disabled>
         <option value="null" disabled>Oficina</option>
         <option value="central">Central</option>
         <option value="secondary">Ledezma</option>
       </select> <br>
-
+    </div>
 
       <div v-if="cash">
-        <i class="icon fas fa-university"></i>
+        
+        <div class=" input-wrapper">
+          
         <input class="input" readonly placeholder="Banco" v-model="bank" :class="{ 'error': error.bank }"
-          @keydown="reset('bank')"> <br>
-
-        <i class="icon fas fa-university"></i>
+          @keydown="reset('bank')">
+          <i class="icon fa fa-university"></i>
+          <br>
+        </div>
+        <div class=" input-wrapper">
+          <i class="icon fa fa-university"></i>
         <input class="input" readonly placeholder="Banco" v-model="account_type" :class="{ 'error': error.bank }"
           @keydown="reset('bank')"> <br>
-
-        <i class="icon fas fa-user-circle"></i>
+        </div>
+        <div class=" input-wrapper">
+          <i class="icon fa fa-user-plus" aria-hidden="true"></i>
         <input class="input" readonly placeholder="Número de cuenta" v-model="account" :class="{ 'error': error.account }"
           @keydown="reset('account')"> <br>
-
+        </div>
         <!-- <i class="icon far fa-user-circle"></i>
         <input class="input" readonly placeholder="Código interbancario"
         v-model="interbank_code"> <br> -->
       </div>
 
       <br>
-      <small>Total disponible: S/. {{ balance }}</small> <br>
+      <small class="cole-label">Total disponible: S/. {{ balance }}</small> <br>
 
-      <i class="icon fas fa-hand-holding-usd"></i>
+      
+      <div class=" input-wrapper">
+        <i class="icon fa fa-money" aria-hidden="true"></i>
       <input class="input" placeholder="Monto a retirar"
         oninput="this.value=this.value.replace(/(?![0-9, '.'])./gmi,'')" v-model.number="amount"
         :class="{ 'error': error.amount }" @keydown="reset('amount')"> <br>
-
+      </div>
       <br>
       <textarea class="input" v-model="desc" placeholder="Descripción" maxlength="30"></textarea> <br>
 

@@ -1,8 +1,8 @@
 <template>
   <div class="app">
-    <header  :class="{ silver: plan == 'business', gold: plan == 'master' }">
+    <header> 
 
-      <h3 class="slogan">
+      <!--<h3 class="slogan">
         <span v-if="country == 'Perú'"       style="font-size: 28px;">🇵🇪</span>
         <span v-if="country == 'Bolivia'"    style="font-size: 28px;">🇧🇴</span>
         <span v-if="country == 'Ecuador'"    style="font-size: 28px;">🇪🇨</span>
@@ -11,13 +11,13 @@
         <span v-if="country == 'Chile'"      style="font-size: 28px;">🇨🇱</span>
         <span v-if="country == 'Costa Rica'" style="font-size: 28px;">🇨🇷</span>
           &nbsp;&nbsp;&nbsp;SUEÑA SIN LIMITES
-      </h3>
+      </h3>-->
+      <img src="../../assets/img/logo/logoibl.png" alt="" class="logo">
+      <i class="burger fas fa-bars" style="margin-left: 310px;" @click="opened"></i>
 
-      <i class="burger fas fa-bars" @click="opened"></i>
-
-      <h4>{{ name }} {{ lastName }} <i class=""
+      <!-- <h4>{{ name }} {{ lastName }} <i class=""
                       :class="{'yellow': affiliated, 'blue': _activated, 'green': activated}"></i>
-      </h4>
+      </h4>-->
 
     </header>
     <section :class="{ 'open': open }">
@@ -159,7 +159,7 @@
             <a class="fab fa-youtube"         :href="yt" target="_blank" style="color: #ff0050;"></a>
           </div> -->
         </header>
-        <section style="overflow: auto;">
+        <section style="overflow: auto; ">
 
           <slot/>
 
