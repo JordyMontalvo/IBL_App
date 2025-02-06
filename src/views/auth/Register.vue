@@ -86,10 +86,7 @@
         <input
           placeholder="Fecha de nacimiento"
           class="input"
-          type="text"
-          onfocus="(this.type='date')"
-          onblur="(this.type='text')"
-          id="date"
+          type="date"
           />
         <i class="fa-solid fa-calendar-alt icon"></i>
       </div>
