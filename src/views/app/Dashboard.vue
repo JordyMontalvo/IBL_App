@@ -1,5 +1,5 @@
 <template>
-  <App :session="session">
+  <App :session="session" :title="title">
 
     <figure class="slide" style="display: flex; margin: 0;">
       <img src="../../assets/img/banner/banner1ibl.webp" style="width: 100%; max-width: 850px; transition: all 2s;" :style="{ opacity: op }" >
@@ -118,6 +118,7 @@ export default {
   computed: {
     session () { return this.$store.state.session },
     plan    () { return this.$store.state.plan },
+    title() { return 'Dashboard' },
   },
   filters: {
     _rank(val) {

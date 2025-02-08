@@ -1,5 +1,5 @@
 <template>
-  <App :session="session" :office_id="office_id">
+  <App :session="session" :office_id="office_id" :title="title">
 
     <h4 class="tabs">
       <router-link class="tab" to="/transfer">
@@ -25,11 +25,11 @@
         oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
         @keydown="error = null"> <br>
       </div>
-        
+      <div class=" input-wrapper">
         <input class="input" v-model.number="amount" placeholder="Monto a enviar"
         oninput="this.value=this.value.replace(/(?![0-9, '.'])./gmi,'')"
         @keydown="error = null"> <br>
-
+      </div>
         <span v-if="error" class="alert">{{ error }}<br></span><br>
 
         <textarea class="input" v-model="desc" placeholder="Motivo de transferencia" maxlength="30"></textarea> <br>
@@ -106,6 +106,7 @@ export default {
   computed: {
     session()   { return this.$store.state.session   },
     office_id() { return this.$store.state.office_id },
+    title()   {return 'Comisiones'}
   },
   async created() {
     // GET data

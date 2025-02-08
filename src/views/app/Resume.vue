@@ -1,5 +1,5 @@
 <template>
-  <App :session="session" :office_id="office_id">
+  <App :session="session" :office_id="office_id" :title="title">
 
     <h4>RESUMEN</h4>
 
@@ -129,6 +129,7 @@ export default {
     office_id() { return this.$store.state.office_id },
     name()      { return this.$store.state.name },
     activated() { return this.$store.state.activated },
+    title() { return 'Resumen'; },
   },
 
   filters: {

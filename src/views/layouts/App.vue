@@ -24,7 +24,7 @@
 
       <div class="menu">
         
-        <!-- <label v-if="office_id == null">
+        <label v-if="office_id == null">
           <img v-if="photoState == 'default'" class="photo" :src="photo">
           <img v-if="photoState == 'changed'" class="photo" :src="newPhoto">
 
@@ -34,7 +34,7 @@
         <div v-if="photoState == 'changed'" class="controls" >
           <i @click="cancelNewPhoto" class="fas fa-times"></i>
           <i @click="changeNewPhoto" class="fas fa-check"></i>
-        </div>-->
+        </div>
 
       <!-- <div class="social" style="display: flex;" v-if="office_id == null">
           <a class="fab fa-facebook-square" :href="fb" target="_blank" style="font-size: 18px;color: #4267B2;"></a>
@@ -42,7 +42,7 @@
           <a class="fab fa-youtube"         :href="yt" target="_blank" style="font-size: 18px;color: #ff0050;"></a>
         </div>--> 
 
-        <img  src="../../assets/img/logo/logoibl.png" class= "photo">
+        <img  src="../../assets/img/logo/logoibl.png" class= "photo-logo">
 
         <router-link to="/dashboard" @click.native="" v-if="office_id == null">
           <i class="fas fa-home"></i> INICIO
@@ -144,19 +144,39 @@
 
       <div class="content">
         <header>
+          <p>{{ title }}</p>
           <div style="display: flex; align-items: center;">
+            <div style="display: flex; align-items: center; ">
             <img class="logo" src="" style="height: 64px;">
-            <p>Dashboard</p>
             <button class="share-button">
-              <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación
-            </button>
+              <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación</button>
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
-          </div>
+
+            <label v-if="office_id == null">
+          <img v-if="photoState == 'default'" class="photo-header" :src="photo">
+          <img v-if="photoState == 'changed'" class="photo-header" :src="newPhoto">
+
+          <input type="file" @change="changePhoto">
+        </label>
+        
+        <div v-if="photoState == 'changed'" class="controls" >
+          <i @click="cancelNewPhoto" class="fas fa-times"></i>
+          <i @click="changeNewPhoto" class="fas fa-check"></i>
+        </div>
+        <div class="user-info" style="margin-left: 20px;">
+          <p>{{ name }} {{ lastName }}</p>
+          <p>{{ email }}</p>
+        </div>
+            </div>
+                </div>
+
+          
           <!-- <div class="social">
             <a class="fab fa-facebook-square" :href="fb" target="_blank" style="color: #4267B2;"></a>
             <a class="fab fa-instagram"       :href="is" target="_blank" style="color: #e95950;"></a>
             <a class="fab fa-tiktok"          :href="tk" target="_blank" style="color: #ff0050;"></a>
             <a class="fab fa-youtube"         :href="yt" target="_blank" style="color: #ff0050;"></a>
+            
           </div> -->
         </header>
         <section style="overflow: auto; ">
@@ -204,6 +224,8 @@ export default {
   props: {
     session: String,
     office_id: String,
+    title: String,
+    
   },
   data() {
     return {
@@ -224,6 +246,7 @@ export default {
     country   () { return this.$store.state.country    },
     photo     () { return this.$store.state.photo      },
     tree      () { return this.$store.state.tree       },
+    email     () { return this.$store.state.email      },
 
     // social
     fb() { return this.$store.state.fb },

@@ -1,5 +1,5 @@
 <template>
-  <App :session="session">
+  <App :session="session" :title="title">
 <h4>Retiros</h4>
     <h4 class="tabs">
       <router-link class="tab" to="/collect">
@@ -129,6 +129,7 @@ export default {
   },
   computed: {
     session() { return this.$store.state.session },
+    title() { return 'Comisiones' },
   },
   filters: {
     alert(msg) {

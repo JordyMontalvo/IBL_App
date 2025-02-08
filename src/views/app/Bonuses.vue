@@ -1,5 +1,5 @@
 <template>
-  <App :session="session">
+  <App :session="session" :title="title">
 
     <h4>BONIFICACIONES</h4>
 
@@ -150,6 +150,7 @@ export default {
   },
   computed: {
     session() { return this.$store.state.session },
+    title() { return 'Resumen'; },
   },
   async created() {
     const { data } = await api.bonuses(this.session); console.log({ data })

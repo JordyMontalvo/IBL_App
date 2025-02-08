@@ -1,5 +1,5 @@
 <template>
-  <App :session="session">
+  <App :session="session" :title="title">
 
     <h4>CIERRES</h4>
 
@@ -84,6 +84,7 @@ export default {
   },
   computed: {
     session() { return this.$store.state.session },
+    title() { return 'Resumen'; },
   },
   filters: {
     date(val) {

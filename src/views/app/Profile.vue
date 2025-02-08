@@ -1,5 +1,5 @@
 <template>
-  <App :session="session">
+  <App :session="session" :title="title">
 
     <h4>PERFIL</h4>
 
@@ -7,28 +7,30 @@
 
     <section v-if="!loading" style="max-width: 400px;">
       <section>
-      <input class="input" readonly
-      placeholder="Pais"
-      v-model="country"> <br>
+        <input class="input" readonly
+        placeholder="Pais"
+        v-model="country"> <br>
+
+        
+        <input class="input" readonly
+        placeholder="Nombre"
+        v-model="name"> <br>
 
       
-      <input class="input" readonly
-      placeholder="Nombre"
-      v-model="name"> <br>
+        <input class="input" readonly
+        placeholder="Apellido"
+        v-model="lastName"> <br>
 
-     
-      <input class="input" readonly
-      placeholder="Apellido"
-      v-model="lastName"> <br>
-
-      
-      <input class="input" readonly
-      placeholder="Documento de identidad"
-      v-model="dni">&nbsp;
-      <router-link to="/password" style="font-size: 12px; text-decoration: underline;">
-        Cambiar contraseña
-      </router-link> <br>
-    </section>
+        <div style="display: flex; align-items: center;">
+          <input class="input" readonly
+            placeholder="Documento de identidad"
+            v-model="dni">&nbsp;
+            
+          <router-link to="/password" style="font-size: 12px; text-decoration: underline; text-wrap: nowrap;">
+              Cambiar contraseña
+          </router-link> 
+        </div>
+      </section>
 
       <section class="input-left">
         <div v-if="token">
@@ -72,7 +74,7 @@
       <router-link to="/security">
         <button class="button">Persona de confianza</button>
       </router-link> <br>
-    </section>
+      </section>
       <br>
       <a class="route">Datos Bancarios</a> <br>
 
@@ -161,6 +163,7 @@ export default {
   computed: {
     session() { return this.$store.state.session },
     link()    { return `${ROOT}/register/${this.token}`},
+    title() { return 'Perfil' },
   },
   async created() {
     // GET data
