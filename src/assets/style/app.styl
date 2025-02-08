@@ -32,6 +32,7 @@
       .menu 
       .content
         transform translate(0, 0)
+        height auto
     // style
     .content
       background c-ligh-gray
@@ -50,23 +51,31 @@
           a
             padding 8px
       >section
-        
         padding 8px 16px
         padding-bottom 72px
+
+@media (max-width: 400px) 
+    .app >section .content >header 
+      display none
   .share-button
-    background-color:rgb(0, 25, 94);
-    color: white;
+    background-color: #00195e;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
-    display: flex;
+    display: flex
     align-items: center;
     justify-content: center;
     font-size: 14px;
     font-weight: bold;
-    margin-left: 10px;
-    margin-left: 600px; // Aumentar el margen izquierdo
+    /* margin-left: 10px; */
+    /* margin-left: 600px; */
+    /* position: relative; */
+    /* left: 400px; */
+    /* transform: translate(500px, 0); */
+    position: relative;
+    left: 30vw; // Aumentar el margen izquierdo
     
   footer
     position fixed
@@ -225,14 +234,17 @@
   color rgba(74, 176, 46, 1)
 
 table
-  background white
+  
+  background c-ligh-gray
   white-space nowrap
   text-align center
   thead
+    
     color c-blue
   tbody
     font-size 14px
-    td
+    td  
+      
       padding 8px
       &.green
         background #00d1b2

@@ -10,7 +10,7 @@
         <thead>
           <tr>
             <th>Fecha</th>
-            <th>Persona</th>
+            <th>Usuario</th>
             <th>Operación</th>
             <th>Monto</th>
             <th>Descripción</th>

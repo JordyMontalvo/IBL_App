@@ -5,9 +5,8 @@
 
     <i class="load" v-if="loading"></i>
 
-    <section v-if="!loading">
-
-      
+    <section v-if="!loading" style="max-width: 400px;">
+      <section>
       <input class="input" readonly
       placeholder="Pais"
       v-model="country"> <br>
@@ -29,9 +28,10 @@
       <router-link to="/password" style="font-size: 12px; text-decoration: underline;">
         Cambiar contraseña
       </router-link> <br>
+    </section>
 
-
-      <div v-if="token">
+      <section class="input-left">
+        <div v-if="token">
 
         
         <input class="input" readonly @click="copy_token" id="token"
@@ -72,7 +72,7 @@
       <router-link to="/security">
         <button class="button">Persona de confianza</button>
       </router-link> <br>
-
+    </section>
       <br>
       <a class="route">Datos Bancarios</a> <br>
 

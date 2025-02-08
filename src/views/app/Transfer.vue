@@ -18,13 +18,13 @@
 
       <div v-if="!confirmation">
 
-        <small>Total disponible: S/. {{ balance }}</small> <br><br>
+        <small class="cole-label">Total disponible: S/. {{ balance }}</small> <br><br>
 
-        
+        <div class=" input-wrapper">
         <input class="input" v-model="dni" placeholder="Usuario receptor"
         oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
         @keydown="error = null"> <br>
-
+      </div>
         
         <input class="input" v-model.number="amount" placeholder="Monto a enviar"
         oninput="this.value=this.value.replace(/(?![0-9, '.'])./gmi,'')"
