@@ -145,14 +145,14 @@
       <div class="content">
         <header>
           <p>{{ title }}</p>
-          <div style="display: flex; align-items: center;">
-            <div style="display: flex; align-items: center; ">
+          <div style="display: flex; align-items: center; gap: 40px;">
+            
             <img class="logo" src="" style="height: 64px;">
             <button class="share-button">
               <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación</button>
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
 
-            <label v-if="office_id == null">
+        <label v-if="office_id == null">
           <img v-if="photoState == 'default'" class="photo-header" :src="photo">
           <img v-if="photoState == 'changed'" class="photo-header" :src="newPhoto">
 
@@ -163,12 +163,11 @@
           <i @click="cancelNewPhoto" class="fas fa-times"></i>
           <i @click="changeNewPhoto" class="fas fa-check"></i>
         </div>
-        <div class="user-info" style="margin-left: 20px;">
           <p>{{ name }} {{ lastName }}</p>
           <p>{{ email }}</p>
         </div>
-            </div>
-                </div>
+            
+                
 
           
           <!-- <div class="social">

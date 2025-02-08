@@ -155,6 +155,7 @@ export default {
     this.$store.commit('SET_COUNTRY',    data.country)
     this.$store.commit('SET_PHOTO',      data.photo)
     this.$store.commit('SET_TREE',       data.tree)
+    this.$store.commit('SET_EMAIL',       data.email)
 
     this.banner   = data.banner
     this.ins      = data.ins
