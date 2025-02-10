@@ -188,7 +188,7 @@
 
     </section>
 
-    <footer>
+    <footer class = "footer-Dashboard">
       <router-link to="/dashboard">
         <i class="fa-solid fa-house"></i>
         Inicio

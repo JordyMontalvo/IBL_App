@@ -170,7 +170,7 @@
       <br /><br />
     </section>
     <footer>
-      <router-link to="/welcome" class="route">Regresar</router-link>
+      <router-link to="/welcome" class="footer-register">Regresar</router-link>
       <br />
       <header>
         <div class="social">
