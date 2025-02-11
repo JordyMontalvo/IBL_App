@@ -136,7 +136,7 @@
         </router-link>
 
         <br>
-        <a @click="logout">
+        <a @click="logout" style="background-color: black;">
           <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
         </a>
 
@@ -163,9 +163,11 @@
           <i @click="cancelNewPhoto" class="fas fa-times"></i>
           <i @click="changeNewPhoto" class="fas fa-check"></i>
         </div>
-          <p>{{ name }} {{ lastName }}</p>
-          <p>{{ email }}</p>
+        <div>
+          <p class = "names">{{ name }} {{ lastName }}  </p>
+          <p>{{ email  }}</p>
         </div>
+          </div>
             
                 
 

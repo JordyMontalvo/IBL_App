@@ -3,7 +3,7 @@
 
     <h4>Apalancamiento</h4><br>
 
-      <table>
+      <table style="background-color: rgba(109, 193, 255, 0.14); width: 200px; border-radius: 20px;">
         <thead>
           <tr>
             <th>FRONTALES</th>
@@ -129,16 +129,17 @@
     </a> <br>
 
 
-    
+    <div class="input-wrapper">
     <input class="input" readonly @click="copy_token" id="token"
     v-model="token">
     <i class="copy" v-if="c_token">código copiado <i class="fas fa-check"></i></i><br>
+    </div>
 
-    
+    <div class="input-wrapper">
     <input class="input" readonly @click="copy_link" id="link"
     v-model="link">
     <i class="copy" v-if="c_link">link copiado <i class="fas fa-check"></i></i>
-
+    </div>
   </App>
 </template>
 

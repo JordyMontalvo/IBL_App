@@ -1,6 +1,7 @@
 .app
   min-height 100vh
-  _grid()
+  display flex 
+  flex-direction column
   >header
     _flex()
     // background c-blue
@@ -16,8 +17,10 @@
   >section
     display flex
     overflow hidden
+    flex 1
     // layout
     .menu
+      padding 10px 20px
     .content
       transition all .5s
     .menu
@@ -115,7 +118,7 @@
     >section
       .menu
       .content
-        height 100%
+        //height auto
         min-width auto
         transform none
       .content
@@ -133,7 +136,7 @@
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   min-width 40%
-  height 100vh // Asegura que el sidebar ocupe toda la altura de la vista
+  //height auto // Asegura que el sidebar ocupe toda la altura de la vista
   transform translate(-100%, 0)
 
   background linear-gradient(to right, rgba(8, 56, 92, 1), rgba(17, 95, 153, 1), rgba(8, 56, 92, 1))
@@ -236,7 +239,7 @@
 .scroll
   overflow auto
   margin 16px 0
-  color rgba(74, 176, 46, 1)
+  color rgb(0, 17, 92)
 
 table
   
@@ -247,15 +250,14 @@ table
     
     color c-blue
   tbody
-    font-size 14px
+    font-size 16px
+    font-weight bold
     td  
-      
+      color rgba(8, 56, 92, 1);
+      font roboto-bold
       padding 8px
-      &.green
-        background #00d1b2
-        color white
-
-
+              
+        
 // Tree
 .tree
   .row

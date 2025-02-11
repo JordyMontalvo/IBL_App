@@ -31,9 +31,9 @@
         @keydown="error = null"> <br>
       </div>
         <span v-if="error" class="alert">{{ error }}<br></span><br>
-
-        <textarea class="input" v-model="desc" placeholder="Motivo de transferencia" maxlength="30"></textarea> <br>
-
+      <div class = "input-wrapper" >
+        <textarea class="input" style="height: 150px;" v-model="desc" placeholder="Motivo de transferencia" maxlength="30"></textarea> <br>
+      </div>
         <button class="button" v-show="!validating" @click="validate">Transferir</button>
         <button class="button" v-show= "validating" disabled>Transferir</button>
 

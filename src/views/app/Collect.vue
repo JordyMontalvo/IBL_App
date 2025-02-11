@@ -79,8 +79,9 @@
         :class="{ 'error': error.amount }" @keydown="reset('amount')"> <br>
       </div>
       <br>
-      <textarea class="input" v-model="desc" placeholder="Descripción" maxlength="30"></textarea> <br>
-
+      <div class="input-wrapper">
+      <textarea class="input" style="height: 150px;" v-model="desc" placeholder="Descripción" maxlength="30"></textarea> <br>
+      </div>
       <p class="alert">{{ alert | alert }}</p>
 
       <small v-if="success" class="success">Retiro Enviado</small> <br>
