@@ -8,7 +8,7 @@
       <router-link to="/login" class="button">Ingresar a Oficina</router-link>
       <router-link to="/register" class="button">Registrar Distribuidor</router-link>
       
-      <a :href="wsp" target="_blank" class="whatsapp-link">
+      <a  target="_blank" class="whatsapp-link">
         <i class="fa-brands fa-whatsapp"></i>
         WhatsApp de ayuda
       </a>

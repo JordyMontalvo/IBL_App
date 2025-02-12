@@ -1,17 +1,18 @@
 <template>
-  <App :session="session" :office_id="office_id">
+  <App :session="session" :office_id="office_id  " :title="title">
 
     <h4 class="tabs">
       <router-link class="tab" to="/activation">
-        Comprar
+        Terronos
       </router-link> &nbsp;&nbsp;
       <router-link class="tab" to="/activations" v-if="!office_id">
-        Historial
+        Membresías
       </router-link>
     </h4>
 
+    
+    <h4> Compras</h4>
     <h4>Puntos: {{ current_points }}</h4>
-    <h4>PRODUCTOS</h4>
 
     <i class="load" v-if="loading"></i>
 
@@ -197,6 +198,7 @@ export default {
   computed: {
     session()   { return this.$store.state.session   },
     office_id() { return this.$store.state.office_id },
+    title() { return 'Productos' },
 
     price()   {
       console.log('price')

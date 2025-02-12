@@ -95,8 +95,20 @@
   // >footer
   //   text-align right
 
+.input-mobile 
+  display flex 
+  align-items center
 
 
+.text-header
+  display flex 
+  align-items center  
+  gap 20px
+  padding 12px
+
+@media (min-width: d-break)
+  .text-header
+    display none
 
 
 @media (max-width: d-break)
@@ -115,4 +127,7 @@
     transform none
     margin: 1rem 0;
 
+@media (max-width: 768px)
+  .input-mobile
+    display block
 

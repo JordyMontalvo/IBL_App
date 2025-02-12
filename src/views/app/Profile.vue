@@ -7,21 +7,29 @@
 
     <section v-if="!loading" style="max-width: 400px;">
       <section>
+        <div class = "input-wrapper">
         <input class="input" readonly
         placeholder="Pais"
-        v-model="country"> <br>
+        v-model="country"> 
+        <i class="fa fa-font-awesome icon "></i>
+      </div>
 
-        
-        <input class="input" readonly
+
+      <div class = "input-wrapper">
+        <input class="input " readonly
         placeholder="Nombre"
-        v-model="name"> <br>
+        v-model="name">
+      <i class ="fa fa-user icon"></i>
+      </div>
 
-      
+        <div class = "input-wrapper">
         <input class="input" readonly
         placeholder="Apellido"
-        v-model="lastName"> <br>
+        v-model="lastName">
+        <i class ="fa fa-user icon"></i>
+       </div>
 
-        <div style="display: flex; align-items: center;">
+        <div class = "input-mobile">
           <input class="input" readonly
             placeholder="Documento de identidad"
             v-model="dni">&nbsp;
@@ -35,41 +43,51 @@
       <section class="input-left">
         <div v-if="token">
 
+          <div class = "input-wrapper">
         
         <input class="input" readonly @click="copy_token" id="token"
         v-model="token">
-        <i class="copy" v-if="c_token">código copiado <i class="fas fa-check"></i></i><br>
+        <i class="copy" v-if="c_token">código copiado <i class="fas fa-check"></i></i></div>
 
-        
+        <div class = "input-wrapper">
         <input class="input" readonly @click="copy_link" id="link"
         v-model="link">
+        <i class ="fa fa-share-alt icon"></i>
         <i class="copy" v-if="c_link">link copiado <i class="fas fa-check"></i></i>
-
+      </div>
         &nbsp;<a v-bind:href="link"> <small> Registrar </small> </a> <br>
 
       </div>
 
 
-      
+      <div class = "input-wrapper">
       <input class="input" placeholder="Correo electrónico"
-      v-model="email"> <br>
+      v-model="email">
+      <i class ="fa fa-envelope-o icon"></i>
+    </div>
 
-      
+      <div class = "input-wrapper">
       <input class="input" placeholder="Teléfono"
-      v-model="phone"> <br>
+      v-model="phone">
+    <i class="fa fa-mobile icon"></i>
+    </div>
 
       <!-- <i class="icon fas fa-user"></i>
       <input class="input" placeholder="edad"
       oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
       v-model="age"> <br> -->
 
-      
+      <div class = "input-wrapper">
       <input type="date" class="input" placeholder="Fecha de Nacimiento" readonly
-      v-model="birthdate"> <br>
-
+      v-model="birthdate">
+    <i class ="fa fa-calendar icon "></i> 
+  </div>
       
+      <div class = "input-wrapper">
       <input class="input" placeholder="Dirección"
-      v-model="address"> <br>
+      v-model="address"> 
+        <i class ="fa fa-map-marker icon"></i>
+    </div>
 
       <router-link to="/security">
         <button class="button">Persona de confianza</button>
@@ -81,14 +99,16 @@
       
       <!-- <select class="input"
       v-model="bank" :disabled="bank_disabled"> -->
+      <div class = "input-wrapper">
       <select class="input"
       v-model="bank">
+      <i class ="fa fa-university icon"></i>
         <option value="null" disabled>Banco</option>
         <option value="BCP">BCP</option>
         <option value="INTERBANK">INTERBANK</option>
         <option value="BBVA">BBVA</option>
-      </select> <br>
-
+      </select> 
+    </div>
       
       <!-- <select class="input"
       v-model="account_type" :disabled="account_type_disabled"> -->
@@ -102,8 +122,11 @@
     
       <!-- <input class="input" placeholder="Número de cuenta" :disabled="account_disabled"
       v-model="account"> <br> -->
+      <div class = "input-wrapper">
+
       <input class="input" placeholder="Número de cuenta"
-      v-model="account"> <br>
+      v-model="account"> 
+      </div>
 
       <br>
 

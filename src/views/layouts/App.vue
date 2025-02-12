@@ -23,7 +23,7 @@
     <section :class="{ 'open': open }">
 
       <div class="menu">
-        
+        <div class = "text-header">
         <label v-if="office_id == null">
           <img v-if="photoState == 'default'" class="photo" :src="photo">
           <img v-if="photoState == 'changed'" class="photo" :src="newPhoto">
@@ -35,7 +35,11 @@
           <i @click="cancelNewPhoto" class="fas fa-times"></i>
           <i @click="changeNewPhoto" class="fas fa-check"></i>
         </div>
-
+      <div>
+        <p style = "color: white; font-size: 18px"> {{ name }} {{ lastName }}  </p>
+        <p style = "color : white;font-size: 12px"> {{ email }} </p>
+      </div>
+    </div>
       <!-- <div class="social" style="display: flex;" v-if="office_id == null">
           <a class="fab fa-facebook-square" :href="fb" target="_blank" style="font-size: 18px;color: #4267B2;"></a>
           <a class="fab fa-instagram"       :href="is" target="_blank" style="font-size: 18px;color: #e95950;"></a>
@@ -145,9 +149,9 @@
       <div class="content">
         <header>
           <p>{{ title }}</p>
-          <div style="display: flex; align-items: center; gap: 40px;">
+          <div style="display: flex; align-items: center; gap: 20px; margin-top: 25px;">
             
-            <img class="logo" src="" style="height: 64px;">
+            <img class="logo" src="" style="height: 50px;">
             <button class="share-button">
               <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación</button>
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
@@ -164,8 +168,8 @@
           <i @click="changeNewPhoto" class="fas fa-check"></i>
         </div>
         <div>
-          <p class = "names">{{ name }} {{ lastName }}  </p>
-          <p>{{ email  }}</p>
+          <p style="color: rgba(8, 56, 92, 1);; font-size: 18px"> {{ name }} {{ lastName }}  </p>
+          <p style="color: rgba(8, 56, 92, 1);; font-size: 12px">{{ email  }}</p>
         </div>
           </div>
             

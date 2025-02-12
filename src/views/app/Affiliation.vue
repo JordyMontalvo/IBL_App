@@ -1,5 +1,5 @@
 <template>
-  <App :session="session" :office_id="office_id">
+  <App :session="session" :office_id="office_id"  :title="title">
 
     <h4>AFILIACIÓN</h4>
 
@@ -236,6 +236,7 @@ export default {
     session() { return this.$store.state.session },
     office_id() { return this.$store.state.office_id },
     plan() { return this.$store.state.plan },
+    title() { return 'Productos' },
 
     categories() {
       return this.products
