@@ -23,12 +23,14 @@
         <div class=" input-wrapper">
         <input class="input" v-model="dni" placeholder="Usuario receptor"
         oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
-        @keydown="error = null"> <br>
+        @keydown="error = null">
+        <i class="fas fa-user-tie icon"></i> <br>
       </div>
       <div class=" input-wrapper">
         <input class="input" v-model.number="amount" placeholder="Monto a enviar"
         oninput="this.value=this.value.replace(/(?![0-9, '.'])./gmi,'')"
-        @keydown="error = null"> <br>
+        @keydown="error = null"> 
+        <i class="fas fa-money-bill-wave icon"></i> <br>
       </div>
         <span v-if="error" class="alert">{{ error }}<br></span><br>
       <div class = "input-wrapper" >
