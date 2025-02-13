@@ -3,15 +3,15 @@
 
     <h4 class="tabs">
       <router-link class="tab" to="/activation">
-        Terronos
+        Comprar
       </router-link> &nbsp;&nbsp;
       <router-link class="tab" to="/activations" v-if="!office_id">
-        Membresías
+        Historial
       </router-link>
     </h4>
 
     
-    <h4> Compras</h4>
+    
     <h4>Puntos: {{ current_points }}</h4>
 
     <i class="load" v-if="loading"></i>
@@ -23,13 +23,13 @@
 
           <img :src="product.img" style="max-width: 200px; margin: 12px 0; max-height: 200px;">
 
-          <div class="_tabs">
-            <p class="_tab" v-for="(category, i) in categories" @click="tab = category" :class="{'selected': tab == categories[i]}">{{ category }}</p>
+          <div class="_tabs " style="color :rgba(8, 56, 92, 1)">
+            <p class="_tab " v-for="(category, i) in categories" @click="tab = category" :class="{'selected': tab == categories[i]}">{{ category }}</p>
           </div>
 
           <!-- <div class="flex"> -->
 
-            <div class="_tab_content" v-for="(category, i) in categories" v-show="tab == categories[i]">
+            <div class="_tab_content" style="color :rgba(8, 56, 92, 1)"  v-for="(category, i) in categories" v-show="tab == categories[i]">
               <article class="product" v-for="(product, i) in products" @click="touch(i)" v-if="product.type == category">
                 <small>
                   <p class="_name">{{ product.name }}</p>
@@ -50,7 +50,7 @@
             </div> <br>
 
 
-          <small>
+          <small style="color: rgba(8, 56, 92, 1)">
             Resumen: <br>
             <p class="_light" v-for="(product, i) in products" v-if="product.total > 0">
               {{ product.total }} {{ product.name }}
@@ -58,21 +58,24 @@
           </small> <br>
 
 
+          <p style="color : rgba(74, 176, 46, 1); font-size : 24px"> Datos Bancarios</p>
 
-          <small>Impuesto: {{ IGV.toFixed(2) }}</small> <br>
 
-          
+
+          <small style="color : rgba(8, 56, 92, 1);">Impuesto: {{ IGV.toFixed(2) }}</small> <br>
+
+          <div class = "input-wrapper">
           <input class="input" readonly v-model="_price"> <br>
-
-          
+          </div>
+          <div class = "input-wrapper">
           <input class="input" readonly v-model="_points"> <br>
-
-          
+          </div>
+          <div class = "input-wrapper">
           <select class="input" v-model="office" v-if="!pending">
             <option value="null" disabled>Oficina</option>
             <option v-for="office in offices" :value="office">{{ office.name }}</option>
           </select> <br>
-
+            </div>
           <small v-if="office">{{ office.address }}</small> <br>
 
           <div v-if="office">
@@ -81,12 +84,12 @@
 
           <label>
             <input type="checkbox" v-model="check">
-            <small>Deseo usar mi saldo</small>
+            <small style="color : rgba(8, 56, 92, 1);">Deseo usar mi saldo</small>
           </label> <br>
 
           <div v-show="check">
-            <small>Saldo no disponible: {{ _balance }}</small> <br>
-            <small>Saldo disponible: {{ balance }}</small> <br>
+            <small style="color : rgba(8, 56, 92, 1);">Saldo no disponible: {{ _balance }}</small> <br>
+            <small style="color : rgba(8, 56, 92, 1);">Saldo disponible: {{ balance }}</small> <br>
             <small v-if="remaining > 0">restan: {{ remaining }}</small>
           </div>
 
@@ -94,7 +97,7 @@
 
           <div v-show="!(check && remaining == 0)">
 
-            <small>Medio de Pago</small>
+            <small style="color : rgba(74, 176, 46, 1); font-size : 24px">Medio de Pago</small>
             <br>
 
             <div v-if="check">
@@ -106,12 +109,12 @@
 
             <label>
               <input type="radio" :value="'bank'" v-model="pay_method">
-              <small>Banco</small>
+              <small style="color : rgba(8, 56, 92, 1);">Banco</small>
             </label> <br>
 
             <label>
               <input type="radio" :value="'cash'" v-model="pay_method">
-              <small>Efectivo</small> <br>
+              <small style="color : rgba(8, 56, 92, 1);">Efectivo</small> <br>
             </label>
 
             <div v-if="pay_method == 'bank'"> <br>
