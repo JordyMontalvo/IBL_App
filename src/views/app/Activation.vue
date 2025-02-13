@@ -22,9 +22,9 @@
         <div style="width: 100%">
 
           <div style=" display: flex; gap:10px">
-            <button class="_tabs">Terreno</button>
-            <button class="_tabs">Membresia</button>
-            <button class="_tabs">Activación</button>
+            <button class="_tabs" v-for="(category, i) in categories" @click="tab = category" :class="{'selected': tab == categories[i]}">{{ category }}</button>
+            
+            
           </div>
           <div class="_tab_content" style="color :rgba(8, 56, 92, 1)"  v-for="(category, i) in categories" v-show="tab == categories[i]">
             <article class="product" v-for="(product, i) in products" @click="touch(i)" v-if="product.type == category">
