@@ -11,9 +11,53 @@
 
     <i class="load" v-if="loading"></i>
 
-    <div class="boxes" v-if="!loading">
+    <div class="grid">
+      <div class="grid-item">
+        <div class="card">
+          <h3> Mis Ganancias Mis Ganancias Mis Ganancias Mis Ganancias Mis Ganancias Mis Ganancias Mis Ganancias Mis Ganancias </h3>
+          <div class="card-content">
+            <i class="fas fa-dollar-sign"></i>
+            <p>{{ balance }}</p>
+          </div>
+        </div>
+      </div>
 
-      <div class="box white nivel-actual-card">
+      <div class="grid-item">
+        <div class="card">
+          <h3>Comisiones Comisiones Comisiones Comisiones </h3>
+          <div class="card-content">
+            <i class="fas fa-hand-holding-usd"></i>
+            <p>{{ _balance }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-item">
+        <div class="card">
+          <h3>Puntos</h3>
+          <div class="card-content">
+            <i class="fas fa-star"></i>
+            <p>{{ points }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-item">
+        <div class="card">
+          <h3>Rango</h3>
+          <div class="card-content">
+            <i class="fas fa-trophy"></i>
+            <p>{{ rank }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- <div class="boxes grid" v-if="!loading">
+
+      <div class="box white nivel-actual-card grid-item">
         <h2>Nivel Actual</h2>
         <div class="rank-image">
           <img src="https://s3-alpha-sig.figma.com/img/7802/2e20/5a4b8e6b84fee7f04d9ef27eda097ee1?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fzkCIOclXtfeMBRARqHw3U4324RsIc49HJWuT5gZaENS5FGF22rzoZm803hywEtzf9kOUOsNO1qFLU0uuC7HGpjb~6AmI5538XhUFHNw~FUzbJ-OTQOJprbPeVvG4pRlT58ArVxElY1gM5rF5RbXvKP5UCtojppAk22GHbBpDuBS6qTorWHV5eE-pOEuvDF-e3EecDYUgpg8hCyiaCPHhLI4z4dnPzVMSJ8p7QKiG3wfftBsbRYOfH-tuAZygeUrILyZgISRYoAJ1ns4hxzkk7jQ619lCafSisSFIHNbf~pmMEeT9pK6ehD3cqjwGHXUTcmUoQc0rTGNna~9Jm3FBA__" alt="Rango" />
@@ -63,14 +107,14 @@
         </div>
       </div>
 
-      <div class="box white">
+      <div class="box white grid-item">
         <h3>Rango Alcanzado</h3>
         <p>{{ achievedRank }}</p>
         <p>Puntos Grupales: {{ groupPoints }}</p>
         <p>Frontales: {{ frontales }}</p>
       </div>
 
-      <div class="box white">
+      <div class="box white grid-item">
         <i class="fas fa-wallet"></i>
         <div>
           <p>S/. {{ balance }}</p>
@@ -78,7 +122,7 @@
         </div>
       </div>
 
-      <div class="box white">
+      <div class="box white grid-item">
         <i class="fas fa-hand-holding-usd"></i>
         <div>
           <p>S/. {{ _balance }}</p>
@@ -86,7 +130,7 @@
         </div>
       </div>
 
-      <div class="box white">
+      <div class="box white grid-item">
         <i class="fas fa-hand-holding-usd"></i>
         <div>
           <p>S/. {{ Number(ins + insVirtual).toFixed(2) }}</p>
@@ -94,7 +138,7 @@
         </div>
       </div>
 
-      <div class="box white">
+      <div class="box white grid-item">
         <i class="fas fa-medal"></i>
         <div>
           <p>{{ points }}</p>
@@ -103,7 +147,7 @@
       </div>
 
 
-      <div class="box white" v-if="node">
+      <div class="box white grid-item" v-if="node">
         <i class="fas fa-gem"></i>
         <div>
           <p>{{ node.rank | _rank }}</p>
@@ -112,7 +156,7 @@
       </div>
 
 
-      <div class="box white" v-if="node">
+      <div class="box white grid-item" v-if="node">
         <i class="fa fa-tachometer"></i>
         <div>
           <p>{{ node.next_rank.name | _rank }}</p>
@@ -120,12 +164,12 @@
         </div>
       </div>
 
-      <div class="box white">
+      <div class="box white grid-item">
         <h3>Pack de Afiliación</h3>
         <p></p>
       </div>
 
-    </div>
+    </div> -->
 
   </App>
 </template>
@@ -133,6 +177,7 @@
 <script>
 import App from '@/views/layouts/App'
 import api from '@/api'
+import Masonry from 'masonry-layout'
 
 export default {
   components: {
@@ -246,10 +291,21 @@ export default {
     }, time)
 
   },
+  mounted() {
+    this.$nextTick(() => {
+      // Initialize Masonry after the content is loaded
+      new Masonry('.grid', {
+        itemSelector: '.grid-item',
+        columnWidth: '.grid-item',
+        percentPosition: true,
+        gutter: 20
+      })
+    })
+  }
 };
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .nivel-actual-card {
   padding: 2rem;
   text-align: center;
@@ -313,5 +369,81 @@ export default {
   color: #1a3b5d;
   font-weight: bold;
   font-size: 1.1rem;
+}
+
+.boxes {
+  padding: 1rem;
+  width: 100%;
+}
+
+.grid-item {
+  width: calc(33.333% - 16px);
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1200px) {
+  .grid-item {
+    width: calc(50% - 16px);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-item {
+    width: 100%;
+  }
+}
+</style> -->
+<style scoped>
+.grid {
+  width: 100%;
+  padding: 20px;
+}
+
+.grid-item {
+  width: calc(33.333% - 20px);
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 1.2em;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.card-content i {
+  font-size: 24px;
+  color: #4a90e2;
+}
+
+.card-content p {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+  color: #2c3e50;
+}
+
+/* @media (max-width: 1200px) {
+  .grid-item {
+    width: calc(50% - 20px);
+  }
+} */
+
+@media (max-width: 768px) {
+  .grid-item {
+    width: 100%;
+  }
 }
 </style>
