@@ -65,13 +65,16 @@
           <small style="color : rgba(8, 56, 92, 1);">Impuesto: {{ IGV.toFixed(2) }}</small> <br>
 
           <div class = "input-wrapper">
+            <i class ="fa-solid fa-money-bill-wave icon"></i>
           <input class="input" readonly v-model="_price"> <br>
           </div>
           <div class = "input-wrapper">
+            <i class ="fa-solid fa-hand-holding-usd icon"></i>
           <input class="input" readonly v-model="_points"> <br>
           </div>
           <div class = "input-wrapper">
           <select class="input" v-model="office" v-if="!pending">
+            <i class="fas fa-building icon"></i>
             <option value="null" disabled>Oficina</option>
             <option v-for="office in offices" :value="office">{{ office.name }}</option>
           </select> <br>
