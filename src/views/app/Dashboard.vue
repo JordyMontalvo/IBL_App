@@ -13,16 +13,57 @@
 
     <div class="boxes" v-if="!loading">
 
-      <div class="box white">
+      <div class="box white nivel-actual-card">
         <h2>Nivel Actual</h2>
-        <p>{{ rank }}</p>
-        <p>Volumen Personal: {{ personalVolume }}</p>
-        <p>Volumen Grupal: {{ groupVolume }}</p>
-        <p>Socios: {{ team }}</p>
-        <p>Frontales: {{ frontales }}</p>
+        <div class="rank-image">
+          <img src="https://s3-alpha-sig.figma.com/img/7802/2e20/5a4b8e6b84fee7f04d9ef27eda097ee1?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fzkCIOclXtfeMBRARqHw3U4324RsIc49HJWuT5gZaENS5FGF22rzoZm803hywEtzf9kOUOsNO1qFLU0uuC7HGpjb~6AmI5538XhUFHNw~FUzbJ-OTQOJprbPeVvG4pRlT58ArVxElY1gM5rF5RbXvKP5UCtojppAk22GHbBpDuBS6qTorWHV5eE-pOEuvDF-e3EecDYUgpg8hCyiaCPHhLI4z4dnPzVMSJ8p7QKiG3wfftBsbRYOfH-tuAZygeUrILyZgISRYoAJ1ns4hxzkk7jQ619lCafSisSFIHNbf~pmMEeT9pK6ehD3cqjwGHXUTcmUoQc0rTGNna~9Jm3FBA__" alt="Rango" />
+          <h3>Nivel Principiante</h3>
         </div>
+        
+        <div class="stats-container">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="fas fa-user-chart"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">Volumen Personal</span>
+              <span class="stat-value">{{ personalVolume }}</span>
+            </div>
+          </div>
 
-        <div class="box white">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">Volumen Grupal</span>
+              <span class="stat-value">{{ groupVolume }}</span>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">Socios</span>
+              <span class="stat-value">{{ team }}</span>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="fas fa-network-wired"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">Frontales</span>
+              <span class="stat-value">{{ frontales }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box white">
         <h3>Rango Alcanzado</h3>
         <p>{{ achievedRank }}</p>
         <p>Puntos Grupales: {{ groupPoints }}</p>
@@ -207,3 +248,70 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.nivel-actual-card {
+  padding: 2rem;
+  text-align: center;
+}
+
+.rank-image {
+  margin: 2rem 0;
+}
+
+.rank-image img {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+
+.rank-image h3 {
+  color: #1a3b5d;
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  background-color: #f8faff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.stat-icon {
+  background-color: #4CAF50;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.stat-info {
+  flex: 1;
+  text-align: left;
+}
+
+.stat-label {
+  display: block;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.stat-value {
+  display: block;
+  color: #1a3b5d;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+</style>
