@@ -65,7 +65,7 @@
         </div>
       </div> -->
 
-      <div class="modal" :class="{ open }">
+      <div class="modal " style="color: rgba(8, 56, 92, 1)" :class="{ open }">
         <div class="inner" @click.stop="">
           <img class="photo" :src="selec_node.photo">
           <p style="text-align: center;">{{ selec_node.country }}</p>

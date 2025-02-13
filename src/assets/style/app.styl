@@ -141,29 +141,23 @@
 
   background linear-gradient(to right, rgba(8, 56, 92, 1), rgba(17, 95, 153, 1), rgba(8, 56, 92, 1))
   a
+    background  rgba(53, 160, 244, 1);
     display block
     color white
     font-size 14px
     padding 16px
-    cursor pointer
-    transition: background 0.3s, transform 0.1s, border-color 0.3s
     border: 1px solid transparent // Borde transparente por defecto
+    margin-bottom: 20px
+    border-radius: 10px
     i
       width 20px
       text-align center
       margin-right 10px
 
-    &:hover
-      background rgba(53, 160, 244, 0.2) // Cambia el color de fondo al pasar el cursor
-      border-color rgba(53, 160, 244, 1) // Cambia el color del borde al pasar el cursor
-
     &.router-link-active
-      background rgba(53, 160, 244, 1)
+      background: rgba(74, 176, 46, 1);
       border-radius: 12px;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-      padding: 14px;
       
 
 @media (min-width: d-break)
@@ -311,7 +305,6 @@ table
 
 .tabs
   .tab
-    border-bottom 2px solid rgba(8, 56, 92, 1);
     color c-gray
     &.router-link-active
       color  rgba(8, 56, 92, 1);
@@ -320,3 +313,12 @@ table
 .flex
   display flex
   align-items flex-start
+
+._tabs
+  width: 149px
+  gap: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(0, 142, 56, 1);
+  color: white;
+ 

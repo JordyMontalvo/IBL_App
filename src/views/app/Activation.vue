@@ -21,43 +21,43 @@
       <div class="flex">
         <div style="width: 100%">
 
-          <img :src="product.img" style="max-width: 200px; margin: 12px 0; max-height: 200px;">
-
-          <div class="_tabs " style="color :rgba(8, 56, 92, 1)">
-            <p class="_tab " v-for="(category, i) in categories" @click="tab = category" :class="{'selected': tab == categories[i]}">{{ category }}</p>
+          <div style=" display: flex; gap:10px">
+            <button class="_tabs">Terreno</button>
+            <button class="_tabs">Membresia</button>
+            <button class="_tabs">Activación</button>
           </div>
+          <div class="_tab_content" style="color :rgba(8, 56, 92, 1)"  v-for="(category, i) in categories" v-show="tab == categories[i]">
+            <article class="product" v-for="(product, i) in products" @click="touch(i)" v-if="product.type == category">
+              <small>
+                <p class="_name">{{ product.name }}</p>
+                <span>S/. {{ product.price }}</span>&nbsp; &nbsp;
+                <span>PTS {{ product.points }}</span>
+
+                <!-- <span>Val. a comisionar
+                  <i v-if="product.val">{{ product.val   }}</i>
+                  <i v-else>            {{ product.price }}</i>
+                  &nbsp; &nbsp; <i class="_price">$ {{ product.price }}</i></span> -->
+              </small>
+
+              <div class="control" style="color: green">
+                <i class="fas fa-minus-square" @click="less(product)"></i>
+                <input v-model="product.total" readonly>
+                <i class="fas fa-plus-square" @click="more(product)"></i>
+              </div>
+            </article>
+          </div> <br>
+          
+          <div>
+
+            <p style="color: rgba(8, 56, 92, 1); font-size: 20px">Terreno</p>
+          <img :src="product.img" style="width: 370px; margin: 12px 0; max-height: 200px;">
 
           <!-- <div class="flex"> -->
+            <div>
 
-            <div class="_tab_content" style="color :rgba(8, 56, 92, 1)"  v-for="(category, i) in categories" v-show="tab == categories[i]">
-              <article class="product" v-for="(product, i) in products" @click="touch(i)" v-if="product.type == category">
-                <small>
-                  <p class="_name">{{ product.name }}</p>
-                  <span>S/. {{ product.price }}</span>&nbsp; &nbsp;
-                  <span>PTS {{ product.points }}</span>
-                  <!-- <span>Val. a comisionar
-                    <i v-if="product.val">{{ product.val   }}</i>
-                    <i v-else>            {{ product.price }}</i>
-                    &nbsp; &nbsp; <i class="_price">$ {{ product.price }}</i></span> -->
-                </small>
-
-                <div class="control">
-                  <i class="fas fa-minus-square" @click="less(product)"></i>
-                  <input v-model="product.total" readonly>
-                  <i class="fas fa-plus-square" @click="more(product)"></i>
-                </div>
-              </article>
-            </div> <br>
-
-
-          <small style="color: rgba(8, 56, 92, 1)">
-            Resumen: <br>
-            <p class="_light" v-for="(product, i) in products" v-if="product.total > 0">
-              {{ product.total }} {{ product.name }}
-            </p>
-          </small> <br>
-
-
+              <textarea style = "width: 390px ; height: 200px; border-radius: 20px; "v-model="product.description"></textarea>
+            </div>
+              </div>
           <p style="color : rgba(74, 176, 46, 1); font-size : 24px"> Datos Bancarios</p>
 
 
@@ -376,19 +376,7 @@ export default {
 
 
 <style lang="stylus">
-  ._tabs
-    display flex
-    overflow auto
-    ._tab
-      padding 8px 12px
-      background white
-      border-radius 12px 12px 0 0
-      font-weight 300
-      font-size 12px
-      cursor pointer
-      text-wrap nowrap
-      &.selected
-        font-weight 600
+    
 
   .product
     small
