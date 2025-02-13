@@ -80,11 +80,11 @@
           </select> <br>
             </div>
           <small v-if="office">{{ office.address }}</small> <br>
-
+            <div class="input-wrapper">
           <div v-if="office">
-            <textarea readonly class="input" style="color: gray; width: 300px;" rows="5">{{ office.accounts }}</textarea> <br><br>
+            <textarea readonly class="input" style="width: 390px ; height: 200px; border-radius: 20px;" rows="5">{{ office.accounts }}</textarea> <br><br>
           </div>
-
+        </div>
           <label>
             <input type="checkbox" v-model="check">
             <small style="color : rgba(8, 56, 92, 1);">Deseo usar mi saldo</small>
