@@ -342,27 +342,16 @@ export default {
     }, time);
 
     setTimeout(() => {
-
       var elem = document.querySelector('.boxes');
-      console.log({ elem })
-      
-    var msnry = new Masonry( elem, {
-        // options
+      new Masonry( elem, {
         itemSelector: '.box',
-        // columnWidth: 200
       });
     }, 200);
-
   },
 };
 </script>
 
 <style scoped>
-
-.grid-item { width: 200px; }
-.grid-item--width2 { width: 400px; }
-
-/* .box { width: 400px; } */
 
 .nivel-actual-card {
   padding: 2rem;
