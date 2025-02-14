@@ -34,7 +34,7 @@
               :class="{'error': error.password}"
               @keydown="reset('password')"
             >
-            <i class="fa-solid fa-lock icon"></i>
+            <i class="fa-solid fa-lock icon" @click="show = !show"></i>
           </div>
         </div>
 

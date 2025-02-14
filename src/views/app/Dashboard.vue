@@ -142,23 +142,6 @@
           </div>
         </div>
       </div>
-
-      <div class="box white">
-        <i class="fas fa-wallet"></i>
-        <div>
-          <p>S/. {{ balance }}</p>
-          <span>SALDO</span>
-        </div>
-      </div>
-
-      <div class="box white">
-        <i class="fas fa-hand-holding-usd"></i>
-        <div>
-          <p>S/. {{ _balance }}</p>
-          <span>SALDO NO DISPONIBLE</span>
-        </div>
-      </div>
-
       <div
         class="box white"
         style="
@@ -175,20 +158,35 @@
           src="https://s3-alpha-sig.figma.com/img/d6d4/429a/68e4f36017739ce18e2e4f05b1d41531?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=e7rbX~z0sHe5xyWkjj60c-T9eOv-dNefzUkP4m4bIS5jnPed7W5EtQ6Pg3fWVFkY8yRl-akktBybtrCQ2rxxCdCZ0lqLrZ~RabMD0jtk7UXHS9JuaF1V2eBbfp08w8w4VpaNhXom6cpqJgtoRNucVvi~MtL7AeoIlFa-3RoVWcwa~1wzwzndF5H~t-sEj4JJSSHm9UKGQYA6aLqTAKODjQ6WvJTkRdTWe1FODhk5l6fXZkI8ezzgGDMq8R5jacoiDNAUjW0DwVZEvv5f9wvhr84jrQFsIzORj~3eIyhle-IijRhgHJlkubxpUskK9lBBxayi8FmMOpWfB3tW5LxWIw__"
           alt="Trofeo"
           style="width: 100px; height: 100px; margin-bottom: 0.5rem"
-        />
-        <div class="stat-item">
-        <span style="font-weight: bold">
-          S/. {{ Number(ins + insVirtual).toFixed(2) }}
+          />
+          <div class="stat-item">
+            <span style="font-weight: bold">
+              S/. {{ Number(ins + insVirtual).toFixed(2) }}
         </span>
       </div>
-        </div>
+      
+    </div>
+          <div class="box white">
+            <h3>Pack de Afiliación</h3>
+            <p></p>
+          </div>
       <div class="box white">
-        <i class="fas fa-medal"></i>
-        <div clas>
-          <p>{{ points }}</p>
-          <span>PUNTOS</span>
+        <i class="fas fa-wallet"></i>
+        <div>
+          <p>S/. {{ balance }}</p>
+          <span>SALDO</span>
         </div>
       </div>
+
+      <div class="box white">
+        <i class="fas fa-hand-holding-usd"></i>
+        <div>
+          <p>S/. {{ _balance }}</p>
+          <span>SALDO NO DISPONIBLE</span>
+        </div>
+      </div>
+
+
 
       <div class="box white" v-if="node">
         <i class="fas fa-gem"></i>
@@ -205,12 +203,8 @@
           <span>SIGUIENTE RANGO</span>
         </div>
       </div>
-
-      <div class="box white">
-        <h3>Pack de Afiliación</h3>
-        <p></p>
-      </div>
     </div>
+
 
   </App>
 </template>
