@@ -65,9 +65,9 @@
           <router-link to="/activation" @click.native="close" v-if="affiliated">
             <i class="fas fa-shopping-bag"></i> COMPRAS
           </router-link>
-          <router-link to="/affiliation" @click.native="close">
+          <!-- <router-link to="/affiliation" @click.native="close">
             <i class="fas fa-receipt"></i> AFILIACIÓN
-          </router-link>
+          </router-link> -->
         </div>
 
         <a @click="actived(1)" v-if="tree" style="display: flex; justify-content: space-between; align-items: center;">
