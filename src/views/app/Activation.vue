@@ -50,12 +50,12 @@
           <div>
 
             <p style="color: rgba(8, 56, 92, 1); font-size: 20px">Terreno</p>
-          <img :src="product.img" style="width: 370px; margin: 12px 0; max-height: 200px;">
+          <img :src="product.img" style="margin: 12px 0; max-height: 280px;">
 
           <!-- <div class="flex"> -->
             <div>
 
-              <textarea style = "width: 390px ; height: 200px; border-radius: 20px; "v-model="product.description"></textarea>
+              <textarea style = "width: 390px ; height: 100px; border-radius: 20px; padding: 10px;"v-model="product.description"></textarea>
             </div>
               </div>
           <p style="color : rgba(74, 176, 46, 1); font-size : 24px"> Datos Bancarios</p>
