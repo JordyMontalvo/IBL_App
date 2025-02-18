@@ -151,9 +151,10 @@
           <p>{{ title }}</p>
           <div style="display: flex; align-items: center; gap: 20px; margin-top: 25px;">
             
-            <img class="logo" src="" style="height: 50px;">
-            <button class="share-button" src="https://ibl-app-ashen.vercel.app/register/D44F71" target="_blank">
-              <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación</button>
+            <img class="logo" style="height: 50px;">
+            <button class="share-button" :onclick="link">
+              <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación
+            </button>
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
 
         <label v-if="office_id == null">
@@ -252,6 +253,7 @@ export default {
     photo     () { return this.$store.state.photo      },
     tree      () { return this.$store.state.tree       },
     email     () { return this.$store.state.email      },
+    link()    { return `${ROOT}/register/${this.token}`},
 
     // social
     fb() { return this.$store.state.fb },
