@@ -65,6 +65,7 @@
             <!-- <div class="flex"> -->
             <div>
               <textarea
+              readonly
                 style="
                   width: 390px;
                   height: 100px;

@@ -152,10 +152,9 @@
           <div style="display: flex; align-items: center; gap: 20px; margin-top: 25px;">
             
             <img class="logo" style="height: 50px;">
-            <button class="share-button"  readonly @click="copy_link" id="link"
-            v-model="lin">
-              <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación
-            </button>
+            <button class="share-button">
+      <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación
+    </button>
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
 
         <label v-if="office_id == null">

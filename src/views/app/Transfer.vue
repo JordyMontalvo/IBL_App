@@ -10,7 +10,7 @@
       </router-link>
     </h4> <br>
 
-    <h4>MONEDERO SIFRAH</h4>
+    <h4>MONEDERO IBL</h4>
 
     <i class="load" v-if="loading"></i>
 
