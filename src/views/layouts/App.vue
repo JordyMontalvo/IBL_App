@@ -152,7 +152,8 @@
           <div style="display: flex; align-items: center; gap: 20px; margin-top: 25px;">
             
             <img class="logo" style="height: 50px;">
-            <button class="share-button" :onclick="ink">
+            <button class="share-button"  readonly @click="copy_link" id="link"
+            v-model="lin">
               <i class="fas fa-share-alt" style="margin-right: 8px;"></i>Compartir Afiliación
             </button>
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
@@ -313,6 +314,11 @@ export default {
     },
     cancelNewPhoto() {
       this.photoState = 'default'
+    },
+    copy_link() {
+      lib.copy('link')
+      this.c_link = true
+      setTimeout(() => this.c_link = false, 4000)
     },
   },
 };

@@ -55,7 +55,7 @@
         <div class="stats-container">
           <div class="stat-item">
             <div class="stat-icon">
-              <i class="fas fa-user-chart"></i>
+              <i class="fas fa-user" style="font-size: 20px;"></i>
             </div>
             <div class="stat-info">
               <span class="stat-label">Volumen Personal</span>
@@ -65,7 +65,7 @@
 
           <div class="stat-item">
             <div class="stat-icon">
-              <i class="fas fa-users"></i>
+              <i class="fas fa-users" style="font-size: 20px;"></i>
             </div>
             <div class="stat-info">
               <span class="stat-label">Volumen Grupal</span>
@@ -75,7 +75,7 @@
 
           <div class="stat-item">
             <div class="stat-icon">
-              <i class="fas fa-building"></i>
+              <i class="fas fa-building " style="font-size: 20px;"></i>
             </div>
             <div class="stat-info">
               <span class="stat-label">Socios</span>
@@ -85,7 +85,7 @@
 
           <div class="stat-item">
             <div class="stat-icon">
-              <i class="fas fa-network-wired"></i>
+              <i class="fas fa-network-wired" style="font-size: 20px;"></i>
             </div>
             <div class="stat-info">
               <span class="stat-label">Frontales</span>
@@ -406,7 +406,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 1rem;
+  margin-right: 1rem; 
 }
 
 .stat-info {
