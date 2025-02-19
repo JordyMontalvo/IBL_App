@@ -60,7 +60,7 @@
 
           <div>
             <p style="color: rgba(8, 56, 92, 1); font-size: 20px">Terreno</p>
-            <img :src="product.img" style="margin: 12px 0; max-height: 280px" />
+            <img :src="product.img" style="margin: 12px 0; width: 370px ; height :170px"/>
 
             <!-- <div class="flex"> -->
             <div>

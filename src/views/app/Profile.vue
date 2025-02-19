@@ -40,24 +40,26 @@
         </div>
       </section>
 
-      <section class="input-left">
-        <div v-if="token">
+      <section style="max-width: 400px;">
+        <div v-if="token" >
 
           <div class = "input-wrapper">
         
         <input class="input" readonly @click="copy_token" id="token"
         v-model="token">
-        <i class="copy" v-if="c_token">código copiado <i class="fas fa-check"></i></i></div>
+        <i class="copy" v-if="c_token">código copiado <i class="fas fa-check"></i></i>
+        </div>
 
-        <div class = "input-wrapper">
+        
+      <div class = "input-mobile">
         <input class="input" readonly @click="copy_link" id="link"
         v-model="link">
         <i class ="fa fa-share-alt icon"></i>
         <i class="copy" v-if="c_link">link copiado <i class="fas fa-check"></i></i>
-      </div>
         &nbsp;<a v-bind:href="link"> <small> Registrar </small> </a> <br>
-
       </div>
+      </div>
+      
 
 
       <div class = "input-wrapper">

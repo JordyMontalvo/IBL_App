@@ -253,7 +253,7 @@ export default {
     photo     () { return this.$store.state.photo      },
     tree      () { return this.$store.state.tree       },
     email     () { return this.$store.state.email      },
-    link()    { return `${ROOT}/register/${this.token}`},
+    link      ()  { return `${ROOT}/register/${this.token}`},
 
     // social
     fb() { return this.$store.state.fb },
