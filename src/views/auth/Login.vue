@@ -9,12 +9,12 @@
     
         
         <div class="form-group">
-          <label>Correo Electrónico:</label>
+          <label>DNI:</label>
           <div class="input-wrapper">
             <input 
               type="email"
               class="input" 
-              placeholder="Correo Electronico"
+              placeholder="Dni"
               v-model="dni"
               :class="{'error': error.dni}"
               @keydown="reset('dni')"
