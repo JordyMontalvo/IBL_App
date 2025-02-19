@@ -1,6 +1,6 @@
 <template>
   <App :session="session" :title="title">
-    <figure class="slide" style="display: flex; margin: 0">
+    <!-- <figure class="slide" style="display: flex; margin: 0">
       <img
         src="../../assets/img/banner/banner1ibl.webp"
         style="width: 100%; max-width: 850px; transition: all 2s"
@@ -29,8 +29,16 @@
         :style="{ opacity: op3 }"
       />
     </figure>
-    <br />
+    <br /> -->
 
+
+    <figure class="slide" style="display: flex; margin: 0;">
+      <img :src="banner.img" style="width: 100%; max-width: 850px; transition: all 2s;" :style="{ opacity: op }" >
+      <img :src="banner.img2" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-100%); opacity:0;" :style="{ opacity: op2 }">
+      <img :src="banner.img3" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-200%); opacity:0;" :style="{ opacity: op3 }">
+    </figure> <br>
+
+    
     <i class="load" v-if="loading"></i>
 
     <div class="boxes" v-if="!loading">
