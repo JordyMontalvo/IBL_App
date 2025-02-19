@@ -175,8 +175,9 @@
       
     </div>
           <div class="box white">
-            <h3>Pack de Afiliación</h3>
-            <p></p>
+            <h3>Pack de Activación</h3>
+            <span v-if="_activated && !activated">Miembros</span>
+            <span v-if="activated">Lotes</span>
           </div>
       <div class="box white">
         <i class="fas fa-wallet"></i>
@@ -249,6 +250,12 @@ export default {
     },
     plan() {
       return this.$store.state.plan;
+    },
+    _activated() {
+      return this.$store.state._activated;
+    },
+    activated() {
+      return this.$store.state.activated;
     },
     title() {
       return "Dashboard";
