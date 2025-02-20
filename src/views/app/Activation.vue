@@ -1,6 +1,6 @@
 <template>
   <App :session="session" :office_id="office_id" :title="title">
-    <h4 class="tabs">
+    <h4 class="tabs" style="margin-bottom: 25px">
       <router-link class="tab" to="/activation"> Comprar </router-link>
       &nbsp;&nbsp;
       <router-link class="tab" to="/activations" v-if="!office_id">
@@ -8,7 +8,6 @@
       </router-link>
     </h4>
 
-    <h4>Puntos: {{ current_points }}</h4>
 
     <i class="load" v-if="loading"></i>
 
@@ -365,15 +364,12 @@ export default {
     // Verificar si el usuario está activado
     if (isActivated) {
       // Para usuarios activados, permitir agregar productos de cualquier tipo
-      if (product.total >= 10) return;
+      if (product.total >= 1) return;
       if(product.type === "ACTIVACIÓN" && product.total >= 1) return; 
     } else {
       // Solo permitir agregar productos de tipo 'activación'
-      if (product.type === "ACTIVACIÓN" && product.total >= 1) return; 
-      if (product.type !== "ACTIVACIÓN") return; 
+      if (product.total >= 1) return; 
     }
-
-    // Incrementar el total del producto
     product.total += 1;
 
     },
