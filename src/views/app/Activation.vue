@@ -362,14 +362,16 @@ export default {
     const isActivated = this.$store.state.activated || this.$store.state._activated;
 
     // Verificar si el usuario está activado
-    if (isActivated) {
+    /*if (isActivated) {
       // Para usuarios activados, permitir agregar productos de cualquier tipo
       if (product.total >= 1) return;
       if(product.type === "ACTIVACIÓN" && product.total >= 1) return; 
     } else {
       // Solo permitir agregar productos de tipo 'activación'
       if (product.total >= 1) return; 
-    }
+    }*/
+
+    if(this.total >=1) return;
     product.total += 1;
 
     },

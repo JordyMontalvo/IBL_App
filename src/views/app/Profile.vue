@@ -51,10 +51,10 @@
         </div>
 
         
-      <div class = "input-mobile">
-        <input class="input" readonly @click="copy_link" id="link"
-        v-model="link">
-        <i class ="fa fa-share-alt icon"></i>
+        <div class = "input-mobile">
+          <input class="input" readonly @click="copy_link" id="link"
+          v-model="link">
+        <i class ="fa fa-share-alt icon" style="top: 25px ; margin-left: 30px;"></i>
         <i class="copy" v-if="c_link">link copiado <i class="fas fa-check"></i></i>
         &nbsp;<a v-bind:href="link"> <small> Registrar </small> </a> <br>
       </div>

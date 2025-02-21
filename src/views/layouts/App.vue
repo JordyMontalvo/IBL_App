@@ -194,7 +194,10 @@
             <button class="share-button" @click="copy_affiliation_link">
               <i class="fas fa-share-alt" style="margin-right: 8px"></i
               >Compartir Afiliación
+              <input readonly id="link-global" @click="copy_affiliation_link"
+              v-model="affiliationLink" style="display: none;"  />
             </button>
+
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
 
             <label v-if="office_id == null">
@@ -401,12 +404,6 @@ export default {
         this.photoFile.name,
         "photos"
       );
-
-      this.$store.commit("SET_PHOTO", ret);
-
-      this.$store.commit("SET_TOKEN", this.token);
-      this.token  = data.token;
-
       this.photoState = "default";
 
       await api.photo(this.session, { photo: this.photo });
@@ -416,7 +413,7 @@ export default {
     },
     copy_affiliation_link() {
       console.log("Copying Affiliation Link:", this.affiliationLink);
-      lib.copy(this.affiliationLink);
+      lib.copy("link-global");
       this.c_affiliation_link = true;
       setTimeout(() => (this.c_affiliation_link = false), 4000);
     },
