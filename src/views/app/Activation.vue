@@ -13,6 +13,7 @@
 
     <section v-if="!loading">
       <div class="flex">
+        <div style="display: flex; gap: 40px;">
         <div style="width: 100%">
           <div style="display: flex; gap: 10px">
             <button
@@ -77,6 +78,9 @@
               ></textarea>
             </div>
           </div>
+        </div>
+
+          <div>
           <p style="color: rgba(74, 176, 46, 1); font-size: 24px">
             Datos Bancarios
           </p>
@@ -211,6 +215,7 @@
           <button class="button" v-show="sending" disabled>
             Enviando orden ...
           </button>
+        </div>
 
           <br /><br /><br />
         </div>
