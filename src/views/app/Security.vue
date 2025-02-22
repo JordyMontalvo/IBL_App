@@ -8,20 +8,26 @@
     <section v-if="!loading"> <br>
 
       <div v-if="state == 'default'">
+        <div class = "input-wrapper">
         <i class="icon fas fa-user"></i>
         <input class="input" placeholder="Nombre" v-model="name"> <br>
-
+      </div>
+      <div class = "input-wrapper">
         <i class="icon fas fa-user"></i>
         <input class="input" placeholder="Apellido" v-model="lastName"> <br>
-
+      </div>
+        <div class = "input-wrapper">
         <i class="icon fas fa-id-card"></i>
         <input class="input" placeholder="Documento de identidad" v-model="dni"> <br>
-
+      </div>
+        <div class = "input-wrapper">
         <i class="icon fas fa-user"></i>
         <input class="input" placeholder="Parentesco" v-model="relation"> <br>
-
+      </div>
+        <div class = "input-wrapper">
         <i class="icon fas fa-mobile-alt"></i>
         <input class="input" placeholder="Teléfono" v-model="phone"> <br>
+      </div>
 
         <small v-if="success" class="success">Persona guardada</small> <br>
 

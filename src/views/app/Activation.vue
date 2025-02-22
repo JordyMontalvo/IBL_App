@@ -38,9 +38,11 @@
             >
               <small>
                 <p class="_name">{{ product.name }}</p>
-                <span>S/. {{ product.price }}</span
+                <span style="color: rgba(8, 56, 92, 1); font-size: 14px; font-weight: bold;
+                  ">S/. {{ product.price }}</span
                 >&nbsp; &nbsp;
-                <span>PTS {{ product.points }}</span>
+                <span style="color: rgba(102, 108, 104, 1); font-weight: bold; 
+                ">PTS {{ product.points }}</span>
 
                 <!-- <span>Val. a comisionar
                   <i v-if="product.val">{{ product.val   }}</i>

@@ -88,7 +88,7 @@
           class="input"
           type="date"
           />
-        <i class="fa-solid fa-calendar-alt icon"></i>
+
       </div>
 
       <div>

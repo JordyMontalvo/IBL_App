@@ -162,7 +162,7 @@
           @click.native="close"
           v-if="office_id == null && affiliated"
         >
-          <i class="fa-solid fa-graduation-cap"></i> EDUCACIÓN
+          <i class="fas fa-building"></i> PROYECTOS 
         </router-link>
 
         <router-link
