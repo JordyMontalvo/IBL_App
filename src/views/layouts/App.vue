@@ -195,8 +195,9 @@
               <i class="fas fa-share-alt" style="margin-right: 8px"></i
               >Compartir Afiliación
               <input readonly id="link-global" @click="copy_affiliation_link"
-              v-model="affiliationLink" style="display: none;"  />
+              v-model="affiliationLink" style="opacity: 0; position: absolute;"  />
             </button>
+            <i class="copy" v-if="c_affiliation_link">link copiado <i class="fas fa-check"></i></i>
 
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
 
