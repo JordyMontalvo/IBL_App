@@ -13,7 +13,7 @@
 
     <section v-if="!loading">
       <div class="flex">
-        <div style="display: flex; gap: 40px;">
+        <div class = "flex-activacion">
         <div style="width: 100%">
           <div style="display: flex; gap: 10px">
             <button
