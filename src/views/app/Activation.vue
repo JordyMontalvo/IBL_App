@@ -47,10 +47,10 @@
                       font-size: 14px;
                       font-weight: bold;
                     "
-                    >S/. {{ product.price }}</span
+                    >S/. {{ formatNumber(product.price) }}</span
                   >&nbsp; &nbsp;
                   <span style="color: #aaa3a3; font-weight: bold"
-                    >PTS {{ product.points }}</span
+                    >PTS {{ formatNumber(product.points) }}</span
                   >
 
                   <!-- <span>Val. a comisionar
@@ -105,11 +105,11 @@
 
             <div class="input-wrapper">
               <i class="fa-solid fa-money-bill-wave icon"></i>
-              <input class="input" readonly v-model="_price" /> <br />
+              <input class="input" readonly v-model="formatNumber(_price)" /> <br />
             </div>
             <div class="input-wrapper">
               <i class="fa-solid fa-hand-holding-usd icon"></i>
-              <input class="input" readonly v-model="_points" /> <br />
+              <input class="input" readonly v-model="formatNumber(_points)" /> <br />
             </div>
             <div class="input-wrapper">
               <select class="input" v-model="office" v-if="!pending">
@@ -148,7 +148,7 @@
               >
               <br />
               <small style="color: rgba(8, 56, 92, 1)"
-                >Saldo disponible: {{ balance }}</small
+                >Saldo disponible: {{ formatNumber(balance) }}</small
               >
               <br />
               <small v-if="remaining > 0">restan: {{ remaining }}</small>
@@ -503,6 +503,9 @@ export default {
       this.success = true;
 
       this.reset();
+    },
+    formatNumber(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
   },
 };
