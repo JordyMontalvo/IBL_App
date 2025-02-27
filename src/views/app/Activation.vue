@@ -99,17 +99,17 @@
             </p>
 
             <small style="color: rgba(8, 56, 92, 1)"
-              >Impuesto: {{ IGV.toFixed(2) }}</small
+              >Impuesto: {{ formatNumber(IGV) }}</small
             >
             <br />
 
             <div class="input-wrapper">
               <i class="fa-solid fa-money-bill-wave icon"></i>
-              <input class="input" readonly v-model="formatNumber(_price)" /> <br />
+              <input class="input" readonly v-model="_price" /> <br />
             </div>
             <div class="input-wrapper">
               <i class="fa-solid fa-hand-holding-usd icon"></i>
-              <input class="input" readonly v-model="formatNumber(_points)" /> <br />
+              <input class="input" readonly v-model="_points" /> <br />
             </div>
             <div class="input-wrapper">
               <select class="input" v-model="office" v-if="!pending">
@@ -144,14 +144,16 @@
 
             <div v-show="check">
               <small style="color: rgba(8, 56, 92, 1)"
-                >Saldo no disponible: {{ _balance }}</small
+                >Saldo no disponible: {{ formatNumber(_balance) }}</small
               >
               <br />
               <small style="color: rgba(8, 56, 92, 1)"
                 >Saldo disponible: {{ formatNumber(balance) }}</small
               >
               <br />
-              <small v-if="remaining > 0">restan: {{ remaining }}</small>
+              <small v-if="remaining > 0"
+                >restan: {{ formatNumber(remaining) }}</small
+              >
             </div>
 
             <br />
@@ -164,9 +166,11 @@
 
               <div v-if="check">
                 <small v-if="plan == 'default'"
-                  >Cash: {{ balance + selec_plan.pay }}</small
+                  >Cash: {{ formatNumber(balance + selec_plan.pay) }}</small
                 >
-                <small v-else> Cash: {{ _balance + balance }}</small>
+                <small v-else>
+                  Cash: {{ formatNumber(_balance + balance) }}</small
+                >
 
                 <br />
               </div>
@@ -184,7 +188,7 @@
 
               <div v-if="pay_method == 'bank'">
                 <br />
-                <small>Monto: {{ remaining }}</small> <br />
+                <small>Monto: {{ formatNumber(remaining) }}</small> <br />
 
                 <input class="input" v-model="bank" placeholder="Banco" />
                 <br />
@@ -216,7 +220,7 @@
 
               <div v-if="pay_method == 'cash'">
                 <br />
-                <small>Monto: {{ remaining }}</small> <br />
+                <small>Monto: {{ formatNumber(remaining) }}</small> <br />
               </div>
             </div>
 
@@ -345,7 +349,7 @@ export default {
     activeCategory() {
       return this.tab
         ? this.tab.charAt(0).toUpperCase() + this.tab.slice(1).toLowerCase()
-        : "Terreno"; 
+        : "Terreno";
     },
   },
   async created() {
@@ -505,7 +509,7 @@ export default {
       this.reset();
     },
     formatNumber(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Formatea el número con comas
     },
   },
 };
