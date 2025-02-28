@@ -23,7 +23,13 @@
       </h4>-->
     </header>
     <section :class="{ open: open }">
-      <div class="menu" :class="{ slide: open }" @click.stop>
+      <div
+        class="menu"
+        :class="{ slide: open }"
+        @touchstart="startTouch"
+        @touchmove="moveTouch"
+        @touchend="endTouch"
+      >
         <div class="text-header">
           <label v-if="office_id == null">
             <img v-if="photoState == 'default'" class="photo" :src="photo" />
@@ -303,6 +309,8 @@ export default {
       photoFile: null,
       c_affiliation_link: false,
       activeProduct: false,
+      startX: 0,
+      endX: 0,
     };
   },
   computed: {
@@ -437,6 +445,18 @@ export default {
       lib.copy("link-global");
       this.c_affiliation_link = true;
       setTimeout(() => (this.c_affiliation_link = false), 4000);
+    },
+    startTouch(event) {
+      this.startX = event.touches[0].clientX; // Guardar la posición inicial del toque
+    },
+    moveTouch(event) {
+      this.endX = event.touches[0].clientX; // Actualizar la posición del toque
+    },
+    endTouch() {
+      // Si el deslizamiento es hacia la izquierda y el menú está abierto, cerrarlo
+      if (this.startX - this.endX > 50 && this.open) {
+        this.closeMenu();
+      }
     },
   },
 };
