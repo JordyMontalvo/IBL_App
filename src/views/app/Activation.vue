@@ -98,9 +98,7 @@
               Datos Bancarios
             </p>
 
-            <small style="color: rgba(8, 56, 92, 1)"
-              >Impuesto: {{ formatNumber(IGV) }}</small
-            >
+            <small style="color: rgba(8, 56, 92, 1)">Impuesto: {{ IGV }}</small>
             <br />
 
             <div class="input-wrapper">
@@ -321,7 +319,7 @@ export default {
     },
 
     IGV() {
-      return this.price - this.price / 1.18;
+      return (this.price - this.price / 1.18).toFixed(2);
     },
 
     remaining() {
@@ -516,8 +514,6 @@ export default {
 </script>
 
 <style lang="stylus">
-
-
 .product
   small
     width 240px
@@ -532,4 +528,8 @@ export default {
 
 ._price
   font-weight 600
+
+.not-selected {
+  opacity: 0.5;
+}
 </style>
