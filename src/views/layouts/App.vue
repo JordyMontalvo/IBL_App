@@ -15,7 +15,7 @@
       <i
         class="burger fas fa-bars"
         style="margin-left: 310px"
-        @click="opened"
+        @click="toggleMenu"
       ></i>
 
       <!-- <h4>{{ name }} {{ lastName }} <i class=""
@@ -23,7 +23,7 @@
       </h4>-->
     </header>
     <section :class="{ open: open }">
-      <div class="menu">
+      <div class="menu" :class="{ slide: open }" @click="closeMenu">
         <div class="text-header">
           <label v-if="office_id == null">
             <img v-if="photoState == 'default'" class="photo" :src="photo" />
@@ -258,8 +258,8 @@
     <footer class="footer-Dashboard">
       <router-link to="/dashboard">
         <i class="fa-solid fa-house"></i>
-        Inicio
-      </router-link>
+        Inicio </router-link
+      >
       <router-link to="/activation" v-if="affiliated">
         <i class="fas fa-shopping-bag"></i>
         Compras
@@ -383,8 +383,13 @@ export default {
     },
   },
   methods: {
-    opened() {
+    toggleMenu() {
       this.$store.commit("SET_OPEN");
+    },
+    closeMenu() {
+      if (this.open) {
+        this.$store.commit("SET_OPEN");
+      }
     },
     actived(i) {
       if (this.activeProduct === i) {
@@ -436,3 +441,13 @@ export default {
   },
 };
 </script>
+<style scoped>
+.menu {
+  transition: transform 0.3s ease;
+  transform: translateX(-100%); /* Oculta el menú fuera de la vista */
+}
+
+.menu.slide {
+  transform: translateX(0); /* Muestra el menú */
+}
+</style>
