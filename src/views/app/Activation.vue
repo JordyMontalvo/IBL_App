@@ -52,7 +52,6 @@
                   <span style="color: #aaa3a3; font-weight: bold"
                     >PTS {{ formatNumber(product.points) }}</span
                   >
-
                   <!-- <span>Val. a comisionar
                   <i v-if="product.val">{{ product.val   }}</i>
                   <i v-else>            {{ product.price }}</i>
