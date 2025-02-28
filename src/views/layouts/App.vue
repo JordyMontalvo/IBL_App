@@ -1,5 +1,5 @@
 <template>
-  <div class="app" @click="closeMenu">
+  <div class="app">
     <header>
       <!--<h3 class="slogan">
         <span v-if="country == 'Perú'"       style="font-size: 28px;">🇵🇪</span>
