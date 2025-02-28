@@ -57,7 +57,7 @@
 
         <img src="../../assets/img/logo/logoibl.png" class="photo-logo" />
 
-        <router-link to="/dashboard" @click.native="" v-if="office_id == null">
+        <router-link to="/dashboard" @click.stop v-if="office_id == null">
           <i class="fas fa-home"></i> INICIO
         </router-link>
         <!-- <router-link to="/status" @click.native="close">
@@ -65,7 +65,7 @@
         </router-link> -->
 
         <a
-          @click="actived(0)"
+          @click.stop="actived(0)"
           :style="{
             display: 'flex',
             justifyContent: 'space-between',
@@ -77,7 +77,7 @@
           <i class="fa fa-angle-down" style="margin-left: 16px"></i>
         </a>
         <div class="sub-menu" :class="{ active: buys }">
-          <router-link to="/activation" @click.native="close" v-if="affiliated">
+          <router-link to="/activation" @click.stop v-if="affiliated">
             <i class="fas fa-shopping-bag"></i> COMPRAS
           </router-link>
           <!-- <router-link to="/affiliation" @click.native="close">
@@ -454,7 +454,7 @@ export default {
     },
     endTouch() {
       // Si el deslizamiento es hacia la izquierda y el menú está abierto, cerrarlo
-      if (this.startX - this.endX > 20 && this.open) {
+      if (this.startX - this.endX > 50 && this.open) {
         this.closeMenu();
       }
     },
