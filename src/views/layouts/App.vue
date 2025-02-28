@@ -60,11 +60,12 @@
 
         <a
           @click="actived(0)"
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
+          :style="{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: activeProduct === 0 ? 'rgba(8, 56, 92, 1)' : '',
+          }"
         >
           <span> <i class="fa fa-cart-plus"></i> PRODUCTOS </span>
           <i class="fa fa-angle-down" style="margin-left: 16px"></i>
@@ -81,11 +82,12 @@
         <a
           @click="actived(1)"
           v-if="tree"
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
+          :style="{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: activeProduct === 1 ? 'rgba(8, 56, 92, 1)' : '',
+          }"
         >
           <span> <i class="fa fa-users"></i> ORGANIZACIÓN </span>
           <i class="fa fa-angle-down" style="margin-left: 16px"></i>
@@ -105,11 +107,12 @@
         <a
           @click="actived(2)"
           v-if="tree"
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
+          :style="{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: activeProduct === 2 ? 'rgba(8, 56, 92, 1)' : '',
+          }"
         >
           <span> <i class="fa fa-money"></i> COMISIONES </span>
           <i class="fa fa-angle-down" style="margin-left: 16px"></i>
@@ -132,11 +135,12 @@
         <a
           @click="actived(3)"
           v-if="tree && office_id == null"
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
+          :style="{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: activeProduct === 3 ? 'rgba(8, 56, 92, 1)' : '',
+          }"
         >
           <span> <i class="fa fa-file-text"></i> RESUMEN </span>
           <i class="fa fa-angle-down" style="margin-left: 16px"></i>
@@ -162,7 +166,7 @@
           @click.native="close"
           v-if="office_id == null && affiliated"
         >
-          <i class="fas fa-building"></i> PROYECTOS 
+          <i class="fas fa-building"></i> PROYECTOS
         </router-link>
 
         <router-link
@@ -194,10 +198,17 @@
             <button class="share-button" @click="copy_affiliation_link">
               <i class="fas fa-share-alt" style="margin-right: 8px"></i
               >Compartir Afiliación
-              <input readonly id="link-global" @click="copy_affiliation_link"
-              v-model="affiliationLink" style="opacity: 0; position: absolute;"  />
+              <input
+                readonly
+                id="link-global"
+                @click="copy_affiliation_link"
+                v-model="affiliationLink"
+                style="opacity: 0; position: absolute"
+              />
             </button>
-            <i class="copy" v-if="c_affiliation_link">link copiado <i class="fas fa-check"></i></i>
+            <i class="copy" v-if="c_affiliation_link"
+              >link copiado <i class="fas fa-check"></i
+            ></i>
 
             <!-- <img class="logo-text" src="@/assets/img/logo/text.svg" style="margin-left: 12px;"> -->
 
@@ -268,8 +279,6 @@
     </footer>
 
     <a :href="wsp" target="_blank" class="wsp fab fa-whatsapp"></a>
-
-
   </div>
 </template>
 
@@ -277,8 +286,8 @@
 import api from "@/api";
 import lib from "@/lib";
 
-const ROOT = process.env.VUE_APP_ROOT
-console.log({ ROOT })
+const ROOT = process.env.VUE_APP_ROOT;
+console.log({ ROOT });
 
 export default {
   props: {
@@ -293,6 +302,7 @@ export default {
       photoState: "default",
       photoFile: null,
       c_affiliation_link: false,
+      activeProduct: false,
     };
   },
   computed: {
@@ -366,7 +376,7 @@ export default {
       return this.$store.state.commissions;
     },
     affiliationLink() {
-      return  `${ROOT}/register/${this.token}`;
+      return `${ROOT}/register/${this.token}`;
     },
     token() {
       return this.$store.state.token;
@@ -377,6 +387,11 @@ export default {
       this.$store.commit("SET_OPEN");
     },
     actived(i) {
+      if (this.activeProduct === i) {
+        this.activeProduct = false;
+      } else {
+        this.activeProduct = i;
+      }
       if (i == 0) this.$store.commit("SET_BUYS");
       if (i == 1) this.$store.commit("SET_NETWORK");
       if (i == 2) this.$store.commit("SET_COMMISSIONS");
