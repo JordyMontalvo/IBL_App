@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" @click="closeMenu">
     <header>
       <!--<h3 class="slogan">
         <span v-if="country == 'Perú'"       style="font-size: 28px;">🇵🇪</span>
@@ -15,7 +15,7 @@
       <i
         class="burger fas fa-bars"
         style="margin-left: 310px"
-        @click="toggleMenu"
+        @click.stop="toggleMenu"
       ></i>
 
       <!-- <h4>{{ name }} {{ lastName }} <i class=""
@@ -23,7 +23,7 @@
       </h4>-->
     </header>
     <section :class="{ open: open }">
-      <div class="menu" :class="{ slide: open }" @click="closeMenu">
+      <div class="menu" :class="{ slide: open }" @click.stop>
         <div class="text-header">
           <label v-if="office_id == null">
             <img v-if="photoState == 'default'" class="photo" :src="photo" />
@@ -258,8 +258,8 @@
     <footer class="footer-Dashboard">
       <router-link to="/dashboard">
         <i class="fa-solid fa-house"></i>
-        Inicio </router-link
-      >
+        Inicio
+      </router-link>
       <router-link to="/activation" v-if="affiliated">
         <i class="fas fa-shopping-bag"></i>
         Compras
