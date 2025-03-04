@@ -394,6 +394,11 @@ export default {
       const isActivated =
         this.$store.state.activated || this.$store.state._activated;
 
+      // Restablecer la cantidad del producto previamente seleccionado
+      if (this.product && this.product !== product) {
+        this.product.total = 0; // Reiniciar el total del producto anterior
+      }
+
       // Verificar si el usuario está activado
       /*if (isActivated) {
       // Para usuarios activados, permitir agregar productos de cualquier tipo
@@ -406,6 +411,7 @@ export default {
 
       if (this.total >= 1) return;
       product.total += 1;
+      this.product = product; // Actualizar el producto seleccionado
     },
 
     less(product) {
