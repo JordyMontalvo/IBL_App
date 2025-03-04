@@ -23,7 +23,11 @@
       </h4>-->
     </header>
     <section :class="{ open: open }">
-      <div class="menu">
+      <div class="menu"
+        @touchstart="startTouch"
+        @touchmove="moveTouch"
+        @touchend="endTouch"
+      >
         <div class="text-header">
           <label v-if="office_id == null">
             <img v-if="photoState == 'default'" class="photo" :src="photo" />
@@ -292,6 +296,8 @@ export default {
       photoState: "default",
       photoFile: null,
       c_affiliation_link: false,
+      startX: 0,
+      endX: 0,
     };
   },
   computed: {
@@ -384,6 +390,11 @@ export default {
     close() {
       this.$store.commit("SET_OPEN");
     },
+    closeMenu() {
+      if (this.open) {
+        this.$store.commit("SET_OPEN");
+      }
+    },
     changePhoto(e) {
       this.photoFile = e.target.files[0];
 
@@ -416,6 +427,18 @@ export default {
       lib.copy("link-global");
       this.c_affiliation_link = true;
       setTimeout(() => (this.c_affiliation_link = false), 4000);
+    },
+    startTouch(event) {
+      this.startX = event.touches[0].clientX; // Guardar la posición inicial del toque
+    },
+    moveTouch(event) {
+      this.endX = event.touches[0].clientX; // Actualizar la posición del toque
+    },
+    endTouch() {
+      // Si el deslizamiento es hacia la izquierda y el menú está abierto, cerrarlo
+      if (this.startX - this.endX > 250 && this.open) {
+        this.closeMenu();
+      }
     },
   },
 };
