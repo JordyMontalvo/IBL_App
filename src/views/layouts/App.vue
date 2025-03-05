@@ -191,7 +191,7 @@
 
       <div class="content">
         <header>
-          <p>{{ title }}</p>
+          <p style="    font-weight: bold;font-size: 20px;">{{ title }}</p>
           <div
             style="
               display: flex;
@@ -414,28 +414,30 @@ export default {
       this.$store.commit("SET_OPEN");
     },
     changePhoto(e) {
-      this.photoFile = e.target.files[0];
+      this.photoFile = e.target.files[0]
 
-      if (!this.photoFile) return;
+      if(!this.photoFile) return
 
-      const reader = new FileReader();
+      const reader = new FileReader()
 
       reader.onload = (e) => {
-        this.newPhoto = e.target.result;
-        this.photoState = "changed";
-      };
+        this.newPhoto = e.target.result
+        this.photoState = 'changed'
+      }
 
-      reader.readAsDataURL(this.photoFile);
+      reader.readAsDataURL(this.photoFile)
     },
     async changeNewPhoto() {
-      const ret = await lib.upload(
-        this.photoFile,
-        this.photoFile.name,
-        "photos"
-      );
-      this.photoState = "default";
+      const ret = await lib.upload(this.photoFile, this.photoFile.name, 'photos')
 
-      await api.photo(this.session, { photo: this.photo });
+      this.$store.commit('SET_PHOTO', ret)
+
+      this.photoState = 'default'
+
+      await api.photo(this.session, { photo: this.photo })
+    },
+    cancelNewPhoto() {
+      this.photoState = 'default'
     },
     cancelNewPhoto() {
       this.photoState = "default";
