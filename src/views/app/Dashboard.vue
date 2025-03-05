@@ -46,7 +46,7 @@
         <h2>Nivel Actual</h2>
         <div class="rank-image">
           <img
-            src="https://s3-alpha-sig.figma.com/img/7802/2e20/5a4b8e6b84fee7f04d9ef27eda097ee1?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fzkCIOclXtfeMBRARqHw3U4324RsIc49HJWuT5gZaENS5FGF22rzoZm803hywEtzf9kOUOsNO1qFLU0uuC7HGpjb~6AmI5538XhUFHNw~FUzbJ-OTQOJprbPeVvG4pRlT58ArVxElY1gM5rF5RbXvKP5UCtojppAk22GHbBpDuBS6qTorWHV5eE-pOEuvDF-e3EecDYUgpg8hCyiaCPHhLI4z4dnPzVMSJ8p7QKiG3wfftBsbRYOfH-tuAZygeUrILyZgISRYoAJ1ns4hxzkk7jQ619lCafSisSFIHNbf~pmMEeT9pK6ehD3cqjwGHXUTcmUoQc0rTGNna~9Jm3FBA__"
+            src="../../assets/img/insignias colores.png"
             alt="Rango"
           />
           <h3>Nivel Principiante</h3>
@@ -103,7 +103,7 @@
           Rango Alcanzado
         </h3>
         <img
-        src="https://s3-alpha-sig.figma.com/img/7802/2e20/5a4b8e6b84fee7f04d9ef27eda097ee1?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fzkCIOclXtfeMBRARqHw3U4324RsIc49HJWuT5gZaENS5FGF22rzoZm803hywEtzf9kOUOsNO1qFLU0uuC7HGpjb~6AmI5538XhUFHNw~FUzbJ-OTQOJprbPeVvG4pRlT58ArVxElY1gM5rF5RbXvKP5UCtojppAk22GHbBpDuBS6qTorWHV5eE-pOEuvDF-e3EecDYUgpg8hCyiaCPHhLI4z4dnPzVMSJ8p7QKiG3wfftBsbRYOfH-tuAZygeUrILyZgISRYoAJ1ns4hxzkk7jQ619lCafSisSFIHNbf~pmMEeT9pK6ehD3cqjwGHXUTcmUoQc0rTGNna~9Jm3FBA__""
+        src="../../assets/img/insignias colores.png"
         alt="Rango Diamante" style="width: 100px; height: 100px; margin-bottom:
         0.5rem" />
         <p style="font-weight: bold">{{ achievedRank }}</p>
@@ -163,7 +163,7 @@
           Total Ganado
         </h3>
         <img
-          src="https://s3-alpha-sig.figma.com/img/d6d4/429a/68e4f36017739ce18e2e4f05b1d41531?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=e7rbX~z0sHe5xyWkjj60c-T9eOv-dNefzUkP4m4bIS5jnPed7W5EtQ6Pg3fWVFkY8yRl-akktBybtrCQ2rxxCdCZ0lqLrZ~RabMD0jtk7UXHS9JuaF1V2eBbfp08w8w4VpaNhXom6cpqJgtoRNucVvi~MtL7AeoIlFa-3RoVWcwa~1wzwzndF5H~t-sEj4JJSSHm9UKGQYA6aLqTAKODjQ6WvJTkRdTWe1FODhk5l6fXZkI8ezzgGDMq8R5jacoiDNAUjW0DwVZEvv5f9wvhr84jrQFsIzORj~3eIyhle-IijRhgHJlkubxpUskK9lBBxayi8FmMOpWfB3tW5LxWIw__"
+          src=""
           alt="Trofeo"
           style="width: 100px; height: 100px; margin-bottom: 0.5rem"
           />
