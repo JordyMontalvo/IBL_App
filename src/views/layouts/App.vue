@@ -456,7 +456,7 @@ export default {
     },
     endTouch() {
       // Si el deslizamiento es hacia la izquierda y el menú está abierto, cerrarlo
-      if (this.startX - this.endX > 170 && this.open) {
+      if (this.startX - this.endX > 150 && this.open) {
         this.closeMenu();
       }
     },
