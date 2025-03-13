@@ -23,13 +23,7 @@
       </h4>-->
     </header>
     <section :class="{ open: open }">
-      <div
-        class="menu"
-        :class="{ slide: open }"
-        @touchstart="startTouch"
-        @touchmove="moveTouch"
-        @touchend="endTouch"
-      >
+      <div class="menu">
         <div class="text-header">
           <label v-if="office_id == null">
             <img v-if="photoState == 'default'" class="photo" :src="photo" />
@@ -255,7 +249,11 @@
             
           </div> -->
         </header>
-        <section style="overflow: auto">
+        <section style="overflow: auto"
+        :class="{ slide: open }"
+        @touchstart="startTouch"
+        @touchmove="moveTouch"
+        @touchend="endTouch">
           <slot />
         </section>
       </div>
@@ -456,7 +454,7 @@ export default {
     },
     endTouch() {
       // Si el deslizamiento es hacia la izquierda y el menú está abierto, cerrarlo
-      if (this.startX - this.endX > 150 && this.open) {
+      if (this.startX - this.endX > 160 && this.open) {
         this.closeMenu();
       }
     },
