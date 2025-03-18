@@ -15,7 +15,7 @@
       <a target="_blank"><i class="icon fas fa-file-pdf"></i> Presentación de Negocios</a> <br><br>
       <a target="_blank"><i class="icon fas fa-file-pdf"></i> Videos</a> <br><br> -->
 
-      <iframe class="_iframe" src="https://claseflix.io/educacion"></iframe>
+      <iframe class="_iframe" src="https://iblsac.com/proyectos/"></iframe>
 
     </div>
   </App>
