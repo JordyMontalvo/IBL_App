@@ -10,233 +10,270 @@
 
     <i class="load" v-if="loading"></i>
 
-    <section v-if="!loading">
-      <div class="flex">
-        <div class="flex-activacion">
-          <div style="width: 100%">
-            <div style="display: flex; gap: 10px">
-              <button
-                class="_tabs"
-                v-for="(category, i) in categories"
-                @click="tab = category"
-                :class="{
-                  selected: tab == categories[i],
-                  'not-selected': tab != categories[i],
-                }"
-              >
-                {{ category }}
-              </button>
-            </div>
+    <section v-if="!loading" class="catalog-container">
+      <!-- Left Column: Product Catalog -->
+      <div class="catalog-left">
+        <h2 class="catalog-title">Catálogo de {{ activeCategory }}</h2>
+        
+        <!-- Filter Dropdown -->
+        <div class="filter-dropdown-container">
+          <select 
+            class="filter-dropdown" 
+            v-model="tab"
+          >
+            <option 
+              v-for="(category, i) in categories" 
+              :key="i"
+              :value="category"
+            >
+              {{ category }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Product Cards Section -->
+        <div class="product-catalog-section">
+          <h3 class="section-title">Datos del comprador</h3>
+          
+          <div class="product-cards">
             <div
-              class="_tab_content"
-              style="color: rgba(8, 56, 92, 1)"
-              v-for="(category, i) in categories"
-              v-show="tab == categories[i]"
+              class="product-card"
+              v-for="(prod, i) in products"
+              v-if="prod.type == tab"
+              :key="i"
+              @click="selectProduct(prod)"
+              :class="{ 'product-card-selected': product && product.id == prod.id }"
             >
-              <article
-                class="product"
-                v-for="(product, i) in products"
-                @click="touch(i)"
-                v-if="product.type == category"
-              >
-                <small>
-                  <p class="_name">{{ product.name }}</p>
-                  <span
-                    style="
-                      color: rgba(8, 56, 92, 1);
-                      font-size: 14px;
-                      font-weight: bold;
-                    "
-                    >S/. {{ formatNumber(product.price) }}</span
-                  >&nbsp; &nbsp;
-                  <span style="color: #aaa3a3; font-weight: bold"
-                    >PTS {{ formatNumber(product.points) }}</span
-                  >
-                  <!-- <span>Val. a comisionar
-                  <i v-if="product.val">{{ product.val   }}</i>
-                  <i v-else>            {{ product.price }}</i>
-                  &nbsp; &nbsp; <i class="_price">$ {{ product.price }}</i></span> -->
-                </small>
+              <div class="product-card-image">
+                <img :src="prod.img || 'https://via.placeholder.com/150x100'" alt="Product" />
+              </div>
+              <div class="product-card-content">
+                <h4 class="product-card-title">{{ prod.name }}</h4>
+                <p class="product-card-subtitle">{{ prod.type }}</p>
+                <span 
+                  class="product-card-status"
+                  :class="{
+                    'status-disponible': prod.total == 0,
+                    'status-reservado': prod.total > 0
+                  }"
+                >
+                  {{ prod.total > 0 ? 'Reservado' : 'Disponible' }}
+                </span>
+              </div>
+              <div class="product-card-price">
+                <div class="card-price-label">Precio</div>
+                <div class="card-price-amount">S/ {{ formatNumber(prod.price) }}</div>
+              </div>
+            </div>
+          </div>
 
-                <div class="control" style="color: green">
-                  <i class="fas fa-minus-square" @click="less(product)"></i>
-                  <input v-model="product.total" readonly />
-                  <i class="fas fa-plus-square" @click="more(product)"></i>
+          <!-- Product Info Section -->
+          <div class="product-info-section" v-if="product">
+            <h3 class="info-title">Información del Producto</h3>
+            <div class="info-details">
+              <!-- TERRENO specific info -->
+              <template v-if="product.type == 'TERRENO'">
+                <div class="info-row">
+                  <span class="info-label">Área:</span>
+                  <span class="info-value">{{ product.area || '250 m²' }}</span>
                 </div>
-              </article>
-            </div>
-            <br />
+                <div class="info-row">
+                  <span class="info-label">Ubicación:</span>
+                  <span class="info-value">{{ product.location || 'Lima, Perú' }}</span>
+                </div>
+              </template>
 
-            <div>
-              <p style="color: rgba(8, 56, 92, 1); font-size: 18px">
-                {{ activeCategory }}
-              </p>
-              <img
-                :src="product.img"
-                style="margin: 12px 0; width: 370px; height: 170px"
-              />
+              <!-- ACTIVACIÓN specific info -->
+              <template v-if="product.type == 'ACTIVACIÓN'">
+                <div class="info-row">
+                  <span class="info-label">Duración:</span>
+                  <span class="info-value">1 Año</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Alcance:</span>
+                  <span class="info-value">Acceso Global</span>
+                </div>
+              </template>
 
-              <!-- <div class="flex"> -->
-              <div>
-                <textarea
-                  readonly
-                  style="
-                    width: 390px;
-                    height: 100px;
-                    border-radius: 20px;
-                    padding: 10px;
-                  "
-                  v-model="product.description"
-                ></textarea>
+              <!-- MEMBRESÍA specific info -->
+              <template v-if="product.type == 'MEMBRESÍA'">
+                <div class="info-row">
+                  <span class="info-label">Nivel:</span>
+                  <span class="info-value">Premium</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Beneficios:</span>
+                  <span class="info-value">Acceso a Club y Eventos</span>
+                </div>
+              </template>
+
+              <!-- Common info -->
+              <div class="info-row">
+                <span class="info-label">Estado:</span>
+                <span class="info-value">{{ product.total > 0 ? 'Reservado' : 'Disponible' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Tipo:</span>
+                <span class="info-value">{{ product.type }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Puntos:</span>
+                <span class="info-value">{{ formatNumber(product.points) }}</span>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div>
-            <p style="color: rgba(74, 176, 46, 1); font-size: 24px">
-              Datos Bancarios
-            </p>
+      <!-- Right Column: Purchase Form -->
+      <div class="catalog-right">
+        <h3 class="form-title">Venta de {{ tab || 'terreno' }}</h3>
+        
+        <!-- Buyer Data Section -->
+        <div class="form-section">
+          <label class="form-label">Datos del comprador</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="DM J Pasaporte"
+            v-model="buyerData.passport"
+          />
+          
+          <label class="form-label">Nombres</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Apellidos"
+            v-model="buyerData.lastName"
+          />
+          
+          <label class="form-label">Correo</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Correo"
+            v-model="buyerData.email"
+          />
+          
+          <label class="form-label">Dirección</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Dirección"
+            v-model="buyerData.address"
+          />
+        </div>
 
-            <small style="color: rgba(8, 56, 92, 1)">Impuesto: {{ IGV }}</small>
-            <br />
+        <!-- Summary Section -->
+        <div class="summary-section">
+          <h3 class="summary-title">Resumen</h3>
+          
+          <div class="summary-row">
+            <label class="summary-label">Precio de Venta</label>
+            <span class="summary-price">S/ {{ formatNumber(price) }}</span>
+          </div>
 
-            <div class="input-wrapper">
-              <i class="fa-solid fa-money-bill-wave icon"></i>
-              <input class="input" readonly v-model="_price" /> <br />
-            </div>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-hand-holding-usd icon"></i>
-              <input class="input" readonly v-model="_points" /> <br />
-            </div>
-            <div class="input-wrapper">
-              <select class="input" v-model="office" v-if="!pending">
-                <i class="fas fa-building icon"></i>
-                <option value="null" disabled>Oficina</option>
-                <option v-for="office in offices" :value="office">
-                  {{ office.name }}
-                </option>
-              </select>
-              <br />
-            </div>
-            <small v-if="office">{{ office.address }}</small> <br />
-            <div class="input-wrapper">
-              <div v-if="office">
-                <textarea
-                  readonly
-                  class="input"
-                  style="width: 390px; height: 200px; border-radius: 20px"
-                  rows="5"
-                  >{{ office.accounts }}</textarea
-                >
-                <br /><br />
-              </div>
-            </div>
-            <label>
-              <input type="checkbox" v-model="check" />
-              <small style="color: rgba(8, 56, 92, 1)"
-                >Deseo usar mi saldo</small
-              >
+          <div class="summary-row">
+            <label class="summary-label">Motivo de ajuste</label>
+            <select class="form-select" v-model="adjustmentReason">
+              <option value="promocion">Promoción</option>
+              <option value="descuento">Descuento</option>
+              <option value="ninguno">Ninguno</option>
+            </select>
+          </div>
+
+          <div class="summary-row">
+            <label class="summary-label">Observaciónes</label>
+            <textarea 
+              class="form-textarea" 
+              rows="3"
+              v-model="observations"
+            ></textarea>
+          </div>
+
+          <!-- Office Selection -->
+          <div class="summary-row">
+            <label class="summary-label">Oficina</label>
+            <select class="form-select" v-model="office">
+              <option value="null" disabled>Seleccione oficina</option>
+              <option v-for="office in offices" :value="office">
+                {{ office.name }}
+              </option>
+            </select>
+          </div>
+
+          <small v-if="office" class="office-address">{{ office.address }}</small>
+
+          <!-- Bank Details -->
+          <div v-if="office" class="bank-details">
+            <textarea
+              readonly
+              class="form-textarea"
+              rows="4"
+              >{{ office.accounts }}</textarea>
+          </div>
+
+          <!-- Balance Checkbox -->
+          <label class="checkbox-label">
+            <input type="checkbox" v-model="check" />
+            <span>Deseo usar mi saldo</span>
+          </label>
+
+          <div v-show="check" class="balance-info">
+            <small>Saldo no disponible: {{ formatNumber(_balance) }}</small><br />
+            <small>Saldo disponible: {{ formatNumber(balance) }}</small><br />
+            <small v-if="remaining > 0">Restan: {{ formatNumber(remaining) }}</small>
+          </div>
+
+          <!-- Payment Method -->
+          <div v-show="!(check && remaining == 0)" class="payment-section">
+            <h4 class="payment-title">Medio de Pago</h4>
+            
+            <label class="radio-label">
+              <input type="radio" :value="'bank'" v-model="pay_method" />
+              <span>Banco</span>
             </label>
-            <br />
+            
+            <label class="radio-label">
+              <input type="radio" :value="'cash'" v-model="pay_method" />
+              <span>Efectivo</span>
+            </label>
 
-            <div v-show="check">
-              <small style="color: rgba(8, 56, 92, 1)"
-                >Saldo no disponible: {{ formatNumber(_balance) }}</small
-              >
-              <br />
-              <small style="color: rgba(8, 56, 92, 1)"
-                >Saldo disponible: {{ formatNumber(balance) }}</small
-              >
-              <br />
-              <small v-if="remaining > 0"
-                >restan: {{ formatNumber(remaining) }}</small
-              >
+            <!-- Bank Payment Details -->
+            <div v-if="pay_method == 'bank'" class="bank-payment">
+              <small>Monto: {{ formatNumber(remaining) }}</small>
+              <input class="form-input" v-model="bank" placeholder="Banco" />
+              <input class="form-input" v-model="date" placeholder="Fecha" type="date" />
+              <input 
+                class="form-input" 
+                v-model="voucher_number" 
+                placeholder="Número de Voucher"
+                oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
+              />
+              
+              <label class="file-label">
+                <span v-show="!voucher">Comprobante de pago</span>
+                <img class="voucher-preview" :src="voucher" v-if="voucher" />
+                <input type="file" @change="onFileChange" />
+              </label>
             </div>
 
-            <br />
-
-            <div v-show="!(check && remaining == 0)">
-              <small style="color: rgba(74, 176, 46, 1); font-size: 24px"
-                >Medio de Pago</small
-              >
-              <br />
-
-              <div v-if="check">
-                <small v-if="plan == 'default'"
-                  >Cash: {{ formatNumber(balance + selec_plan.pay) }}</small
-                >
-                <small v-else>
-                  Cash: {{ formatNumber(_balance + balance) }}</small
-                >
-
-                <br />
-              </div>
-
-              <label>
-                <input type="radio" :value="'bank'" v-model="pay_method" />
-                <small style="color: rgba(8, 56, 92, 1)">Banco</small>
-              </label>
-              <br />
-
-              <label>
-                <input type="radio" :value="'cash'" v-model="pay_method" />
-                <small style="color: rgba(8, 56, 92, 1)">Efectivo</small> <br />
-              </label>
-
-              <div v-if="pay_method == 'bank'">
-                <br />
-                <small>Monto: {{ formatNumber(remaining) }}</small> <br />
-
-                <input class="input" v-model="bank" placeholder="Banco" />
-                <br />
-                <input
-                  class="input"
-                  v-model="date"
-                  placeholder="Fecha"
-                  type="date"
-                />
-                <br />
-                <input
-                  class="input"
-                  v-model="voucher_number"
-                  placeholder="Número de Voucher"
-                  oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
-                />
-                <br />
-
-                <label>
-                  <span class="input" v-show="!voucher"
-                    >Comprobante de pago</span
-                  >
-
-                  <img class="voucher" :src="voucher" />
-
-                  <input type="file" @change="onFileChange" />
-                </label>
-              </div>
-
-              <div v-if="pay_method == 'cash'">
-                <br />
-                <small>Monto: {{ formatNumber(remaining) }}</small> <br />
-              </div>
+            <div v-if="pay_method == 'cash'" class="cash-payment">
+              <small>Monto: {{ formatNumber(remaining) }}</small>
             </div>
-
-            <small v-if="error" style="color: red"
-              ><br />
-              {{ error }}</small
-            >
-            <small v-if="success" class="success">Activación Enviada</small>
-            <br />
-
-            <button class="button" v-show="!sending" @click="POST">
-              Ordenar productos
-            </button>
-            <button class="button" v-show="sending" disabled>
-              Enviando orden ...
-            </button>
           </div>
 
-          <br /><br /><br />
+          <!-- Error/Success Messages -->
+          <small v-if="error" class="error-message">{{ error }}</small>
+          <small v-if="success" class="success-message">Activación Enviada</small>
+
+          <!-- Submit Button -->
+          <button class="confirm-button" v-show="!sending" @click="POST">
+            Confirmar venta
+          </button>
+          <button class="confirm-button" v-show="sending" disabled>
+            Enviando orden ...
+          </button>
         </div>
       </div>
     </section>
@@ -283,6 +320,16 @@ export default {
       bank: null,
       date: null,
       voucher_number: null,
+      
+      // New fields for catalog design
+      buyerData: {
+        passport: '',
+        lastName: '',
+        email: '',
+        address: ''
+      },
+      adjustmentReason: 'promocion',
+      observations: ''
     };
   },
   computed: {
@@ -388,6 +435,20 @@ export default {
   methods: {
     touch(i) {
       this.product = this.products[i];
+    },
+    
+    selectProduct(product) {
+      // Si el producto ya está seleccionado, deseleccionarlo
+      if (this.product && this.product.id === product.id && product.total > 0) {
+        product.total = 0;
+        this.product = null;
+      } else {
+        // Reset all products
+        this.products.forEach(p => p.total = 0);
+        // Select the clicked product
+        product.total = 1;
+        this.product = product;
+      }
     },
 
     more(product) {
@@ -538,3 +599,5 @@ export default {
   opacity: 0.5;
 }
 </style>
+
+<style src="@/assets/style/activation-catalog.css"></style>
