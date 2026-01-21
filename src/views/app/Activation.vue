@@ -49,7 +49,7 @@
               </div>
               <div class="product-card-content">
                 <h4 class="product-card-title">{{ prod.name }}</h4>
-                <p class="product-card-subtitle">{{ prod.type }}</p>
+                <p class="product-card-subtitle">{{ prod.subtitle || prod.type }}</p>
                 <span 
                   class="product-card-status"
                   :class="{
@@ -75,11 +75,11 @@
               <template v-if="product.type == 'TERRENO'">
                 <div class="info-row">
                   <span class="info-label">Área:</span>
-                  <span class="info-value">{{ product.area || '250 m²' }}</span>
+                  <span class="info-value">{{ product.area }}</span>
                 </div>
                 <div class="info-row">
                   <span class="info-label">Ubicación:</span>
-                  <span class="info-value">{{ product.location || 'Lima, Perú' }}</span>
+                  <span class="info-value">{{ product.location }}</span>
                 </div>
               </template>
 
@@ -87,24 +87,21 @@
               <template v-if="product.type == 'ACTIVACIÓN'">
                 <div class="info-row">
                   <span class="info-label">Duración:</span>
-                  <span class="info-value">1 Año</span>
+                  <span class="info-value">{{ product.duration }}</span>
                 </div>
-                <div class="info-row">
-                  <span class="info-label">Alcance:</span>
-                  <span class="info-value">Acceso Global</span>
-                </div>
+
               </template>
 
               <!-- MEMBRESÍA specific info -->
               <template v-if="product.type == 'MEMBRESÍA'">
                 <div class="info-row">
-                  <span class="info-label">Nivel:</span>
-                  <span class="info-value">Premium</span>
+                  <span class="info-label">Ubicación:</span>
+                  <span class="info-value">{{ product.location }}</span>
                 </div>
-                <div class="info-row">
+                <!-- <div class="info-row">
                   <span class="info-label">Beneficios:</span>
                   <span class="info-value">Acceso a Club y Eventos</span>
-                </div>
+                </div> -->
               </template>
 
               <!-- Common info -->
