@@ -5,7 +5,7 @@ axios.defaults.baseURL = process.env.VUE_APP_SERVER + '/api'
 
 class API {
 
-  constructor({ Profile, Password, Security, Afiliation, Activation, Promo, Activations, Collect, Transfer, Collects, Closeds, Transfers }) {
+  constructor({ Profile, Password, Security, Afiliation, Activation, Promo, Activations, Collect, Transfer, Collects, Closeds, Transfers, Sales }) {
     this.Profile     = new Profile
     this.Password    = new Password
     this.Security    = new Security
@@ -18,6 +18,7 @@ class API {
     this.Collects    = new Collects
     this.Closeds     = new Closeds
     this.Transfers   = new Transfers
+    this.Sales       = new Sales
   }
 
   register(data) {
@@ -154,4 +155,10 @@ class Transfers {
   }
 }
 
-export default new API({ Profile, Password, Security, Afiliation, Activation, Promo, Activations, Collect, Closeds, Transfer, Collects, Transfers })
+class Sales {
+  POST(session, data) {
+    return axios.post(`/app/sales?session=${session}`, data)
+  }
+}
+
+export default new API({ Profile, Password, Security, Afiliation, Activation, Promo, Activations, Collect, Closeds, Transfer, Collects, Transfers, Sales })

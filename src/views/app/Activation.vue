@@ -127,23 +127,31 @@
         <h3 class="form-title">Venta de {{ tab || 'terreno' }}</h3>
         
         <!-- Buyer Data Section -->
-        <div class="form-section">
-          <label class="form-label">Datos del comprador</label>
+        <div class="form-section" v-if="tab !== 'ACTIVACIÓN'">
+          <label class="form-label">DNI</label>
           <input 
             type="text" 
             class="form-input" 
-            placeholder="DM J Pasaporte"
-            v-model="buyerData.passport"
+            placeholder="DNI"
+            v-model="buyerData.dni"
           />
-          
-          <label class="form-label">Nombres</label>
+
+          <label class="form-label">Nombres y Apellidos</label>
           <input 
             type="text" 
             class="form-input" 
-            placeholder="Apellidos"
-            v-model="buyerData.lastName"
+            placeholder="Nombres y Apellidos"
+            v-model="buyerData.name"
           />
           
+          <label class="form-label">Celular</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Celular"
+            v-model="buyerData.phone"
+          />
+
           <label class="form-label">Correo</label>
           <input 
             type="text" 
@@ -320,9 +328,10 @@ export default {
       
       // New fields for catalog design
       buyerData: {
-        passport: '',
-        lastName: '',
+        dni: '',
+        name: '',
         email: '',
+        phone: '',
         address: ''
       },
       adjustmentReason: 'promocion',
@@ -549,21 +558,51 @@ export default {
       // POST Affiliation
       this.sending = true;
 
+      // Find selected product to determine type
+      const selectedProduct = products.find(p => p.total > 0)
+      const isSale = selectedProduct && (
+        selectedProduct.type === 'TERRENO' || 
+        selectedProduct.type === 'MEMBRESÍA' || 
+        selectedProduct.type === 'MEMBRESIA'
+      )
+
       if (voucher)
         voucher = await lib.upload(this.file, this.file.name, "activations");
 
-      const { data } = await api.Activation.POST(this.session, {
-        products,
-        voucher,
-        office: office.id,
-        check,
-        pay_method,
-        bank,
-        date,
-        voucher_number,
-      });
+      let response;
+
+      if (isSale) {
+         response = await api.Sales.POST(this.session, {
+            products, // Backend expects products array to find the selected one
+            voucher,
+            office: office.id,
+            check,
+            pay_method,
+            bank,
+            date,
+            voucher_number,
+            buyerData: this.buyerData // Send buyer data for sales
+         });
+      } else {
+         response = await api.Activation.POST(this.session, {
+            products,
+            voucher,
+            office: office.id,
+            check,
+            pay_method,
+            bank,
+            date,
+            voucher_number,
+          });
+      }
 
       this.sending = false;
+
+      // Check response error if any (assuming standard response format)
+      if (response && response.data && response.data.error) {
+          this.error = response.data.error;
+          return;
+      }
 
       this.success = true;
 
