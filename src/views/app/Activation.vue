@@ -10,6 +10,10 @@
 
     <i class="load" v-if="loading"></i>
 
+    <div v-if="notification" class="custom-notification">
+      {{ notification }}
+    </div>
+
     <section v-if="!loading" class="catalog-container">
       <!-- Left Column: Product Catalog -->
       <div class="catalog-left">
@@ -53,11 +57,13 @@
                 <span 
                   class="product-card-status"
                   :class="{
-                    'status-disponible': prod.total == 0,
-                    'status-reservado': prod.total > 0
+                    'status-disponible': prod.total == 0 && !isAlreadyActivated(prod),
+                    'status-reservado': prod.total > 0,
+                    'status-activado': isAlreadyActivated(prod)
                   }"
+                  :style="isAlreadyActivated(prod) ? 'background: #27ae60; color: white;' : ''"
                 >
-                  {{ prod.total > 0 ? 'Reservado' : 'Disponible' }}
+                  {{ isAlreadyActivated(prod) ? 'Adquirido' : (prod.total > 0 ? 'Seleccionado' : 'Disponible') }}
                 </span>
               </div>
               <div class="product-card-price">
@@ -326,6 +332,8 @@ export default {
       date: null,
       voucher_number: null,
       
+      notification: null,
+      
       // New fields for catalog design
       buyerData: {
         dni: '',
@@ -444,6 +452,25 @@ export default {
     },
     
     selectProduct(product) {
+      // Check for existing activation
+      if (product.type === 'ACTIVACIÓN') {
+         const name = (product.name || '').toUpperCase()
+         const isMembership = name.includes('MEMBRESÍA') || name.includes('MEMBRESIA') || name.includes('CLUB')
+         
+         if (isMembership) {
+            if (this.$store.state._activated) {
+               this.showNotification('Ya posees una activación de Membresía activa.')
+               return
+            }
+         } else {
+            // Assume Lote/General
+            if (this.$store.state.activated) {
+               this.showNotification('Ya posees una activación de Lote activa.')
+               return
+            }
+         }
+      }
+
       // Si el producto ya está seleccionado, deseleccionarlo
       if (this.product && this.product.id === product.id && product.total > 0) {
         product.total = 0;
@@ -611,6 +638,24 @@ export default {
     formatNumber(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Formatea el número con comas
     },
+    isAlreadyActivated(prod) {
+      if (prod.type !== 'ACTIVACIÓN') return false
+      
+      const name = (prod.name || '').toUpperCase()
+      const isMembership = name.includes('MEMBRESÍA') || name.includes('MEMBRESIA') || name.includes('CLUB')
+
+      if (isMembership && this.$store.state._activated) return true
+      if (!isMembership && this.$store.state.activated) return true
+      
+      return false
+    },
+    
+    showNotification(msg) {
+      this.notification = msg
+      setTimeout(() => {
+        this.notification = null
+      }, 3000)
+    }
   },
 };
 </script>
@@ -633,6 +678,25 @@ export default {
 
 .not-selected {
   opacity: 0.5;
+}
+
+.custom-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #e74c3c;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 </style>
 
