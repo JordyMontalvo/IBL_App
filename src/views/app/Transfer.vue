@@ -18,7 +18,16 @@
 
       <div v-if="!confirmation">
 
-        <small class="cole-label">Total disponible: S/. {{ balance }}</small> <br><br>
+        <div class="balance-card">
+          <small class="cole-label">Total disponible: S/. {{ balance }}</small> <br>
+          <small style="font-size: 10px; color: #4caf50;">Lotes: S/. {{ available_lote }} | Membresías: S/. {{ available_membresia }}</small>
+        </div>
+        <br>
+        <div class="balance-card" v-if="unavailable_lote > 0 || unavailable_membresia > 0">
+           <small class="cole-label" style="color: #e74c3c;">No disponible: S/. {{ (Number(unavailable_lote) + Number(unavailable_membresia)).toFixed(2) }}</small> <br>
+           <small style="font-size: 10px; color: #e74c3c;">Lotes: S/. {{ unavailable_lote }} | Membresías: S/. {{ unavailable_membresia }}</small>
+        </div>
+        <br>
 
         <div class=" input-wrapper">
         <input class="input" v-model="dni" placeholder="Usuario receptor"
@@ -103,6 +112,12 @@ export default {
       show: false,
 
       end: false,
+
+      available_lote: 0,
+      available_membresia: 0,
+      unavailable_lote: 0,
+      unavailable_membresia: 0,
+      balance: 0,
     }
   },
   computed: {
@@ -130,7 +145,11 @@ export default {
     this.$store.commit('SET_PHOTO',      data.photo)
     this.$store.commit('SET_TREE',       data.tree)
 
-    this.balance  = data.balance
+    this.balance             = data.balance.toFixed(2)
+    this.available_lote      = data.available_lote.toFixed(2)
+    this.available_membresia = data.available_membresia.toFixed(2)
+    this.unavailable_lote    = data.unavailable_lote.toFixed(2)
+    this.unavailable_membresia = data.unavailable_membresia.toFixed(2)
   },
   methods: {
     async validate() {
@@ -175,3 +194,14 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.balance-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+  text-align: center;
+}
+</style>

@@ -96,6 +96,11 @@ export default {
       if(val == 'closed bonus')          return 'Bono cierre'
       if(val == 'activation bonnus promo') return 'Bono compra promoción'
       if(val == 'closed reset')            return 'Descuento por cierre'
+
+      if(val == 'comision venta membresía' || val == 'comision venta membresia') return 'Bono Membresía'
+      if(val == 'comision venta lote')      return 'Bono Lote'
+      if(val == 'comision activacion membresia') return 'Bono Activación Membresía'
+      if(val == 'comision activacion lote') return 'Bono Activación Lote'
     },
   },
 };
