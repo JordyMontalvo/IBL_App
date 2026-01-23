@@ -1,28 +1,6 @@
 <template>
   <App :session="session" :office_id="office_id" :title="title">
 
-    <h4>Apalancamiento</h4><br>
-
-      <table style="background-color: rgba(109, 193, 255, 0.14); width: 200px; border-radius: 20px;">
-        <thead>
-          <tr>
-            <th>FRONTALES</th>
-            <!-- <th>Der</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <input type="radio" v-model="coverage" :value="{id}" name="coverage">
-            </td>
-            <!-- <td>
-              <input type="radio" v-model="coverage" :value="{id}" name="coverage">
-            </td> -->
-          </tr>
-        </tbody>
-      </table> <br>
-
-
     <h4>FRONTALES</h4>
 
     <table v-if="directs.length">
@@ -33,7 +11,6 @@
           <th>Teléfono</th>
           <th>Afiliado</th>
           <th>Activo</th>
-          <th>Apalancar</th>
         </tr>
       </thead>
       <tbody>
@@ -49,17 +26,6 @@
             <span v-if="frontal.activated">Si</span>
             <span v-else>No</span>
           </td>
-          <td>
-            <!-- <input type="radio" v-model="coverage" :value="{id: direct.id}" name="coverage"> -->
-            <input type="radio" v-model="coverage" :value="{ id: frontal.id }">
-          </td>
-
-          <!-- <td>
-            <input type="radio" v-model="coverage" :value="{id: direct.id}" name="coverage">
-          </td> -->
-          <!-- <td>
-            <input type="radio" v-model="coverage" :value="{id: direct.id, branch: 1}" name="coverage">
-          </td> -->
         </tr>
       </tbody>
     </table> <br>
@@ -162,7 +128,6 @@ export default {
       frontals: [],
       loading: true,
       // branch: null,
-      coverage: null,
       token: null,
 
       c_token: false,
@@ -174,12 +139,6 @@ export default {
     office_id() { return this.$store.state.office_id },
     link()    { return `${ROOT}/register/${this.token}`},
     title() { return 'Organización' },
-  },
-  watch: {
-    async coverage(a, b) {
-
-      const { data } = await api.coverage(this.session, { coverage: this.coverage }); console.log({ data })
-    },
   },
   async created() {
     // GET data
@@ -206,7 +165,6 @@ export default {
     // this.branch = data.branch
     this.token    = data.token
     this.id       = data.id
-    this.coverage = data.coverage
     // this.directs  = data.directs.reverse()
     this.directs  = data.directs
     this.frontals  = data.frontals
