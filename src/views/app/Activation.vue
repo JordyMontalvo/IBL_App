@@ -112,10 +112,6 @@
 
               <!-- Common info -->
               <div class="info-row">
-                <span class="info-label">Estado:</span>
-                <span class="info-value">{{ product.total > 0 ? 'Reservado' : 'Disponible' }}</span>
-              </div>
-              <div class="info-row">
                 <span class="info-label">Tipo:</span>
                 <span class="info-value">{{ product.type }}</span>
               </div>
@@ -184,23 +180,6 @@
             <span class="summary-price">S/ {{ formatNumber(price) }}</span>
           </div>
 
-          <div class="summary-row">
-            <label class="summary-label">Motivo de ajuste</label>
-            <select class="form-select" v-model="adjustmentReason">
-              <option value="promocion">Promoción</option>
-              <option value="descuento">Descuento</option>
-              <option value="ninguno">Ninguno</option>
-            </select>
-          </div>
-
-          <div class="summary-row">
-            <label class="summary-label">Observaciónes</label>
-            <textarea 
-              class="form-textarea" 
-              rows="3"
-              v-model="observations"
-            ></textarea>
-          </div>
 
           <!-- Office Selection -->
           <div class="summary-row">
@@ -341,9 +320,7 @@ export default {
         email: '',
         phone: '',
         address: ''
-      },
-      adjustmentReason: 'promocion',
-      observations: ''
+      }
     };
   },
   computed: {
