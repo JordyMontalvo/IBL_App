@@ -174,10 +174,56 @@
       </div>
       
     </div>
-          <div class="box white">
-            <h3>Pack de Activación</h3>
-            <span v-if="_activated && !activated">Miembros</span>
-            <span v-if="activated">Lotes</span>
+          <div class="box white activation-pack-card">
+            <h3 style="color: #1a3b5d; margin-bottom: 1rem;">Pack de Activación</h3>
+            
+            <div class="activation-status">
+              <!-- Membresía Status -->
+              <div class="activation-item" :class="{ 'active': _activated }">
+                <div class="activation-icon">
+                  <i class="fas fa-id-card"></i>
+                </div>
+                <div class="activation-info">
+                  <span class="activation-label">Membresía</span>
+                  <span class="activation-badge" v-if="_activated">
+                    <i class="fas fa-check-circle"></i> Activo
+                  </span>
+                  <span class="activation-badge inactive" v-else>
+                    <i class="fas fa-times-circle"></i> No activo
+                  </span>
+                </div>
+              </div>
+
+              <!-- Lotes Status -->
+              <div class="activation-item" :class="{ 'active': activated }">
+                <div class="activation-icon">
+                  <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="activation-info">
+                  <span class="activation-label">Lotes</span>
+                  <span class="activation-badge" v-if="activated">
+                    <i class="fas fa-check-circle"></i> Activo
+                  </span>
+                  <span class="activation-badge inactive" v-else>
+                    <i class="fas fa-times-circle"></i> No activo
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Overall Package Status -->
+            <div class="package-summary" v-if="activated">
+              <i class="fas fa-crown"></i>
+              <span>Pack Full Completo</span>
+            </div>
+            <div class="package-summary partial" v-else-if="_activated">
+              <i class="fas fa-star-half-alt"></i>
+              <span>Pack Simple</span>
+            </div>
+            <div class="package-summary none" v-else>
+              <i class="fas fa-exclamation-circle"></i>
+              <span>Sin activación</span>
+            </div>
           </div>
       <div class="box white">
         <i class="fas fa-wallet"></i>
@@ -426,5 +472,112 @@ export default {
   color: #1a3b5d;
   font-weight: bold;
   font-size: 1.1rem;
+}
+
+/* Activation Pack Card Styles */
+.activation-pack-card {
+  padding: 1.5rem !important;
+}
+
+.activation-status {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.activation-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8faff;
+  border-radius: 8px;
+  border-left: 4px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.activation-item.active {
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+  border-left-color: #4caf50;
+}
+
+.activation-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  background: #e0e0e0;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.activation-item.active .activation-icon {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  color: white;
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.activation-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.activation-label {
+  font-weight: 600;
+  color: #1a3b5d;
+  font-size: 1rem;
+}
+
+.activation-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.activation-badge i {
+  font-size: 0.9rem;
+}
+
+.activation-badge.inactive {
+  color: #999;
+}
+
+.package-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #1a3b5d;
+  box-shadow: 0 3px 8px rgba(255, 215, 0, 0.3);
+}
+
+.package-summary i {
+  font-size: 1.1rem;
+}
+
+.package-summary.partial {
+  background: linear-gradient(135deg, #64b5f6 0%, #81c784 100%);
+  color: white;
+  box-shadow: 0 3px 8px rgba(100, 181, 246, 0.3);
+}
+
+.package-summary.none {
+  background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+  color: #757575;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 </style>
