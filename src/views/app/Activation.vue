@@ -99,7 +99,7 @@
               </template>
 
               <!-- MEMBRESÍA specific info -->
-              <template v-if="product.type == 'MEMBRESÍA'">
+              <template v-if="product.type.toUpperCase().includes('MEMBRESIA') || product.type.toUpperCase().includes('MEMBRESÍA')">
                 <div class="info-row">
                   <span class="info-label">Ubicación:</span>
                   <span class="info-value">{{ product.location }}</span>
