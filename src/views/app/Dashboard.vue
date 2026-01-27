@@ -692,19 +692,23 @@ export default {
   background: #4caf50;
   color: white;
   border: none;
-  padding: 0 1rem;
+  padding: 0;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 1.1rem;
-  height: 48px;
+  font-size: 1rem;
+  height: 40px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   gap: 0.5rem;
   width: 100%;
   margin-top: 0.6rem;
   transition: background 0.2s;
+}
+
+.retirar-btn i {
+  margin-top: -2px;
 }
 
 .retirar-btn:hover {
