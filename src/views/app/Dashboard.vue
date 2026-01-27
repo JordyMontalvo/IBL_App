@@ -660,7 +660,7 @@ export default {
 
 .section-title i {
   color: #4a5568;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .amount-row {
