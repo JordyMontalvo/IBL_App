@@ -237,7 +237,23 @@
         <i class="fas fa-hand-holding-usd"></i>
         <div>
           <p>S/. {{ _balance }}</p>
-          <span>SALDO NO DISPONIBLE</span>
+          <span>SALDO NO DISPONIBLE TOTAL</span>
+        </div>
+      </div>
+
+      <div class="box white" style="border-left: 4px solid #ff9800;">
+        <i class="fas fa-map-marked-alt" style="color: #ff9800;"></i>
+        <div>
+          <p>S/. {{ _balance_lote }}</p>
+          <span>RETENIDO (LOTE)</span>
+        </div>
+      </div>
+
+      <div class="box white" style="border-left: 4px solid #2196f3;">
+        <i class="fas fa-id-card" style="color: #2196f3;"></i>
+        <div>
+          <p>S/. {{ _balance_membresia }}</p>
+          <span>RETENIDO (MEMBRESÍA)</span>
         </div>
       </div>
 
@@ -279,6 +295,8 @@ export default {
       outs: null,
       balance: null,
       _balance: null,
+      _balance_lote: null,
+      _balance_membresia: null,
       team: null,
       rank: null,
       points: null,
@@ -353,6 +371,8 @@ export default {
     this.outs = data.outs.toFixed(2);
     this.balance = data.balance.toFixed(2);
     this._balance = data._balance.toFixed(2);
+    this._balance_lote = data._balance_lote ? data._balance_lote.toFixed(2) : "0.00";
+    this._balance_membresia = data._balance_membresia ? data._balance_membresia.toFixed(2) : "0.00";
     this.team = data.team;
     this.rank = data.rank;
     this.points = data.points;
