@@ -150,30 +150,67 @@
           </div>
         </div>
       </div>
-      <div
-        class="box white"
-        style="
-          text-align: center;
-          padding: 1rem;
-          border-radius: 8px;
-          
-        "
-      >
-        <h3 style="color: #1a3b5d; font-size: 1.5rem; margin-bottom: 0.5rem">
-          Total Ganado
-        </h3>
-        <img
-          src=""
-          alt="Trofeo"
-          style="width: 100px; height: 100px; margin-bottom: 0.5rem"
-          />
-          <div class="stat-item">
-            <span style="font-weight: bold">
-              S/. {{ Number(ins + insVirtual).toFixed(2) }}
-        </span>
+      <div class="box white earnings-card">
+        <div class="earnings-header">
+          <i class="fas fa-coins header-icon"></i>
+          <h2>GANANCIAS</h2>
+        </div>
+        
+        <div class="earnings-content">
+          <!-- Total Ganado Section -->
+          <div class="earnings-main-section">
+            <div class="section-title">
+              <i class="fas fa-trophy"></i>
+              <span>Total Ganado</span>
+            </div>
+            <div class="amount-row">
+              <span class="currency">S/.</span>
+              <span class="amount">{{ (Number(ins) + Number(insVirtual)).toFixed(2) }}</span>
+            </div>
+            <button class="retirar-btn">
+              <i class="fas fa-money-bill-wave"></i> Retirar
+            </button>
+          </div>
+
+          <!-- Saldo Disponible Section -->
+          <div class="earnings-sub-section">
+            <div class="section-title">
+              <i class="fas fa-wallet"></i>
+              <span>Saldo Disponible</span>
+            </div>
+            <div class="amount-row small">
+              <span class="currency">S/.</span>
+              <span class="amount">{{ balance }}</span>
+            </div>
+          </div>
+
+          <!-- Saldo No Disponible Section -->
+          <div class="earnings-sub-section no-border">
+            <div class="section-title">
+              <i class="fas fa-hourglass-half"></i>
+              <span>Saldo No Disponible</span>
+            </div>
+            
+            <div class="sub-items">
+              <div class="sub-item">
+                <div class="sub-item-info">
+                  <i class="fas fa-home sub-icon" style="color: #4caf50;"></i>
+                  <span>No disponible - Lotes</span>
+                </div>
+                <span class="sub-amount">S/. {{ _balance_lote }}</span>
+              </div>
+              
+              <div class="sub-item">
+                <div class="sub-item-info">
+                  <i class="fas fa-id-card sub-icon" style="color: #2196f3;"></i>
+                  <span>No disponible - Membresías</span>
+                </div>
+                <span class="sub-amount">S/. {{ _balance_membresia }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      
-    </div>
           <div class="box white activation-pack-card">
             <h3 style="color: #1a3b5d; margin-bottom: 1rem;">Pack de Activación</h3>
             
@@ -225,37 +262,6 @@
               <span>Sin activación</span>
             </div>
           </div>
-      <div class="box white">
-        <i class="fas fa-wallet"></i>
-        <div>
-          <p>S/. {{ balance }}</p>
-          <span>SALDO</span>
-        </div>
-      </div>
-
-      <div class="box white">
-        <i class="fas fa-hand-holding-usd"></i>
-        <div>
-          <p>S/. {{ _balance }}</p>
-          <span>SALDO NO DISPONIBLE TOTAL</span>
-        </div>
-      </div>
-
-      <div class="box white" style="border-left: 4px solid #ff9800;">
-        <i class="fas fa-map-marked-alt" style="color: #ff9800;"></i>
-        <div>
-          <p>S/. {{ _balance_lote }}</p>
-          <span>RETENIDO (LOTE)</span>
-        </div>
-      </div>
-
-      <div class="box white" style="border-left: 4px solid #2196f3;">
-        <i class="fas fa-id-card" style="color: #2196f3;"></i>
-        <div>
-          <p>S/. {{ _balance_membresia }}</p>
-          <span>RETENIDO (MEMBRESÍA)</span>
-        </div>
-      </div>
 
 
 
@@ -599,5 +605,148 @@ export default {
   background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
   color: #757575;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Earnings Card Styling */
+.earnings-card {
+  padding: 1.5rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem;
+}
+
+.earnings-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.earnings-header .header-icon {
+  font-size: 1.8rem;
+  color: #ffd700;
+}
+
+.earnings-header h2 {
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  color: #1a3b5d !important;
+  margin: 0 !important;
+}
+
+.earnings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.earnings-main-section, .earnings-sub-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid #eef2f7;
+  border-radius: 12px;
+  background: white;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #1a3b5d;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.section-title i {
+  color: #4a5568;
+  font-size: 1.2rem;
+}
+
+.amount-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  justify-content: flex-start;
+  padding-left: 2rem;
+  margin-top: -0.2rem;
+}
+
+.amount-row .currency {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a3b5d;
+}
+
+.amount-row .amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a3b5d;
+}
+
+.amount-row.small .amount {
+  font-size: 1.3rem;
+}
+
+.retirar-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 0 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.6rem;
+  transition: background 0.2s;
+}
+
+.retirar-btn:hover {
+  background: #43a047;
+}
+
+.sub-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.sub-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f0f4f8;
+}
+
+.sub-item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.sub-item-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.sub-icon {
+  font-size: 0.7rem;
+  width: 16px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.sub-amount {
+  font-weight: 600;
+  color: #1a3b5d;
 }
 </style>
