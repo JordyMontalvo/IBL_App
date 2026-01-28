@@ -49,6 +49,10 @@
               <div v-for="product in activation.products" v-if="product.total != 0">
                 {{ product.name }} - {{ product.total }}
               </div>
+              <div style="margin-top: 4px;">
+                <span class="tag is-info is-light" style="font-size: 0.7em; padding: 0 6px;" v-if="activation.type === 'MEMBRESÍA' || (activation.products && activation.products.some(p => p.name.includes('Membresía')))">Membresía</span>
+                <span class="tag is-warning is-light" style="font-size: 0.7em; padding: 0 6px;" v-if="activation.type === 'LOTE' || (activation.products && activation.products.some(p => p.name.includes('Lote')))">Lote</span>
+              </div>
             </td>
             <td>{{ activation.price | price }}</td>
             <td>{{ activation.points }}</td>
@@ -125,7 +129,7 @@ export default {
     this.$store.commit('SET_PHOTO', data.photo)
     this.$store.commit('SET_TREE', data.tree)
 
-    this.activations = data.activations.reverse()
+    this.activations = data.activations
     // this.arr         = data.arr
 
   },
