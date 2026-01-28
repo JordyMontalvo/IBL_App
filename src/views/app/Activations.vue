@@ -57,9 +57,10 @@
             <td>{{ activation.price | price }}</td>
             <td>{{ activation.points }}</td>
             <td>
-              <a :href="activation.voucher" target="_blank">
+              <a :href="activation.voucher" target="_blank" v-if="activation.voucher">
                 <img :src="activation.voucher" style="max-height: 80px; max-width: 80px">
               </a>
+              <span v-else>-</span>
             </td>
             <td>{{ activation.status | status }}</td>
             <td><a :href="`${INVOICE_ROOT}?id=${activation.id}`" target="_blank" style="color: gray;"
@@ -100,7 +101,7 @@ export default {
       // return new Date(val).toLocaleString()
     },
     price(val) {
-      return `S/. ${val}`
+      return `S/. ${(val || 0).toFixed(2)}`
     },
     status(val) {
       if (val == 'pending') return 'Pendiente'
