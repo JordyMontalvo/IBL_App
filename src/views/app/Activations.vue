@@ -46,8 +46,9 @@
           <tr v-for="activation in activations">
             <td>{{ activation.date | date }}</td>
             <td>
-              <div v-for="product in activation.products" v-if="product.total != 0">
-                {{ product.name }} - {{ product.total }}
+              <div v-for="product in activation.products" v-if="product.total != 0" style="display: flex; align-items: center; gap: 8px;">
+                <img v-if="product.image" :src="product.image" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                <span>{{ product.name }} - {{ product.total }}</span>
               </div>
               <div style="margin-top: 4px;">
                 <span class="tag is-info is-light" style="font-size: 0.7em; padding: 0 6px;" v-if="activation.type === 'MEMBRESÍA' || (activation.products && activation.products.some(p => p.name.includes('Membresía')))">Membresía</span>
