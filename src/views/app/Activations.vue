@@ -129,9 +129,18 @@
   </App>
 </template>
 
-<style scoped>
+<style>
+/* Global style override to ensure modal visibility */
 .modal {
-  z-index: 9999;
+  z-index: 999999 !important;
+}
+.modal.is-active {
+  display: flex !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 </style>
 
@@ -176,6 +185,7 @@ export default {
   },
   methods: {
     openDetail(item) {
+      console.log('Opening details for:', item)
       this.selectedActivation = item
       this.showModal = true
     },
