@@ -133,6 +133,9 @@
 /* Global style override to ensure modal visibility */
 .modal {
   z-index: 999999 !important;
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
 }
 .modal.is-active {
   display: flex !important;
@@ -141,6 +144,12 @@
   left: 0;
   bottom: 0;
   right: 0;
+}
+/* Ensure centering */
+.modal-card {
+  max-width: 640px;
+  width: 90%;
+  margin: 0 auto;
 }
 </style>
 
