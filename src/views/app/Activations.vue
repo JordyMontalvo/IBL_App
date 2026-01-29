@@ -40,6 +40,7 @@
             <th>Voucher</th>
             <th>Estado</th>
             <th>Boleta</th>
+            <th>Detalle</th>
           </tr>
         </thead>
         <tbody>
@@ -65,10 +66,64 @@
             </td>
             <td>{{ activation.status | status }}</td>
             <td><a :href="`${INVOICE_ROOT}?id=${activation.id}`" target="_blank" style="color: gray;"
-                v-if="activation.status == 'approved'">boleta</a></td>
+                v-if="activation.status == 'approved'">boleta</a>
+            </td>
+            <!-- Detail Button -->
+            <td>
+               <button class="button is-small is-info is-light" @click="openDetail(activation)">
+                 <i class="fas fa-eye"></i>
+               </button>
+            </td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal" :class="{'is-active': showModal}">
+      <div class="modal-background" @click="closeModal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Detalles de Operación</p>
+          <button class="delete" aria-label="close" @click="closeModal"></button>
+        </header>
+        <section class="modal-card-body" v-if="selectedActivation">
+           
+           <h5 class="title is-5">Información General</h5>
+           <div class="columns is-mobile is-multiline">
+              <div class="column is-6"><strong>ID:</strong> <br> {{ selectedActivation.id }}</div>
+              <div class="column is-6"><strong>Fecha:</strong> <br> {{ selectedActivation.date | date }}</div>
+              <div class="column is-6"><strong>Estado:</strong> <br> {{ selectedActivation.status | status }}</div>
+              <div class="column is-6"><strong>Tipo:</strong> <br> {{ selectedActivation.type || 'ACTIVACIÓN' }}</div>
+           </div>
+
+           <hr>
+
+           <h5 class="title is-5">Datos del Comprador</h5>
+           <div v-if="selectedActivation.buyer" class="content is-small">
+              <div class="columns is-mobile is-multiline">
+                <div class="column is-12" v-if="selectedActivation.buyer.name"><strong>Nombre:</strong> {{ selectedActivation.buyer.name }}</div>
+                <div class="column is-6" v-if="selectedActivation.buyer.dni"><strong>DNI/Cédula:</strong> {{ selectedActivation.buyer.dni }}</div>
+                <div class="column is-6" v-if="selectedActivation.buyer.email"><strong>Email:</strong> {{ selectedActivation.buyer.email }}</div>
+                <div class="column is-6" v-if="selectedActivation.buyer.phone"><strong>Teléfono:</strong> {{ selectedActivation.buyer.phone }}</div>
+                <div class="column is-12" v-if="selectedActivation.buyer.address"><strong>Dirección:</strong> {{ selectedActivation.buyer.address }}</div>
+              </div>
+           </div>
+           <div v-else class="notification is-light">
+             No hay datos de comprador registrados en este objeto.
+           </div>
+
+           <hr>
+           <h5 class="title is-5">Datos del Vendedor / Patrocinador</h5>
+           <div class="content is-small">
+              <p><strong>Seller ID:</strong> {{ selectedActivation.sellerId || 'Sistema/Admin' }}</p>
+           </div>
+           
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button" @click="closeModal">Cerrar</button>
+        </footer>
+      </div>
     </div>
 
   </App>
@@ -91,6 +146,8 @@ export default {
       // arr: [0,0,0],
       loading: true,
       INVOICE_ROOT,
+      showModal: false,
+      selectedActivation: null
     }
   },
   computed: {
@@ -98,8 +155,8 @@ export default {
   },
   filters: {
     date(val) {
-      return new Date(val).toLocaleDateString()
-      // return new Date(val).toLocaleString()
+      if (!val) return '-'
+      return new Date(val).toLocaleDateString() + ' ' + new Date(val).toLocaleTimeString()
     },
     price(val) {
       return `S/. ${(val || 0).toFixed(2)}`
@@ -108,7 +165,18 @@ export default {
       if (val == 'pending') return 'Pendiente'
       if (val == 'approved') return 'Aprobada'
       if (val == 'rejected') return 'Rechazada'
+      return val
     },
+  },
+  methods: {
+    openDetail(item) {
+      this.selectedActivation = item
+      this.showModal = true
+    },
+    closeModal() {
+      this.showModal = false
+      this.selectedActivation = null
+    }
   },
   async created() {
     // GET data
