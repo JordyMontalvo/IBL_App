@@ -129,7 +129,7 @@
         <h3 class="form-title">Venta de {{ tab || 'terreno' }}</h3>
         
         <!-- Buyer Data Section -->
-        <div class="form-section" v-if="tab !== 'ACTIVACIÓN'">
+        <div class="form-section">
           <label class="form-label">DNI</label>
           <input 
             type="text" 
@@ -597,6 +597,7 @@ export default {
             bank,
             date,
             voucher_number,
+            buyerData: this.buyerData
           });
       }
 
