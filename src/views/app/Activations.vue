@@ -129,6 +129,12 @@
   </App>
 </template>
 
+<style scoped>
+.modal {
+  z-index: 9999;
+}
+</style>
+
 <script>
 import App from '@/views/layouts/App'
 import api from '@/api'
