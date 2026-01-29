@@ -184,6 +184,13 @@
             <label class="summary-label">Precio de Venta</label>
             <span class="summary-price">S/ {{ formatNumber(price) }}</span>
           </div>
+          
+          <div v-if="tab === 'TERRENO' || (tab && tab.toUpperCase() === 'TERRENO')">
+            <label class="summary-label" style="display: block; margin-top: 10px; margin-bottom: 5px;">Motivo de ajuste</label>
+            <select class="form-select" v-model="adjustmentReason" style="width: 100%; margin-bottom: 10px;">
+              <option value="Promoción">Promoción</option>
+            </select>
+          </div>
 
 
           <!-- Office Selection -->
@@ -324,8 +331,10 @@ export default {
         name: '',
         email: '',
         phone: '',
+        phone: '',
         address: ''
-      }
+      },
+      adjustmentReason: 'Promoción'
     };
   },
   computed: {
