@@ -136,6 +136,7 @@
             class="form-input" 
             placeholder="DNI"
             v-model="buyerData.dni"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
           />
 
           <label class="form-label">Nombres y Apellidos</label>
@@ -144,6 +145,7 @@
             class="form-input" 
             placeholder="Nombres y Apellidos"
             v-model="buyerData.name"
+            oninput="this.value=this.value.replace(/[0-9]/g,'')"
           />
           
           <label class="form-label">Celular</label>
@@ -152,6 +154,7 @@
             class="form-input" 
             placeholder="Celular"
             v-model="buyerData.phone"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
           />
 
           <label class="form-label">Correo</label>
