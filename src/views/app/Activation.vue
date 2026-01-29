@@ -516,7 +516,15 @@ export default {
         bank,
         date,
         voucher_number,
+        buyerData
       } = this;
+
+      // Validate buyer data
+      if (!buyerData.dni) { this.error = "Ingrese DNI del cliente"; return; }
+      if (!buyerData.name) { this.error = "Ingrese Nombres y Apellidos del cliente"; return; }
+      if (!buyerData.phone) { this.error = "Ingrese Celular del cliente"; return; }
+      if (!buyerData.email) { this.error = "Ingrese Correo del cliente"; return; }
+      if (!buyerData.address) { this.error = "Ingrese Dirección del cliente"; return; }
 
       if (pay_method == "bank") {
         if (!bank) {
