@@ -80,49 +80,95 @@
     </div>
 
     <!-- Details Modal -->
+    <!-- Details Modal (Card Style) -->
     <div class="modal" :class="{'is-active': showModal}">
       <div class="modal-background" @click="closeModal"></div>
+      
       <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Detalles de Operación</p>
-          <button class="delete" aria-label="close" @click="closeModal"></button>
-        </header>
-        <section class="modal-card-body" v-if="selectedActivation">
-           
-           <h5 class="title is-5">Información General</h5>
-           <div class="columns is-mobile is-multiline">
-              <div class="column is-6"><strong>ID:</strong> <br> {{ selectedActivation.id }}</div>
-              <div class="column is-6"><strong>Fecha:</strong> <br> {{ selectedActivation.date | date }}</div>
-              <div class="column is-6"><strong>Estado:</strong> <br> {{ selectedActivation.status | status }}</div>
-              <div class="column is-6"><strong>Tipo:</strong> <br> {{ selectedActivation.type || 'ACTIVACIÓN' }}</div>
+        <!-- Custom Header -->
+        <div class="modal-header-custom">
+           <div class="modal-title">
+             <i class="fas fa-user-plus"></i> Detalles de la Operación
            </div>
+           <i class="fas fa-times close-icon" @click="closeModal"></i>
+        </div>
 
-           <hr>
-
-           <h5 class="title is-5">Datos del Comprador</h5>
-           <div v-if="selectedActivation.buyer" class="content is-small">
-              <div class="columns is-mobile is-multiline">
-                <div class="column is-12" v-if="selectedActivation.buyer.name"><strong>Nombre:</strong> {{ selectedActivation.buyer.name }}</div>
-                <div class="column is-6" v-if="selectedActivation.buyer.dni"><strong>DNI/Cédula:</strong> {{ selectedActivation.buyer.dni }}</div>
-                <div class="column is-6" v-if="selectedActivation.buyer.email"><strong>Email:</strong> {{ selectedActivation.buyer.email }}</div>
-                <div class="column is-6" v-if="selectedActivation.buyer.phone"><strong>Teléfono:</strong> {{ selectedActivation.buyer.phone }}</div>
-                <div class="column is-12" v-if="selectedActivation.buyer.address"><strong>Dirección:</strong> {{ selectedActivation.buyer.address }}</div>
+        <!-- Custom Body -->
+        <div class="modal-body-custom" v-if="selectedActivation">
+           <div class="info-grid">
+              
+              <!-- ID -->
+              <div class="info-card">
+                 <div class="info-label"><i class="fas fa-hashtag"></i> ID:</div>
+                 <div class="info-value">{{ selectedActivation.id }}</div>
               </div>
-           </div>
-           <div v-else class="notification is-light">
-             No hay datos de comprador registrados en este objeto.
-           </div>
 
-           <hr>
-           <h5 class="title is-5">Datos del Vendedor / Patrocinador</h5>
-           <div class="content is-small">
-              <p><strong>Seller ID:</strong> {{ selectedActivation.sellerId || 'Sistema/Admin' }}</p>
+              <!-- Fecha -->
+              <div class="info-card">
+                 <div class="info-label"><i class="fas fa-calendar-alt"></i> Fecha:</div>
+                 <div class="info-value">{{ selectedActivation.date | date }}</div>
+              </div>
+
+              <!-- Usuario (Comprador) -->
+              <div class="info-card">
+                 <div class="info-label"><i class="fas fa-user"></i> Usuario:</div>
+                 <div class="info-value">
+                   {{ (selectedActivation.buyer && selectedActivation.buyer.name) ? selectedActivation.buyer.name : 'No registrado' }}
+                 </div>
+              </div>
+
+              <!-- DNI -->
+              <div class="info-card">
+                 <div class="info-label"><i class="fas fa-id-card"></i> DNI:</div>
+                 <div class="info-value">
+                   {{ (selectedActivation.buyer && selectedActivation.buyer.dni) ? selectedActivation.buyer.dni : '-' }}
+                 </div>
+              </div>
+
+              <!-- Oficina (Placeholder/Dynamic if available) -->
+              <div class="info-card">
+                 <div class="info-label"><i class="fas fa-building"></i> Oficina:</div>
+                 <div class="info-value">{{ selectedActivation.office || 'OFICINA MATRIZ' }}</div>
+              </div>
+
+              <!-- Plan (Placeholder/Dynamic) -->
+              <div class="info-card">
+                 <div class="info-label"><i class="fas fa-cubes"></i> Tipo:</div>
+                 <div class="info-value">{{ selectedActivation.type || 'ACTIVACIÓN' }}</div>
+              </div>
+
+              <!-- Monto -->
+              <div class="info-card">
+                 <div class="info-label"><i class="fas fa-money-bill-wave"></i> Monto:</div>
+                 <div class="info-value">{{ selectedActivation.price | price }}</div>
+              </div>
+
+              <!-- Productos (Full Width) -->
+              <div class="info-card full-width">
+                 <div class="info-label"><i class="fas fa-shopping-bag"></i> Productos:</div>
+                 <div class="info-value">
+                    <span v-for="(p, index) in selectedActivation.products" :key="index">
+                      {{ p.total }} {{ p.name }}<span v-if="index < selectedActivation.products.length - 1">, </span>
+                    </span>
+                 </div>
+              </div>
+
+              <!-- Vendedor (Full Width if present) -->
+               <div class="info-card full-width" v-if="selectedActivation.sellerId">
+                 <div class="info-label"><i class="fas fa-hand-holding-usd"></i> Vendedor ID:</div>
+                 <div class="info-value">{{ selectedActivation.sellerId }}</div>
+              </div>
+
            </div>
-           
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button" @click="closeModal">Cerrar</button>
-        </footer>
+        </div>
+
+        <!-- Custom Footer -->
+        <div class="modal-footer-custom">
+           <button class="button is-info" @click="closeModal">
+             <i class="fas fa-times"></i> &nbsp; Cerrar
+           </button>
+        </div>
+
       </div>
     </div>
 
@@ -145,11 +191,92 @@
   bottom: 0;
   right: 0;
 }
-/* Ensure centering */
+</style>
+
+<style scoped>
+/* Card Modal Styling */
 .modal-card {
-  max-width: 640px;
-  width: 90%;
-  margin: 0 auto;
+  max-width: 500px;
+  width: 95%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header-custom {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.close-icon {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.close-icon:hover {
+  opacity: 1;
+}
+
+.modal-body-custom {
+  background-color: #f7fafc; /* Light gray bg */
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.info-card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-size: 0.85rem;
+  color: #667eea; /* Purple-ish text for labels */
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-value {
+  font-size: 1rem;
+  color: #2d3748;
+  font-weight: 500;
+  word-break: break-word; /* Prevent overflow */
+}
+
+/* Make products and Buyer full width */
+.full-width {
+  grid-column: span 2;
+}
+
+.modal-footer-custom {
+  padding: 15px 20px;
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #e2e8f0;
 }
 </style>
 
