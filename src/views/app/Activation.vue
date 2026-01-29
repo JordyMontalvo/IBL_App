@@ -130,6 +130,7 @@
         
         <!-- Buyer Data Section -->
         <div class="form-section">
+          <template v-if="tab !== 'ACTIVACIÓN'">
           <label class="form-label">DNI</label>
           <input 
             type="text" 
@@ -172,6 +173,7 @@
             placeholder="Dirección"
             v-model="buyerData.address"
           />
+          </template>
         </div>
 
         <!-- Summary Section -->
@@ -523,11 +525,13 @@ export default {
       } = this;
 
       // Validate buyer data
-      if (!buyerData.dni) { this.error = "Ingrese DNI del cliente"; return; }
-      if (!buyerData.name) { this.error = "Ingrese Nombres y Apellidos del cliente"; return; }
-      if (!buyerData.phone) { this.error = "Ingrese Celular del cliente"; return; }
-      if (!buyerData.email) { this.error = "Ingrese Correo del cliente"; return; }
-      if (!buyerData.address) { this.error = "Ingrese Dirección del cliente"; return; }
+      if (this.tab !== 'ACTIVACIÓN') {
+        if (!buyerData.dni) { this.error = "Ingrese DNI del cliente"; return; }
+        if (!buyerData.name) { this.error = "Ingrese Nombres y Apellidos del cliente"; return; }
+        if (!buyerData.phone) { this.error = "Ingrese Celular del cliente"; return; }
+        if (!buyerData.email) { this.error = "Ingrese Correo del cliente"; return; }
+        if (!buyerData.address) { this.error = "Ingrese Dirección del cliente"; return; }
+      }
 
       if (pay_method == "bank") {
         if (!bank) {
