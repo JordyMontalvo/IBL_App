@@ -864,10 +864,13 @@ export default {
 }
 
 .coin-icon {
-  font-size: 4.5rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transform: scale(2.5); /* Scale the icon */
+  margin-right: 0.8rem; /* Reduced margin to move text to the left */
+  margin-left: 0.5rem; /* Shift slightly to the right */
+  transform-origin: center;
 }
 
 .bono-title h2 {
