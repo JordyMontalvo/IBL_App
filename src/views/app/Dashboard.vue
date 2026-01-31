@@ -153,7 +153,7 @@
       <div class="box white earnings-card">
         <div class="earnings-header">
           <i class="fas fa-coins header-icon"></i>
-          <h2>GANANCIAS</h2>
+          <h2>Ganancias</h2>
         </div>
         
         <div class="earnings-content">
@@ -263,6 +263,79 @@
             </div>
           </div>
 
+      <!-- Bono Constructor Card -->
+      <div class="box white bono-constructor-card">
+        <div class="bono-header">
+          <div class="bono-title">
+            <span class="coin-icon">💰</span>
+            <h2>Bono Constructor</h2>
+          </div>
+        </div>
+
+        <div class="bono-subheader">
+          <span>Ciclo activo • 3 períodos</span>
+        </div>
+
+        <div class="bono-status-bar">
+          <div class="status-text">
+            <i class="fas fa-check-circle check-icon"></i>
+            <span>Lotes acumulados: <strong>{{ bonoConstructor.accumulatedLots }} / {{ bonoConstructor.totalLots }}</strong></span>
+            <div class="status-icons">
+              <i class="fas fa-briefcase"></i>
+              <i class="fas fa-briefcase"></i>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: (bonoConstructor.accumulatedLots / bonoConstructor.totalLots * 100) + '%' }">
+                <div class="progress-dot"></div>
+              </div>
+            </div>
+            <div class="progress-markers">
+              <span>1</span>
+              <span>4</span>
+              <span>7</span>
+              <span>10</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="periods-grid">
+          <div v-for="(period, index) in bonoConstructor.periods" :key="index" class="period-card" :class="period.status">
+            <div class="period-label">{{ period.label }}</div>
+            <div class="period-month">
+              <i class="far fa-calendar-alt"></i>
+              <span>{{ period.month }}</span>
+            </div>
+            <div class="period-lots" :class="period.status">
+              <i class="fas" :class="period.status === 'completed' ? 'fa-check' : 'fa-lock'"></i>
+              <span>{{ period.lots }} Lote{{ period.lots !== 1 ? 's' : '' }}</span>
+            </div>
+            <div class="period-footer">
+              <span class="prize-text">Premio de {{ period.prize }}</span>
+              <span class="date-text">Iniciado el {{ period.date }}.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prizes-section">
+          <h3>Premios del Ciclo</h3>
+          <div class="prizes-list">
+            <div v-for="(prize, index) in bonoConstructor.prizes" :key="index" class="prize-item">
+              <div class="prize-info">
+                <i class="fas" :class="prize.status === 'completed' ? 'fa-check green' : 'fa-lock gray'"></i>
+                <span><strong>{{ prize.lots }} Lotes:</strong> {{ prize.label }}</span>
+              </div>
+              <div class="prize-status-tab" :class="[prize.status, 'prize-' + prize.lots]">
+                <i class="fas fa-lock"></i>
+                <span>{{ prize.label }}</span>
+                <i v-if="prize.lots === 10" class="fas fa-money-bill-wave-alt ml-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
 
       <div class="box white" v-if="node">
@@ -312,6 +385,23 @@ export default {
       op: 1,
       op2: 0,
       op3: 0,
+
+      bonoConstructor: {
+        accumulatedLots: 3,
+        totalLots: 10,
+        activePeriods: 3,
+        periods: [
+          { label: '1er Período', month: 'Mayo', lots: 1, status: 'completed', prize: 'Activación', date: '1 Ene' },
+          { label: '2do Período', month: 'Junio', lots: 0, status: 'locked', prize: 'mi Activación', date: '1 Feb' },
+          { label: '3er Período', month: 'Julio', lots: 2, status: 'pending', prize: 'mi Activación', date: '1 Mar' }
+        ],
+        prizes: [
+          { lots: 1, label: 'Cena', status: 'completed' },
+          { lots: 4, label: 'Viaje', status: 'locked' },
+          { lots: 7, label: 'Paseo en Yate', status: 'locked' },
+          { lots: 10, label: 'Bono Lote', status: 'locked' }
+        ]
+      },
     };
   },
   computed: {
@@ -752,5 +842,252 @@ export default {
 .sub-amount {
   font-weight: 600;
   color: #1a3b5d;
+}
+
+/* Bono Constructor Styles */
+.bono-constructor-card {
+  padding: 1.2rem !important;
+  color: #1a3b5d;
+}
+
+.bono-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.bono-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.coin-icon {
+  font-size: 1.5rem;
+}
+
+.bono-title h2 {
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  color: #1a3b5d !important;
+}
+
+.info-icon {
+  color: #a0c4ff;
+  font-size: 1.2rem;
+}
+
+.bono-actions {
+  display: flex;
+  gap: 1rem;
+  color: #94a3b8;
+}
+
+.bono-subheader {
+  background: #f1f5f9;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.bono-status-bar {
+  margin-bottom: 1.5rem;
+}
+
+.status-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.check-icon {
+  color: #4caf50;
+  font-size: 1.2rem;
+}
+
+.status-icons {
+  margin-left: auto;
+  display: flex;
+  gap: 0.3rem;
+  color: #cbd5e1;
+}
+
+.progress-container {
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  position: relative;
+  transition: width 1s ease;
+}
+
+.progress-dot {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  margin-right: 2px;
+}
+
+.progress-markers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  padding: 0 5%;
+}
+
+.periods-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.period-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.period-label {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.period-month {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  background: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.period-month i {
+  color: #94a3b8;
+}
+
+.period-lots {
+  padding: 0.2rem 0.4rem;
+  margin: 0.4rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.period-lots.completed {
+  background: #4caf50;
+  color: white;
+}
+
+.period-lots.locked {
+  background: #e2e8f0;
+  color: #64748b;
+}
+
+.period-lots.pending {
+  background: #4caf50; /* Based on image color which looks greenish but has lock */
+  opacity: 0.8;
+  color: white;
+}
+
+.period-footer {
+  padding: 0.6rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.2;
+}
+
+.prize-text {
+  display: block;
+  font-weight: 500;
+}
+
+.prizes-section h3 {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.8rem !important;
+  color: #1a3b5d !important;
+}
+
+.prizes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.prize-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prize-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.prize-info i.green {
+  color: #4caf50;
+}
+
+.prize-info i.gray {
+  color: #94a3b8;
+}
+
+.prize-status-tab {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 100px;
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.prize-status-tab.completed {
+  background: #fefce8;
+  color: #854d0e;
+  border: 1px solid #fef08a;
+}
+
+.prize-status-tab i {
+  font-size: 0.8rem;
+}
+
+.ml-1 {
+  margin-left: auto;
 }
 </style>
