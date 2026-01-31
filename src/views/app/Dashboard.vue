@@ -387,20 +387,11 @@ export default {
       op3: 0,
 
       bonoConstructor: {
-        accumulatedLots: 3,
+        accumulatedLots: 0,
         totalLots: 10,
-        activePeriods: 3,
-        periods: [
-          { label: '1er Período', month: 'Mayo', lots: 1, status: 'completed', prize: 'Activación', date: '1 Ene' },
-          { label: '2do Período', month: 'Junio', lots: 0, status: 'locked', prize: 'mi Activación', date: '1 Feb' },
-          { label: '3er Período', month: 'Julio', lots: 2, status: 'pending', prize: 'mi Activación', date: '1 Mar' }
-        ],
-        prizes: [
-          { lots: 1, label: 'Cena', status: 'completed' },
-          { lots: 4, label: 'Viaje', status: 'locked' },
-          { lots: 7, label: 'Paseo en Yate', status: 'locked' },
-          { lots: 10, label: 'Bono Lote', status: 'locked' }
-        ]
+        activePeriods: 0,
+        periods: [],
+        prizes: []
       },
     };
   },
@@ -474,6 +465,7 @@ export default {
     this.points = data.points;
     this.node = data.node;
     this.n_affiliates = data.n_affiliates;
+    this.bonoConstructor = data.bonoConstructor;
 
     const time = 4000;
     let i = 0;
