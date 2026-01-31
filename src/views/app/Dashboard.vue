@@ -864,7 +864,10 @@ export default {
 }
 
 .coin-icon {
-  font-size: 1.5rem;
+  font-size: 4.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .bono-title h2 {
@@ -992,7 +995,7 @@ export default {
 }
 
 .period-lots {
-  padding: 0.2rem 0.4rem;
+  padding: 0.6rem 0.4rem;
   margin: 0.4rem;
   border-radius: 4px;
   display: flex;
@@ -1001,6 +1004,18 @@ export default {
   gap: 0.4rem;
   font-weight: 600;
   font-size: 0.85rem;
+}
+
+.period-lots i {
+  font-size: 1.0rem;
+}
+
+.period-lots i.fa-lock {
+  margin-top: -2px; /* Shift lock up */
+}
+
+.period-lots i.fa-check {
+  margin-top: 2px; /* Shift check down slightly */
 }
 
 .period-lots.completed {
