@@ -44,8 +44,19 @@
         display flex
         align-items center
         justify-content: space-between;
-        color green
-        border-bottom: 2px solid #00796b;
+        color #1b8a45
+        border-bottom: 2px solid #1b8a45
+        .page-heading__title
+          margin 0
+          font-weight 700
+          font-size 22px
+          color #1b8a45
+          line-height 1.2
+        .page-heading__crumbs
+          margin 6px 0 0
+          font-size 13px
+          font-weight 500
+          color #8aa0a6
         .social
           font-size 20px
           margin-left 20px
@@ -168,13 +179,21 @@
 .sub-menu
   display none
   a
-    font-size 10px
+    font-size 13px
+    font-weight 600
     padding 12px
-    padding-left 32px
-    background: rgba(8, 56, 92, 1);
+    padding-left 28px
+    background: rgba(53, 160, 244, 1)
+    border-radius 12px
+    margin-bottom 10px
 
     i
-      width 12.5px
+      width 16px
+  a.router-link-active
+    background #ffffff
+    color #123a66
+    i
+      color #123a66
   &.active
     display block
 

@@ -64,19 +64,19 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 0 ? 'rgba(8, 56, 92, 1)' : '',
+            backgroundColor: activeProduct === 0 || isProducts ? 'rgba(8, 56, 92, 1)' : '',
           }"
         >
           <span> <i class="fa fa-cart-plus"></i> PRODUCTOS </span>
           <i class="fa fa-angle-down" style="margin-left: 16px"></i>
         </a>
-        <div class="sub-menu" :class="{ active: buys }">
-          <router-link to="/activation" @click.stop v-if="affiliated">
-            <i class="fas fa-shopping-bag"></i> COMPRAS
+        <div class="sub-menu" :class="{ active: buys || isProducts }">
+          <router-link to="/activation" exact @click.native="close" v-if="affiliated">
+            <i class="fas fa-bolt"></i> Activaciones
           </router-link>
-          <!-- <router-link to="/affiliation" @click.native="close">
-            <i class="fas fa-receipt"></i> AFILIACIÓN
-          </router-link> -->
+          <router-link to="/membership" @click.native="close" v-if="affiliated">
+            <i class="fas fa-id-card"></i> Venta de Membresías
+          </router-link>
         </div>
 
         <a
@@ -185,7 +185,13 @@
 
       <div class="content">
         <header>
-          <p style="    font-weight: bold;font-size: 20px;">{{ title }}</p>
+          <div class="page-heading">
+            <p class="page-heading__title">{{ title }}</p>
+            <p class="page-heading__crumbs" v-if="crumbs.length">
+              <span>{{ crumbs[0] }}</span>
+              <span v-if="crumbs[1]"> › {{ crumbs[1] }}</span>
+            </p>
+          </div>
           <div
             style="
               display: flex;
@@ -265,8 +271,8 @@
         Inicio
       </router-link>
       <router-link to="/activation" v-if="affiliated">
-        <i class="fas fa-shopping-bag"></i>
-        Compras
+        <i class="fas fa-bolt"></i>
+        Activar
       </router-link>
       <router-link to="/affiliation" v-if="!affiliated">
         <i class="fas fa-shopping-bag"></i>
@@ -298,6 +304,10 @@ export default {
     session: String,
     office_id: String,
     title: String,
+    crumbs: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -386,6 +396,9 @@ export default {
     },
     token() {
       return this.$store.state.token;
+    },
+    isProducts() {
+      return this.$route.path === "/activation" || this.$route.path === "/membership";
     },
   },
   methods: {

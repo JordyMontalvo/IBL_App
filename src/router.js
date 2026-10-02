@@ -98,6 +98,11 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/membership',
+    component: Activation,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/activations',
     component: Activations,
     meta: { requiresAuth: true }

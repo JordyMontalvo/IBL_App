@@ -1,282 +1,273 @@
 <template>
-  <App :session="session" :office_id="office_id" :title="title">
-    <h4 class="tabs" style="margin-bottom: 25px">
-      <router-link class="tab" to="/activation"> Comprar </router-link>
-      &nbsp;&nbsp;
-      <router-link class="tab" to="/activations" v-if="!office_id">
-        Historial
-      </router-link>
-    </h4>
-
+  <App :session="session" :office_id="office_id" :title="title" :crumbs="crumbs">
     <i class="load" v-if="loading"></i>
 
     <div v-if="notification" class="custom-notification">
       {{ notification }}
     </div>
 
-    <section v-if="!loading" class="catalog-container">
-      <!-- Left Column: Product Catalog -->
-      <div class="catalog-left">
-        <h2 class="catalog-title">Catálogo de {{ activeCategory }}</h2>
-        
-        <!-- Filter Dropdown -->
-        <div class="filter-dropdown-container">
-          <select 
-            class="filter-dropdown" 
-            v-model="tab"
-          >
-            <option 
-              v-for="(category, i) in categories" 
-              :key="i"
-              :value="category"
-            >
-              {{ category }}
-            </option>
-          </select>
-        </div>
-
-        <!-- Product Cards Section -->
-        <div class="product-catalog-section">
-          <h3 class="section-title">Datos del comprador</h3>
-          
-          <div class="product-cards">
-            <div
-              class="product-card"
-              v-for="(prod, i) in products"
-              v-if="prod.type == tab"
-              :key="i"
-              @click="selectProduct(prod)"
-              :class="{ 'product-card-selected': product && product.id == prod.id }"
-            >
-              <div class="product-card-image">
-                <img :src="prod.img || 'https://via.placeholder.com/150x100'" alt="Product" />
-              </div>
-              <div class="product-card-content">
-                <h4 class="product-card-title">{{ prod.name }}</h4>
-                <p class="product-card-subtitle">{{ prod.subtitle || prod.type }}</p>
-                <span 
-                  class="product-card-status"
-                  :class="{
-                    'status-disponible': prod.total == 0 && !isAlreadyActivated(prod),
-                    'status-reservado': prod.total > 0,
-                    'status-activado': isAlreadyActivated(prod)
-                  }"
-                  :style="isAlreadyActivated(prod) ? 'background: #27ae60; color: white;' : ''"
-                >
-                  {{ isAlreadyActivated(prod) ? 'Adquirido' : (prod.total > 0 ? 'Seleccionado' : 'Disponible') }}
-                </span>
-              </div>
-              <div class="product-card-price">
-                <div class="card-price-label">Precio</div>
-                <div class="card-price-amount">S/ {{ formatNumber(prod.price) }}</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Info Section -->
-          <div class="product-info-section" v-if="product">
-            <h3 class="info-title">Información del Producto</h3>
-            <div class="info-details">
-              <!-- TERRENO specific info -->
-              <template v-if="product.type == 'TERRENO'">
-                <div class="info-row">
-                  <span class="info-label">Área:</span>
-                  <span class="info-value">{{ product.area }}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Ubicación:</span>
-                  <span class="info-value">{{ product.location }}</span>
-                </div>
-              </template>
-
-              <!-- ACTIVACIÓN specific info -->
-              <template v-if="product.type == 'ACTIVACIÓN'">
-                <div class="info-row">
-                  <span class="info-label">Duración:</span>
-                  <span class="info-value">{{ product.duration }}</span>
-                </div>
-
-              </template>
-
-              <!-- MEMBRESÍA specific info -->
-              <template v-if="product.type.toUpperCase().includes('MEMBRESIA') || product.type.toUpperCase().includes('MEMBRESÍA')">
-                <div class="info-row">
-                  <span class="info-label">Ubicación:</span>
-                  <span class="info-value">{{ product.location }}</span>
-                </div>
-                <!-- <div class="info-row">
-                  <span class="info-label">Beneficios:</span>
-                  <span class="info-value">Acceso a Club y Eventos</span>
-                </div> -->
-              </template>
-
-              <!-- Common info -->
-              <div class="info-row">
-                <span class="info-label">Tipo:</span>
-                <span class="info-value">{{ product.type }}</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Puntos:</span>
-                <span class="info-value">{{ formatNumber(product.points) }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+    <section v-if="!loading" class="ibl-shop">
+      <div class="mobile-page-head">
+        <h1>{{ title }}</h1>
+        <p>Productos › {{ title }}</p>
       </div>
 
-      <!-- Right Column: Purchase Form -->
-      <div class="catalog-right">
-        <h3 class="form-title">Venta de {{ tab || 'terreno' }}</h3>
-        
-        <!-- Buyer Data Section -->
-        <div class="form-section">
-          <template v-if="tab !== 'ACTIVACIÓN'">
-          <label class="form-label">DNI</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            placeholder="DNI"
-            v-model="buyerData.dni"
-            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-          />
+      <div class="shop-layout">
+        <div class="shop-main">
+          <div class="hero" :class="{ 'hero--membership': mode === 'membership' }">
+            <div class="hero-copy">
+              <h2>{{ mode === 'membership' ? 'Vende una membresía' : 'Activa tu participación' }}</h2>
+              <p v-if="mode === 'activation'">
+                Para comercializar las membresías de IBL y acceder al plan de compensación, debes mantener una activación vigente. Esta activación te da acceso al modelo comercial.
+              </p>
+              <p v-else>
+                Brinda acceso a un club exclusivo y genera comisiones por cada venta.
+              </p>
+            </div>
+            <div class="hero-points" v-if="mode === 'activation'">
+              <div class="hero-point"><i class="fas fa-chart-bar"></i><span>Comercializa membresías</span></div>
+              <div class="hero-point"><i class="fas fa-users"></i><span>Construye tu equipo</span></div>
+              <div class="hero-point"><i class="fas fa-trophy"></i><span>Accede a comisiones y beneficios</span></div>
+            </div>
+            <div class="hero-points" v-else>
+              <div class="hero-point"><i class="fas fa-star"></i><span>Experiencias exclusivas</span></div>
+              <div class="hero-point"><i class="fas fa-users"></i><span>Más bienestar y calidad de vida</span></div>
+              <div class="hero-point"><i class="fas fa-chart-line"></i><span>Oportunidad de crecimiento</span></div>
+            </div>
+          </div>
 
-          <label class="form-label">Nombres y Apellidos</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            placeholder="Nombres y Apellidos"
-            v-model="buyerData.name"
-            oninput="this.value=this.value.replace(/[0-9]/g,'')"
-          />
-          
-          <label class="form-label">Celular</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            placeholder="Celular"
-            v-model="buyerData.phone"
-            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-          />
+          <div class="panel" id="planes" v-if="mode === 'activation'">
+            <div class="panel-head">
+              <h3><i class="fas fa-bolt"></i> Elige tu activación</h3>
+              <router-link class="history-link" to="/activations" v-if="!office_id">Historial</router-link>
+            </div>
 
-          <label class="form-label">Correo</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            placeholder="Correo"
-            v-model="buyerData.email"
-          />
-          
-          <label class="form-label">Dirección</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            placeholder="Dirección"
-            v-model="buyerData.address"
-          />
+            <div class="plan-grid" v-if="visibleProducts.length">
+              <article
+                class="plan-card"
+                v-for="prod in visibleProducts"
+                :key="prod.id"
+                :class="{ selected: isSelected(prod) }"
+                @click="selectProduct(prod)"
+              >
+                <span class="best-badge" v-if="isConvenient(prod)">Más conveniente</span>
+                <div class="plan-icon"><i class="fas fa-calendar-alt"></i></div>
+                <p class="plan-kicker">Activación</p>
+                <h4>{{ prod.name }}</h4>
+                <p class="plan-blurb">{{ planBlurb(prod) }}</p>
+                <p class="plan-price">S/ {{ money(prod.price) }}</p>
+                <ul class="feature-list">
+                  <li v-for="(item, idx) in featuresFor(prod)" :key="idx">
+                    <i class="fas fa-check-circle"></i>
+                    <span>{{ item }}</span>
+                  </li>
+                </ul>
+                <button type="button" class="pick-btn">
+                  <span class="pick-dot"></span>
+                  Seleccionar
+                </button>
+              </article>
+            </div>
+            <p v-else class="empty-plans">No hay activaciones disponibles.</p>
+
+            <div class="note">
+              <i class="fas fa-info-circle"></i>
+              <div>
+                <strong>Importante:</strong>
+                <ul>
+                  <li>La activación te habilita para comercializar membresías y participar en el plan.</li>
+                  <li>El pago de activación no genera comisión para el patrocinador.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <template v-else>
+            <div class="panel" id="planes">
+              <div class="panel-head">
+                <h3><span class="step-no">1</span> Selecciona la membresía</h3>
+              </div>
+              <div class="member-grid" v-if="visibleProducts.length">
+                <article
+                  class="member-card"
+                  v-for="(prod, i) in visibleProducts"
+                  :key="prod.id"
+                  :class="{ selected: isSelected(prod) }"
+                  @click="selectProduct(prod)"
+                >
+                  <div class="member-photo" :style="{ backgroundImage: 'url(' + cardImage(prod, i) + ')' }">
+                    <span class="photo-radio"></span>
+                  </div>
+                  <p class="member-kicker">Membresía</p>
+                  <h4>{{ shortName(prod) }}</h4>
+                  <p class="member-blurb">{{ tagline(prod) }}</p>
+                  <p class="member-price">S/ {{ money(prod.price) }}</p>
+                  <ul class="feature-list">
+                    <li v-for="(item, idx) in featuresFor(prod)" :key="idx">
+                      <i class="fas fa-check-circle"></i>
+                      <span>{{ item }}</span>
+                    </li>
+                  </ul>
+                </article>
+              </div>
+              <p v-else class="empty-plans">No hay membresías disponibles.</p>
+            </div>
+
+            <div class="panel" id="comprador">
+              <div class="panel-head">
+                <h3><span class="step-no">2</span> Datos del comprador</h3>
+              </div>
+              <div class="buyer-grid">
+                <div class="field">
+                  <label>DNI <span class="req">*</span></label>
+                  <input v-model="buyerData.dni" placeholder="DNI" inputmode="numeric" @input="onlyDigits('dni')" />
+                </div>
+                <div class="field">
+                  <label>Correo</label>
+                  <input v-model="buyerData.email" placeholder="Correo" />
+                </div>
+                <div class="field">
+                  <label>Nombres y Apellidos <span class="req">*</span></label>
+                  <input v-model="buyerData.name" placeholder="Nombres y Apellidos" @input="onlyLetters" />
+                </div>
+                <div class="field">
+                  <label>Dirección</label>
+                  <input v-model="buyerData.address" placeholder="Dirección" />
+                </div>
+                <div class="field">
+                  <label>Celular <span class="req">*</span></label>
+                  <input v-model="buyerData.phone" placeholder="Celular" inputmode="numeric" @input="onlyDigits('phone')" />
+                </div>
+                <div class="field">
+                  <label>Oficina</label>
+                  <select v-model="office">
+                    <option :value="null" disabled>Seleccione oficina</option>
+                    <option v-for="item in offices" :key="item.id" :value="item">{{ item.name }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </template>
         </div>
 
-        <!-- Summary Section -->
-        <div class="summary-section">
-          <h3 class="summary-title">Resumen</h3>
-          
-          <div class="summary-row">
-            <label class="summary-label">Precio de Venta</label>
-            <span class="summary-price">S/ {{ formatNumber(price) }}</span>
-          </div>
-          
-          <div v-if="tab === 'TERRENO' || (tab && tab.toUpperCase() === 'TERRENO')">
-            <label class="summary-label" style="display: block; margin-top: 10px; margin-bottom: 5px;">Motivo de ajuste</label>
-            <select class="form-select" v-model="adjustmentReason" style="width: 100%; margin-bottom: 10px;">
-              <option value="Promoción">Promoción</option>
-            </select>
-          </div>
+        <aside class="shop-side">
+          <div class="summary-card">
+            <h3>{{ mode === 'membership' ? 'Resumen de venta' : 'Resumen de compra' }}</h3>
 
+            <div class="summary-product" v-if="product">
+              <div v-if="mode === 'activation'" class="cal"><i class="fas fa-calendar-alt"></i></div>
+              <div
+                v-else
+                class="summary-thumb"
+                :style="{ backgroundImage: 'url(' + cardImage(product, selectedIndex) + ')' }"
+              ></div>
+              <div>
+                <strong>{{ mode === 'membership' ? 'MEMBRESÍA ' + shortName(product) : product.name }}</strong>
+                <small v-if="mode === 'activation'">Vigencia: {{ vigenciaText(product) }}</small>
+                <small v-else>Valor comercial</small>
+                <div v-if="mode === 'membership'">
+                  <button type="button" class="linkish" @click="scrollTo('planes')">Cambiar</button>
+                </div>
+              </div>
+              <div class="summary-price">S/ {{ money(price) }}</div>
+            </div>
+            <p v-else class="empty-plans">Selecciona un producto.</p>
 
-          <!-- Office Selection -->
-          <div class="summary-row">
-            <label class="summary-label">Oficina</label>
-            <select class="form-select" v-model="office">
-              <option value="null" disabled>Seleccione oficina</option>
-              <option v-for="office in offices" :value="office">
-                {{ office.name }}
-              </option>
-            </select>
-          </div>
-
-          <small v-if="office" class="office-address">{{ office.address }}</small>
-
-          <!-- Bank Details -->
-          <div v-if="office" class="bank-details">
-            <textarea
-              readonly
-              class="form-textarea"
-              rows="4"
-              >{{ office.accounts }}</textarea>
-          </div>
-
-          <!-- Balance Checkbox -->
-          <label class="checkbox-label">
-            <input type="checkbox" v-model="check" />
-            <span>Deseo usar mi saldo</span>
-          </label>
-
-          <div v-show="check" class="balance-info">
-            <small>Saldo no disponible: {{ formatNumber(_balance) }}</small><br />
-            <small>Saldo disponible: {{ formatNumber(balance) }}</small><br />
-            <small v-if="remaining > 0">Restan: {{ formatNumber(remaining) }}</small>
-          </div>
-
-          <!-- Payment Method -->
-          <div v-show="!(check && remaining == 0)" class="payment-section">
-            <h4 class="payment-title">Medio de Pago</h4>
-            
-            <label class="radio-label">
-              <input type="radio" :value="'bank'" v-model="pay_method" />
-              <span>Banco</span>
-            </label>
-            
-            <label class="radio-label">
-              <input type="radio" :value="'cash'" v-model="pay_method" />
-              <span>Efectivo</span>
-            </label>
-
-            <!-- Bank Payment Details -->
-            <div v-if="pay_method == 'bank'" class="bank-payment">
-              <small>Monto: {{ formatNumber(remaining) }}</small>
-              <input class="form-input" v-model="bank" placeholder="Banco" />
-              <input class="form-input" v-model="date" placeholder="Fecha" type="date" />
-              <input 
-                class="form-input" 
-                v-model="voucher_number" 
-                placeholder="Número de Voucher"
-                oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
-              />
-              
-              <label class="file-label">
-                <span v-show="!voucher">Comprobante de pago</span>
-                <img class="voucher-preview" :src="voucher" v-if="voucher" />
-                <input type="file" @change="onFileChange" />
-              </label>
+            <div class="total-line" v-if="mode === 'activation'">
+              <span>Total a pagar</span>
+              <span>S/ {{ money(price) }}</span>
             </div>
 
-            <div v-if="pay_method == 'cash'" class="cash-payment">
-              <small>Monto: {{ formatNumber(remaining) }}</small>
+            <div class="buyer-preview" v-if="mode === 'membership'">
+              <header>
+                <h4>Datos del comprador</h4>
+                <button type="button" class="linkish" @click="scrollTo('comprador')">Editar</button>
+              </header>
+              <p><i class="fas fa-user"></i> {{ buyerData.name || 'Nombres y Apellidos' }}</p>
+              <p><i class="fas fa-id-card"></i> DNI: {{ buyerData.dni || '—' }}</p>
+              <p><i class="fas fa-phone"></i> Celular: {{ buyerData.phone || '—' }}</p>
+              <p><i class="fas fa-envelope"></i> Correo: {{ buyerData.email || '—' }}</p>
+              <p><i class="fas fa-map-marker-alt"></i> Dirección: {{ buyerData.address || '—' }}</p>
+              <p><i class="fas fa-building"></i> Oficina: {{ office && office.name ? office.name : '—' }}</p>
+            </div>
+
+            <div class="pay-block">
+              <div class="pay-head">
+                <h4>Método de pago</h4>
+              </div>
+
+              <div class="office-row" v-if="mode === 'activation' && !office_id">
+                <span>Oficina</span>
+                <select v-model="office">
+                  <option :value="null" disabled>Seleccione</option>
+                  <option v-for="item in offices" :key="item.id" :value="item">{{ item.name }}</option>
+                </select>
+              </div>
+
+              <button type="button" class="pay-option" :class="{ active: payChoice === 'balance' }" @click="setPay('balance')">
+                <i class="fas fa-wallet method"></i>
+                <span class="grow">
+                  <strong>Deseo usar mi saldo</strong>
+                  <small>Saldo disponible: S/ {{ money(balance) }}</small>
+                </span>
+                <span class="dot"></span>
+              </button>
+              <button type="button" class="pay-option" :class="{ active: payChoice === 'bank' }" @click="setPay('bank')">
+                <i class="fas fa-university method"></i>
+                <span class="grow"><strong>Transferencia / Depósito bancario</strong></span>
+                <span class="dot"></span>
+              </button>
+              <button type="button" class="pay-option" :class="{ active: payChoice === 'cash' }" @click="setPay('cash')">
+                <i class="fas fa-money-bill-wave method"></i>
+                <span class="grow"><strong>Efectivo</strong></span>
+                <span class="dot"></span>
+              </button>
+
+              <small v-if="payChoice === 'balance' && remaining > 0" class="pay-hint">
+                El saldo no cubre el total. Restan S/ {{ money(remaining) }}. Elige transferencia o efectivo.
+              </small>
+
+              <div v-if="payChoice === 'bank'" class="pay-extra">
+                <input v-model="bank" placeholder="Banco" />
+                <input v-model="date" type="date" />
+                <input v-model="voucher_number" placeholder="Número de voucher" @input="onlyVoucher" />
+                <label class="file-label">
+                  <img class="voucher-preview" :src="voucher" v-if="voucher" />
+                  <span>{{ voucher ? 'Cambiar comprobante' : 'Comprobante de pago' }}</span>
+                  <input type="file" @change="onFileChange" />
+                </label>
+                <small v-if="office && office.accounts">{{ office.accounts }}</small>
+              </div>
+
+              <div class="pay-box">
+                <h4>Resumen de pago</h4>
+                <div class="row">
+                  <span>{{ mode === 'membership' ? 'Precio de venta' : 'Subtotal' }}</span>
+                  <span>S/ {{ money(price) }}</span>
+                </div>
+                <div class="row">
+                  <span>Usar saldo</span>
+                  <span>- S/ {{ money(appliedBalance) }}</span>
+                </div>
+                <div class="row strong">
+                  <span>Total a pagar</span>
+                  <span>S/ {{ money(remaining) }}</span>
+                </div>
+              </div>
+
+              <small v-if="error" class="error-message">{{ error }}</small>
+              <small v-if="success" class="success-message">
+                {{ mode === 'membership' ? 'Venta enviada' : 'Activación enviada' }}
+              </small>
+
+              <button class="confirm-btn" v-show="!sending" @click="POST">
+                <i class="fas fa-lock"></i>
+                {{ mode === 'membership' ? 'Confirmar venta de membresía' : 'Confirmar compra' }}
+              </button>
+              <button class="confirm-btn" v-show="sending" disabled>Enviando orden ...</button>
             </div>
           </div>
-
-          <!-- Error/Success Messages -->
-          <small v-if="error" class="error-message">{{ error }}</small>
-          <small v-if="success" class="success-message">Activación Enviada</small>
-
-          <!-- Submit Button -->
-          <button class="confirm-button" v-show="!sending" @click="POST">
-            Confirmar venta
-          </button>
-          <button class="confirm-button" v-show="sending" disabled>
-            Enviando orden ...
-          </button>
-        </div>
+        </aside>
       </div>
     </section>
   </App>
@@ -286,6 +277,11 @@
 import App from "@/views/layouts/App";
 import api from "@/api";
 import lib from "@/lib";
+
+const FALLBACK_PHOTOS = [
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=70",
+  "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=900&q=70",
+];
 
 export default {
   components: {
@@ -299,42 +295,31 @@ export default {
       product: null,
       balance: null,
       _balance: null,
-      //  office:   null,
-      check: false,
+      check: true,
       voucher: null,
-
       error: null,
-
       file: null,
       office: null,
       offices: null,
-
       loading: true,
       sending: false,
       success: false,
-
       pending: false,
-
       tab: null,
-
       pay_method: null,
-
+      payChoice: "balance",
       bank: null,
       date: null,
       voucher_number: null,
-      
       notification: null,
-      
-      // New fields for catalog design
       buyerData: {
-        dni: '',
-        name: '',
-        email: '',
-        phone: '',
-        phone: '',
-        address: ''
+        dni: "",
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
       },
-      adjustmentReason: 'Promoción'
+      adjustmentReason: "Promoción",
     };
   },
   computed: {
@@ -344,75 +329,66 @@ export default {
     office_id() {
       return this.$store.state.office_id;
     },
-    title() {
-      return "Productos";
+    mode() {
+      return this.$route.path === "/membership" ? "membership" : "activation";
     },
-
+    title() {
+      return this.mode === "membership" ? "Venta de Membresías" : "Activaciones";
+    },
+    crumbs() {
+      return ["Productos", this.title];
+    },
+    visibleProducts() {
+      if (!this.products) return [];
+      return this.products.filter((prod) =>
+        this.mode === "activation" ? this.isActivationProduct(prod) : this.isMembershipProduct(prod)
+      );
+    },
+    selectedIndex() {
+      const idx = this.visibleProducts.findIndex((prod) => this.product && prod.id === this.product.id);
+      return idx < 0 ? 0 : idx;
+    },
     price() {
-      console.log("price");
-      let price = this.products.reduce((a, b) => a + b.price * b.total, 0);
-      return price;
+      if (!this.products) return 0;
+      return this.products.reduce((sum, item) => sum + item.price * item.total, 0);
     },
     points() {
-      return this.products.reduce((a, b) => a + b.points * b.total, 0);
+      if (!this.products) return 0;
+      return this.products.reduce((sum, item) => sum + item.points * item.total, 0);
     },
-    // commission() { return this.products.reduce((a, b) => a + (b.val ? b.val : b.price) * b.total, 0) },
     total() {
-      return this.products.reduce((a, b) => a + b.total, 0);
+      if (!this.products) return 0;
+      return this.products.reduce((sum, item) => sum + item.total, 0);
     },
-
-    _price() {
-      return `Total: S/. ${this.price}`;
-    },
-    // _points() { return `A comisionar: ${this.commission}` },
-    _points() {
-      return `Puntos: ${this.points}`;
-    },
-
-    IGV() {
-      return (this.price - this.price / 1.18).toFixed(2);
-    },
-
     remaining() {
-      if (this.check) {
-        let ret = this.price - (this.balance + this._balance);
-
-        return ret > 0 ? ret : 0;
-      } else {
-        return this.price;
-      }
+      const price = Number(this.price) || 0;
+      if (!this.check) return price;
+      const pool = Number(this.balance || 0) + Number(this._balance || 0);
+      const left = price - pool;
+      return left > 0 ? left : 0;
     },
-
-    categories() {
-      const arr = this.products.map(function (x) {
-        return x.type;
-      });
-
-      let ret = arr.filter(function (v, i, self) {
-        return i == self.indexOf(v);
-      });
-
-      return ret;
+    appliedBalance() {
+      if (!this.check) return 0;
+      const price = Number(this.price) || 0;
+      const pool = Number(this.balance || 0) + Number(this._balance || 0);
+      return Math.min(Math.max(pool, 0), price);
     },
-
-    activeCategory() {
-      return this.tab
-        ? this.tab.charAt(0).toUpperCase() + this.tab.slice(1).toLowerCase()
-        : "Terreno";
+  },
+  watch: {
+    "$route.path": function () {
+      this.error = null;
+      this.success = false;
+      this.buyerData = { dni: "", name: "", email: "", phone: "", address: "" };
+      if (this.products) this.selectDefault();
     },
   },
   async created() {
-    // GET data
     const { data } = await api.Activation.GET(this.session);
-    console.log({ data });
 
     this.loading = false;
 
-    // error
-    if (data.error && data.msg == "invalid session")
-      this.$router.push("/login");
+    if (data.error && data.msg == "invalid session") this.$router.push("/login");
 
-    // success
     this.$store.commit("SET_NAME", data.name);
     this.$store.commit("SET_LAST_NAME", data.lastName);
     this.$store.commit("SET_AFFILIATED", data.affiliated);
@@ -425,281 +401,277 @@ export default {
 
     this.current_points = data.points;
     this.current_profit = data.profit;
-    this.products = data.products.map((a) => ({ ...a, total: 0 }));
-    this.product = this.products[0];
-
+    this.products = data.products.map((item) => ({ ...item, total: 0 }));
     this.balance = data.balance;
     this._balance = data._balance;
-
-    if (this.office_id) this.office = this.office_id;
-
     this.offices = data.offices;
 
-    this.tab = this.categories[0];
+    if (this.office_id && this.offices) {
+      const match = this.offices.find((item) => item.id == this.office_id);
+      this.office = match || null;
+    }
+
+    this.selectDefault();
   },
   methods: {
-    touch(i) {
-      this.product = this.products[i];
+    norm(value) {
+      return String(value || "")
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
     },
-    
-    selectProduct(product) {
-      // Check for existing activation
-      if (product.type === 'ACTIVACIÓN') {
-         const name = (product.name || '').toUpperCase()
-         const isMembership = name.includes('MEMBRESÍA') || name.includes('MEMBRESIA') || name.includes('CLUB')
-         
-         if (isMembership) {
-            if (this.$store.state._activated) {
-               this.showNotification('Ya posees una activación de Membresía activa.')
-               return
-            }
-         } else {
-            // Assume Lote/General
-            if (this.$store.state.activated) {
-               this.showNotification('Ya posees una activación de Lote activa.')
-               return
-            }
-         }
+    isActivationProduct(prod) {
+      return this.norm(prod.type).includes("ACTIV");
+    },
+    isMembershipProduct(prod) {
+      return this.norm(prod.type).includes("MEMBRE");
+    },
+    isSelected(prod) {
+      return !!(this.product && this.product.id === prod.id && prod.total > 0);
+    },
+    isConvenient(prod) {
+      return this.mode === "activation" && this.norm(prod.name).includes("ANUAL");
+    },
+    vigenciaText(prod) {
+      if (prod.duration) return prod.duration;
+      const name = this.norm(prod.name);
+      if (name.includes("ANUAL")) return "12 cierres";
+      if (name.includes("MENSUAL")) return "1 cierre";
+      return "vigente";
+    },
+    planBlurb(prod) {
+      const vigencia = this.vigenciaText(prod);
+      if (vigencia === "vigente") return "Mantén tu acceso vigente.";
+      return "Mantén tu acceso vigente por " + vigencia + ".";
+    },
+    shortName(prod) {
+      return String(prod.name || "")
+        .replace(/membres[ií]a/gi, "")
+        .replace(/activaci[oó]n/gi, "")
+        .trim();
+    },
+    tagline(prod) {
+      const name = this.norm(prod.name);
+      if (name.includes("VIP")) return "Experiencia premium del club";
+      return "Acceso a los beneficios del club";
+    },
+    featuresFor(prod) {
+      if (this.isActivationProduct(prod)) {
+        const items = [
+          "Vigencia: " + this.vigenciaText(prod),
+          "Habilita la venta de membresías",
+          "Acceso al plan de compensación",
+          "Soporte en la plataforma",
+        ];
+        if (this.isConvenient(prod)) items.push("Mejor relación costo – beneficio");
+        return items;
       }
 
-      // Si el producto ya está seleccionado, deseleccionarlo
-      if (this.product && this.product.id === product.id && product.total > 0) {
-        product.total = 0;
+      if (this.norm(prod.name).includes("VIP")) {
+        return [
+          "Todos los beneficios Estándar",
+          "Beneficios premium",
+          "Experiencias exclusivas",
+          "Atención preferencial",
+          "Válida a nivel nacional",
+        ];
+      }
+
+      return [
+        "Acceso al club",
+        "Programas y actividades",
+        "Beneficios exclusivos",
+        "Válida a nivel nacional",
+      ];
+    },
+    cardImage(prod, index) {
+      if (prod && prod.img) return prod.img;
+      return FALLBACK_PHOTOS[index % FALLBACK_PHOTOS.length];
+    },
+    selectDefault() {
+      const list = this.visibleProducts;
+      if (!list.length) {
         this.product = null;
+        this.tab = null;
+        return;
+      }
+
+      let chosen = list[0];
+      if (this.mode === "activation") {
+        chosen = list.find((prod) => this.norm(prod.name).includes("ANUAL")) || list[0];
       } else {
-        // Reset all products
-        this.products.forEach(p => p.total = 0);
-        // Select the clicked product
-        product.total = 1;
-        this.product = product;
-      }
-    },
-
-    more(product) {
-      const isActivated =
-        this.$store.state.activated || this.$store.state._activated;
-
-      // Restablecer la cantidad del producto previamente seleccionado
-      if (this.product && this.product !== product) {
-        this.product.total = 0; // Reiniciar el total del producto anterior
+        chosen =
+          list.find((prod) => {
+            const name = this.norm(prod.name);
+            return name.includes("ESTANDAR") || name.includes("STANDARD");
+          }) || list.slice().sort((a, b) => Number(a.price) - Number(b.price))[0];
       }
 
-      // Verificar si el usuario está activado
-      /*if (isActivated) {
-      // Para usuarios activados, permitir agregar productos de cualquier tipo
-      if (product.total >= 1) return;
-      if(product.type === "ACTIVACIÓN" && product.total >= 1) return; 
-    } else {
-      // Solo permitir agregar productos de tipo 'activación'
-      if (product.total >= 1) return; 
-    }*/
-
-      if (this.total >= 1) return;
-      product.total += 1;
-      this.product = product; // Actualizar el producto seleccionado
+      this.products.forEach((prod) => {
+        prod.total = 0;
+      });
+      if (!(this.mode === "activation" && this.isAlreadyActivated(chosen))) chosen.total = 1;
+      this.product = chosen;
+      this.tab = chosen.type;
     },
+    selectProduct(product) {
+      if (this.mode === "activation" && this.isAlreadyActivated(product)) {
+        this.showNotification("Ya posees una activación vigente.");
+        return;
+      }
 
-    less(product) {
-      if (product.total == 0) return;
-      product.total -= 1;
+      this.products.forEach((prod) => {
+        prod.total = 0;
+      });
+      product.total = 1;
+      this.product = product;
+      this.tab = product.type;
+      this.success = false;
+      this.error = null;
+    },
+    setPay(choice) {
+      this.payChoice = choice;
+      this.error = null;
+      if (choice === "balance") {
+        this.check = true;
+        this.pay_method = null;
+        return;
+      }
+      this.check = false;
+      this.pay_method = choice === "bank" ? "bank" : "cash";
+    },
+    onlyDigits(field) {
+      this.buyerData[field] = String(this.buyerData[field] || "").replace(/[^0-9]/g, "");
+    },
+    onlyLetters(event) {
+      this.buyerData.name = event.target.value.replace(/[0-9]/g, "");
+    },
+    onlyVoucher(event) {
+      this.voucher_number = event.target.value.replace(/(?![0-9])./gmi, "");
+    },
+    scrollTo(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    money(value) {
+      const amount = Number(value) || 0;
+      const digits = Number.isInteger(amount) ? 0 : 2;
+      return amount.toLocaleString("en-US", {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits,
+      });
     },
     onFileChange(e) {
       this.file = e.target.files[0];
+      if (!this.file) return;
 
       const reader = new FileReader();
-      reader.onload = (e) => {
-        this.voucher = e.target.result;
+      reader.onload = (event) => {
+        this.voucher = event.target.result;
       };
-
       reader.readAsDataURL(this.file);
     },
     reset() {
-      console.log("reset ...");
-
       this.products.forEach((product) => {
         product.total = 0;
       });
+      this.selectDefault();
     },
     async POST() {
-      let {
+      let { products, office, check, voucher, pay_method, bank, date, voucher_number } = this;
+
+      if (this.mode === "membership") {
+        if (!this.buyerData.dni) return (this.error = "Ingrese DNI del cliente");
+        if (!this.buyerData.name) return (this.error = "Ingrese Nombres y Apellidos del cliente");
+        if (!this.buyerData.phone) return (this.error = "Ingrese Celular del cliente");
+        if (!this.buyerData.email) return (this.error = "Ingrese Correo del cliente");
+        if (!this.buyerData.address) return (this.error = "Ingrese Dirección del cliente");
+      }
+
+      if (pay_method == "bank") {
+        if (!bank) return (this.error = "Nombre de banco");
+        if (!date) return (this.error = "Fecha de voucher");
+        if (!voucher_number) return (this.error = "Número de voucher");
+        if (!voucher) return (this.error = "Voucher de pago");
+      }
+
+      if (!this.total) return (this.error = "Seleccione productos");
+      if (!office || !office.id) return (this.error = "Seleccione oficina");
+
+      if (this.payChoice === "balance" && this.remaining > 0) {
+        this.error = "El saldo no cubre el total. Elige transferencia o efectivo.";
+        return;
+      }
+
+      if (!check && !pay_method) return (this.error = "Seleccione Medio de Pago");
+
+      this.error = null;
+      this.sending = true;
+
+      const selectedProduct = products.find((item) => item.total > 0);
+      const isSale =
+        selectedProduct &&
+        (selectedProduct.type === "TERRENO" ||
+          this.norm(selectedProduct.type).includes("MEMBRE"));
+
+      if (voucher) voucher = await lib.upload(this.file, this.file.name, "activations");
+
+      let response;
+      const payload = {
         products,
-        office,
-        check,
         voucher,
+        office: office.id,
+        check,
         pay_method,
         bank,
         date,
         voucher_number,
-        buyerData
-      } = this;
+        buyerData: this.buyerData,
+      };
 
-      // Validate buyer data
-      if (this.tab !== 'ACTIVACIÓN') {
-        if (!buyerData.dni) { this.error = "Ingrese DNI del cliente"; return; }
-        if (!buyerData.name) { this.error = "Ingrese Nombres y Apellidos del cliente"; return; }
-        if (!buyerData.phone) { this.error = "Ingrese Celular del cliente"; return; }
-        if (!buyerData.email) { this.error = "Ingrese Correo del cliente"; return; }
-        if (!buyerData.address) { this.error = "Ingrese Dirección del cliente"; return; }
-      }
-
-      if (pay_method == "bank") {
-        if (!bank) {
-          this.error = "Nombre de banco";
-          return;
-        }
-        if (!date) {
-          this.error = "Fecha de voucher";
-          return;
-        }
-        if (!voucher_number) {
-          this.error = "Número de voucher";
-          return;
-        }
-        if (!voucher) {
-          this.error = "Voucher de pago";
-          return;
-        }
-      }
-
-      if (!this.total) {
-        this.error = "Seleccione productos";
-        return;
-      }
-
-      if (!office) {
-        this.error = "Seleccione oficina";
-        return;
-      }
-
-      if (!check && !pay_method) {
-        this.error = "Seleccione Medio de Pago";
-        return;
-      }
-
-      if (check && this.remaining && !pay_method) {
-        this.error = "Seleccione Medio de Pago";
-        return;
-      }
-
-      this.error = null;
-
-      // POST Affiliation
-      this.sending = true;
-
-      // Find selected product to determine type
-      const selectedProduct = products.find(p => p.total > 0)
-      const isSale = selectedProduct && (
-        selectedProduct.type === 'TERRENO' || 
-        selectedProduct.type === 'MEMBRESÍA' || 
-        selectedProduct.type === 'MEMBRESIA'
-      )
-
-      if (voucher)
-        voucher = await lib.upload(this.file, this.file.name, "activations");
-
-      let response;
-
-      if (isSale) {
-         response = await api.Sales.POST(this.session, {
-            products, // Backend expects products array to find the selected one
-            voucher,
-            office: office.id,
-            check,
-            pay_method,
-            bank,
-            date,
-            voucher_number,
-            buyerData: this.buyerData // Send buyer data for sales
-         });
-      } else {
-         response = await api.Activation.POST(this.session, {
-            products,
-            voucher,
-            office: office.id,
-            check,
-            pay_method,
-            bank,
-            date,
-            voucher_number,
-            buyerData: this.buyerData
-          });
-      }
+      if (isSale) response = await api.Sales.POST(this.session, payload);
+      else response = await api.Activation.POST(this.session, payload);
 
       this.sending = false;
 
-      // Check response error if any (assuming standard response format)
       if (response && response.data && response.data.error) {
-          this.error = response.data.error;
-          return;
+        this.error = response.data.msg || response.data.error;
+        return;
       }
 
       this.success = true;
-
       this.reset();
     },
-    formatNumber(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Formatea el número con comas
-    },
     isAlreadyActivated(prod) {
-      if (prod.type !== 'ACTIVACIÓN') return false
-      
-      const name = (prod.name || '').toUpperCase()
-      const isMembership = name.includes('MEMBRESÍA') || name.includes('MEMBRESIA') || name.includes('CLUB')
-
-      if (isMembership && this.$store.state._activated) return true
-      if (!isMembership && this.$store.state.activated) return true
-      
-      return false
+      if (!this.isActivationProduct(prod)) return false;
+      const name = this.norm(prod.name);
+      const isMembership = name.includes("MEMBRESIA") || name.includes("CLUB");
+      if (isMembership && this.$store.state._activated) return true;
+      if (!isMembership && this.$store.state.activated) return true;
+      return false;
     },
-    
     showNotification(msg) {
-      this.notification = msg
+      this.notification = msg;
       setTimeout(() => {
-        this.notification = null
-      }, 3000)
-    }
+        this.notification = null;
+      }, 3000);
+    },
   },
 };
 </script>
 
 <style lang="stylus">
-.product
-  small
-    width 240px
-    font-weight 300
-  ._name
-    font-weight 600
-    font-size 12.5px
-
-._light
-  font-weight 300
-  font-size 12.5px
-
-._price
-  font-weight 600
-
-.not-selected {
-  opacity: 0.5;
-}
-
-.custom-notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #e74c3c;
-  color: white;
-  padding: 15px 25px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  z-index: 1000;
-  animation: slideIn 0.3s ease;
-  font-weight: 500;
-}
-
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
+.custom-notification
+  position fixed
+  top 20px
+  right 20px
+  background #e74c3c
+  color white
+  padding 15px 25px
+  border-radius 8px
+  box-shadow 0 4px 6px rgba(0,0,0,0.1)
+  z-index 1000
+  font-weight 500
 </style>
 
 <style src="@/assets/style/activation-catalog.css"></style>
