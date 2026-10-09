@@ -6,6 +6,19 @@
       {{ notification }}
     </div>
 
+    <!-- Pop-up Modal de Éxito -->
+    <div class="custom-modal-overlay" v-if="showSuccessModal">
+      <div class="custom-modal-content">
+        <i class="fas fa-check-circle success-icon"></i>
+        <h3>¡Gracias por su compra!</h3>
+        <p>La operación se ha procesado correctamente.</p>
+        <div class="custom-modal-actions">
+          <button @click="goToHome" class="btn-primary">Ir al inicio</button>
+          <button @click="closeModal" class="btn-secondary">Nueva operación</button>
+        </div>
+      </div>
+    </div>
+
     <section v-if="!loading" class="ibl-shop">
       <div class="mobile-page-head">
         <h1>{{ title }}</h1>
@@ -312,6 +325,7 @@ export default {
       date: null,
       voucher_number: null,
       notification: null,
+      showSuccessModal: false,
       buyerData: {
         dni: "",
         name: "",
@@ -378,6 +392,7 @@ export default {
     "$route.path": function () {
       this.error = null;
       this.success = false;
+      this.showSuccessModal = false;
       this.buyerData = { dni: "", name: "", email: "", phone: "", address: "" };
       if (this.products) this.selectDefault();
     },
@@ -572,10 +587,35 @@ export default {
       reader.readAsDataURL(this.file);
     },
     reset() {
-      this.products.forEach((product) => {
-        product.total = 0;
-      });
+      if (this.products) {
+        this.products.forEach((product) => {
+          product.total = 0;
+        });
+      }
+      this.buyerData = {
+        dni: "",
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+      };
+      this.bank = null;
+      this.date = null;
+      this.voucher_number = null;
+      this.voucher = null;
+      this.file = null;
+      this.office = null;
+      this.setPay("balance");
+      this.error = null;
+      this.success = false;
       this.selectDefault();
+    },
+    goToHome() {
+      this.showSuccessModal = false;
+      this.$router.push('/dashboard');
+    },
+    closeModal() {
+      this.showSuccessModal = false;
     },
     async POST() {
       let { products, office, check, voucher, pay_method, bank, date, voucher_number } = this;
@@ -639,8 +679,8 @@ export default {
         return;
       }
 
-      this.success = true;
       this.reset();
+      this.showSuccessModal = true;
     },
     isAlreadyActivated(prod) {
       if (!this.isActivationProduct(prod)) return false;
@@ -672,6 +712,65 @@ export default {
   box-shadow 0 4px 6px rgba(0,0,0,0.1)
   z-index 1000
   font-weight 500
+
+.custom-modal-overlay
+  position fixed
+  top 0
+  left 0
+  right 0
+  bottom 0
+  background rgba(0, 0, 0, 0.6)
+  display flex
+  align-items center
+  justify-content center
+  z-index 2000
+
+.custom-modal-content
+  background white
+  padding 30px 40px
+  border-radius 12px
+  text-align center
+  max-width 400px
+  width 90%
+  box-shadow 0 10px 25px rgba(0,0,0,0.2)
+
+  h3
+    margin 15px 0 10px
+    font-size 22px
+    color #2c3e50
+
+  p
+    color #7f8c8d
+    margin-bottom 25px
+
+  .success-icon
+    font-size 60px
+    color #2ecc71
+
+  .custom-modal-actions
+    display flex
+    gap 15px
+    justify-content center
+
+    button
+      padding 10px 20px
+      border none
+      border-radius 6px
+      cursor pointer
+      font-weight 600
+      transition all 0.2s
+
+    .btn-primary
+      background #08385c
+      color white
+      &:hover
+        background #062b47
+
+    .btn-secondary
+      background #ecf0f1
+      color #2c3e50
+      &:hover
+        background #bdc3c7
 </style>
 
 <style src="@/assets/style/activation-catalog.css"></style>
