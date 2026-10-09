@@ -151,13 +151,6 @@
                   <label>Celular <span class="req">*</span></label>
                   <input v-model="buyerData.phone" placeholder="Celular" inputmode="numeric" @input="onlyDigits('phone')" />
                 </div>
-                <div class="field">
-                  <label>Oficina</label>
-                  <select v-model="office">
-                    <option :value="null" disabled>Seleccione oficina</option>
-                    <option v-for="item in offices" :key="item.id" :value="item">{{ item.name }}</option>
-                  </select>
-                </div>
               </div>
             </div>
           </template>
@@ -201,20 +194,11 @@
               <p><i class="fas fa-phone"></i> Celular: {{ buyerData.phone || '—' }}</p>
               <p><i class="fas fa-envelope"></i> Correo: {{ buyerData.email || '—' }}</p>
               <p><i class="fas fa-map-marker-alt"></i> Dirección: {{ buyerData.address || '—' }}</p>
-              <p><i class="fas fa-building"></i> Oficina: {{ office && office.name ? office.name : '—' }}</p>
             </div>
 
             <div class="pay-block">
               <div class="pay-head">
                 <h4>Método de pago</h4>
-              </div>
-
-              <div class="office-row" v-if="mode === 'activation' && !office_id">
-                <span>Oficina</span>
-                <select v-model="office">
-                  <option :value="null" disabled>Seleccione</option>
-                  <option v-for="item in offices" :key="item.id" :value="item">{{ item.name }}</option>
-                </select>
               </div>
 
               <button type="button" class="pay-option" :class="{ active: payChoice === 'balance' }" @click="setPay('balance')">
@@ -636,7 +620,6 @@ export default {
       }
 
       if (!this.total) return (this.error = "Seleccione productos");
-      if (!office || !office.id) return (this.error = "Seleccione oficina");
 
       if (this.payChoice === "balance" && this.remaining > 0) {
         this.error = "El saldo no cubre el total. Elige transferencia o efectivo.";
@@ -660,7 +643,7 @@ export default {
       const payload = {
         products,
         voucher,
-        office: office.id,
+        office: office ? office.id : null,
         check,
         pay_method,
         bank,
