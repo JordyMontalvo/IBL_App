@@ -59,9 +59,18 @@
             <td>{{ activation.price | price }}</td>
             <td>{{ activation.points }}</td>
             <td>
-              <a :href="activation.voucher" target="_blank" v-if="activation.voucher">
-                <img :src="activation.voucher" style="max-height: 80px; max-width: 80px">
-              </a>
+              <div v-if="activation.voucher || activation.voucher2">
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <a :href="activation.voucher" target="_blank" v-if="activation.voucher">
+                    <img :src="activation.voucher" style="max-height: 80px; max-width: 80px">
+                  </a>
+                  <a :href="activation.voucher2" target="_blank" v-if="activation.voucher2">
+                    <img :src="activation.voucher2" style="max-height: 80px; max-width: 80px">
+                  </a>
+                </div>
+                <small v-if="activation.voucher_number">Núm: {{ activation.voucher_number }}</small>
+                <small v-if="activation.voucher_number2"><br>Núm 2: {{ activation.voucher_number2 }}</small>
+              </div>
               <span v-else>-</span>
             </td>
             <td>{{ activation.status | status }}</td>

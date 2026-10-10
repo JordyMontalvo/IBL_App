@@ -227,11 +227,22 @@
               <div v-if="payChoice === 'bank'" class="pay-extra">
                 <input v-model="bank" placeholder="Banco" />
                 <input v-model="date" type="date" />
-                <input v-model="voucher_number" placeholder="Número de voucher" @input="onlyVoucher" />
+                <input v-model="voucher_number" placeholder="Número de operación / voucher" @input="onlyVoucher($event, 'voucher_number')" />
                 <label class="file-label">
                   <img class="voucher-preview" :src="voucher" v-if="voucher" />
                   <span>{{ voucher ? 'Cambiar comprobante' : 'Comprobante de pago' }}</span>
-                  <input type="file" @change="onFileChange" />
+                  <input type="file" accept="image/*" @change="onFileChange($event, 1)" />
+                </label>
+                <input
+                  v-if="voucher2"
+                  v-model="voucher_number2"
+                  placeholder="Número de operación del segundo comprobante"
+                  @input="onlyVoucher($event, 'voucher_number2')"
+                />
+                <label class="file-label">
+                  <img class="voucher-preview" :src="voucher2" v-if="voucher2" />
+                  <span>{{ voucher2 ? 'Cambiar segundo comprobante' : 'Segundo comprobante de pago (opcional)' }}</span>
+                  <input type="file" accept="image/*" @change="onFileChange($event, 2)" />
                 </label>
                 <small v-if="office && office.accounts">{{ office.accounts }}</small>
               </div>
@@ -294,8 +305,10 @@ export default {
       _balance: null,
       check: true,
       voucher: null,
+      voucher2: null,
       error: null,
       file: null,
+      file2: null,
       office: null,
       offices: null,
       loading: true,
@@ -308,6 +321,7 @@ export default {
       bank: null,
       date: null,
       voucher_number: null,
+      voucher_number2: null,
       notification: null,
       showSuccessModal: false,
       buyerData: {
@@ -545,8 +559,8 @@ export default {
     onlyLetters(event) {
       this.buyerData.name = event.target.value.replace(/[0-9]/g, "");
     },
-    onlyVoucher(event) {
-      this.voucher_number = event.target.value.replace(/(?![0-9])./gmi, "");
+    onlyVoucher(event, field) {
+      this[field] = event.target.value.replace(/(?![0-9])./gmi, "");
     },
     scrollTo(id) {
       const el = document.getElementById(id);
@@ -560,15 +574,19 @@ export default {
         maximumFractionDigits: digits,
       });
     },
-    onFileChange(e) {
-      this.file = e.target.files[0];
-      if (!this.file) return;
+    onFileChange(e, slot) {
+      const selected = e.target.files[0];
+      if (!selected) return;
 
       const reader = new FileReader();
       reader.onload = (event) => {
-        this.voucher = event.target.result;
+        if (slot === 2) this.voucher2 = event.target.result;
+        else this.voucher = event.target.result;
       };
-      reader.readAsDataURL(this.file);
+      reader.readAsDataURL(selected);
+
+      if (slot === 2) this.file2 = selected;
+      else this.file = selected;
     },
     reset() {
       if (this.products) {
@@ -586,8 +604,11 @@ export default {
       this.bank = null;
       this.date = null;
       this.voucher_number = null;
+      this.voucher_number2 = null;
       this.voucher = null;
+      this.voucher2 = null;
       this.file = null;
+      this.file2 = null;
       this.office = null;
       this.setPay("balance");
       this.error = null;
@@ -602,7 +623,7 @@ export default {
       this.showSuccessModal = false;
     },
     async POST() {
-      let { products, office, check, voucher, pay_method, bank, date, voucher_number } = this;
+      let { products, office, check, voucher, voucher2, pay_method, bank, date, voucher_number, voucher_number2 } = this;
 
       if (this.mode === "membership") {
         if (!this.buyerData.dni) return (this.error = "Ingrese DNI del cliente");
@@ -617,6 +638,12 @@ export default {
         if (!date) return (this.error = "Fecha de voucher");
         if (!voucher_number) return (this.error = "Número de voucher");
         if (!voucher) return (this.error = "Voucher de pago");
+        if (voucher2 && !voucher_number2) {
+          return (this.error = "Ingresa el número de operación del segundo comprobante");
+        }
+        if (voucher2 && String(voucher_number) === String(voucher_number2)) {
+          return (this.error = "Los dos comprobantes no pueden tener el mismo número de operación");
+        }
       }
 
       if (!this.total) return (this.error = "Seleccione productos");
@@ -638,17 +665,20 @@ export default {
           this.norm(selectedProduct.type).includes("MEMBRE"));
 
       if (voucher) voucher = await lib.upload(this.file, this.file.name, "activations");
+      if (voucher2) voucher2 = await lib.upload(this.file2, this.file2.name, "activations");
 
       let response;
       const payload = {
         products,
         voucher,
+        voucher2,
         office: office ? office.id : null,
         check,
         pay_method,
         bank,
         date,
         voucher_number,
+        voucher_number2: voucher2 ? voucher_number2 : null,
         buyerData: this.buyerData,
       };
 
