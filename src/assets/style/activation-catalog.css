@@ -651,11 +651,22 @@
   position: relative;
 }
 
+.file-label small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #90a0ae;
+}
+
 .file-label input {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
   cursor: pointer;
+  z-index: 2;
 }
 
 .voucher-preview {

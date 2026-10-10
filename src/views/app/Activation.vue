@@ -228,22 +228,24 @@
                 <input v-model="bank" placeholder="Banco" />
                 <input v-model="date" type="date" />
                 <input v-model="voucher_number" placeholder="Número de operación / voucher" @input="onlyVoucher($event, 'voucher_number')" />
-                <label class="file-label">
+                <div class="file-label">
                   <img class="voucher-preview" :src="voucher" v-if="voucher" />
                   <span>{{ voucher ? 'Cambiar comprobante' : 'Comprobante de pago' }}</span>
-                  <input type="file" accept="image/*" @change="onFileChange($event, 1)" />
-                </label>
+                  <small>JPG o PNG</small>
+                  <input type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" @change="onFileChange($event, 1)" />
+                </div>
                 <input
                   v-if="voucher2"
                   v-model="voucher_number2"
                   placeholder="Número de operación del segundo comprobante"
                   @input="onlyVoucher($event, 'voucher_number2')"
                 />
-                <label class="file-label">
+                <div class="file-label">
                   <img class="voucher-preview" :src="voucher2" v-if="voucher2" />
                   <span>{{ voucher2 ? 'Cambiar segundo comprobante' : 'Segundo comprobante de pago (opcional)' }}</span>
-                  <input type="file" accept="image/*" @change="onFileChange($event, 2)" />
-                </label>
+                  <small>JPG o PNG</small>
+                  <input type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" @change="onFileChange($event, 2)" />
+                </div>
                 <small v-if="office && office.accounts">{{ office.accounts }}</small>
               </div>
 
@@ -577,6 +579,17 @@ export default {
     onFileChange(e, slot) {
       const selected = e.target.files[0];
       if (!selected) return;
+
+      const name = (selected.name || "").toLowerCase();
+      const type = (selected.type || "").toLowerCase();
+      const extOk = [".jpg", ".jpeg", ".png"].some((ext) => name.endsWith(ext));
+      const typeOk = ["image/jpeg", "image/jpg", "image/png", "image/pjpeg"].includes(type);
+      if (!extOk && !typeOk) {
+        this.error = "El comprobante debe ser JPG o PNG";
+        e.target.value = "";
+        return;
+      }
+      this.error = null;
 
       const reader = new FileReader();
       reader.onload = (event) => {
