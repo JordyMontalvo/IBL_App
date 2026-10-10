@@ -658,15 +658,20 @@
   color: #90a0ae;
 }
 
-.file-label input {
+.file-label input[type="file"] {
+  display: block !important;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0.01;
   cursor: pointer;
-  z-index: 2;
+  z-index: 3;
+  font-size: 100px;
 }
 
 .voucher-preview {
