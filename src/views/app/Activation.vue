@@ -704,6 +704,11 @@ export default {
         return;
       }
 
+      if (!isSale && check && this.remaining === 0) {
+        this.$store.commit("SET_ACTIVATED", true);
+        this.$store.commit("SET__ACTIVATED", true);
+      }
+
       this.reset();
       this.showSuccessModal = true;
     },
