@@ -1,7 +1,18 @@
 <template>
   <Auth>
+    <template #hero>
+      <div class="hero-banner">
+        <div class="hero-divider"></div>
+        <h2 class="hero-title">Forma parte del equipo comercial</h2>
+        <p class="hero-desc">Regístrate para ofrecer membresías IBL.</p>
+      </div>
+    </template>
+
     <section>
-      <h1>Registro</h1>
+      <h1>Registro de vendedor</h1>
+      <p class="register-subtitle">
+        Únete al equipo comercial de IBL y empieza a ofrecer nuestras membresías.
+      </p>
       <p class="forgot-text">
         ¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a>
       </p>
@@ -137,11 +148,12 @@
       </div>
 
       <div>
+        <label class="field-label">Código de quien te invita</label>
         <div class="input-wrapper">
           <input
             type="text"
             class="input"
-            placeholder="Código de patrocinador"
+            placeholder="Código de quien te invita"
             :disabled="disabled"
             v-model="code"
             :class="{ error: error.code }"
@@ -162,7 +174,7 @@
       <br />
 
       <button class="button" v-show="!sending" @click="submit">
-        Registrarme
+        Registrarme como vendedor
       </button>
       <button class="button" v-show="sending" disabled>
         Creando cuenta ...
@@ -411,3 +423,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.register-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  line-height: 1.4;
+  margin: -0.25rem 0 1rem;
+  text-align: left;
+}
+
+.field-label {
+  display: block;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 4px;
+}
+</style>

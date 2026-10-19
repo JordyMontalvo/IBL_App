@@ -14,9 +14,10 @@
      
         
           <header v-if="showLogo">
-            <img class="logo-container" src="@/assets/img/logo/logoibl.png"> <br>
-            <!-- <img class="logo" src="@/assets/img/logo/logo.jpeg"> <br> -->
-            <!-- <img class="logo-text" src="@/assets/img/logo/text.svg"> -->
+            <div class="logo-container">
+              <img src="@/assets/img/logo/logoibl.png" alt="IBL Inmobiliaria">
+              <slot name="hero"></slot>
+            </div>
           </header>
 
           <slot/>
