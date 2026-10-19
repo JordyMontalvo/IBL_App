@@ -49,137 +49,155 @@
           <a class="fab fa-youtube"         :href="yt" target="_blank" style="font-size: 18px;color: #ff0050;"></a>
         </div>-->
 
-        <img src="../../assets/img/logo/logoibl.png" class="photo-logo" />
+        <img src="../../assets/img/logo/logoibl.png" class="photo-logo" alt="IBL Inmobiliaria" />
 
-        <router-link to="/dashboard" @click.stop v-if="office_id == null">
-          <i class="fas fa-home"></i> INICIO
+        <div class="menu-category">Menú Principal</div>
+
+        <router-link to="/dashboard" exact class="menu-link" @click.native="close" v-if="office_id == null">
+          <div class="menu-link-left">
+            <i class="fas fa-home menu-icon"></i>
+            <span>Inicio</span>
+          </div>
         </router-link>
-        <!-- <router-link to="/status" @click.native="close">
-          <i class="fas fa-tachometer-alt"></i> ESTADO
-        </router-link> -->
 
-        <a
-          @click.stop="actived(0)"
-          :style="{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: activeProduct === 0 || isProducts ? 'rgba(8, 56, 92, 1)' : '',
-          }"
-        >
-          <span> <i class="fa fa-cart-plus"></i> PRODUCTOS </span>
-          <i class="fa fa-angle-down" style="margin-left: 16px"></i>
-        </a>
-        <div class="sub-menu" :class="{ active: buys || isProducts }">
-          <router-link to="/activation" exact @click.native="close" v-if="affiliated">
-            <i class="fas fa-bolt"></i> Activaciones
-          </router-link>
-          <router-link to="/membership" @click.native="close" v-if="affiliated">
-            <i class="fas fa-id-card"></i> Venta de Membresías
-          </router-link>
+        <!-- Productos -->
+        <div class="menu-group" :class="{ 'is-open': openSections.products }">
+          <a class="menu-link menu-parent" @click.stop="toggleSection('products')">
+            <div class="menu-link-left">
+              <i class="fas fa-cube menu-icon"></i>
+              <span>Productos</span>
+            </div>
+            <i :class="openSections.products ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="chevron-icon"></i>
+          </a>
+          <div class="sub-menu" v-show="openSections.products">
+            <router-link to="/activation" exact class="sub-link" @click.native="close" v-if="affiliated">
+              <i class="fas fa-tag sub-icon"></i>
+              <span>Activaciones</span>
+            </router-link>
+            <router-link to="/membership" exact class="sub-link" @click.native="close" v-if="affiliated">
+              <i class="fas fa-users sub-icon"></i>
+              <span>Venta de Membresías</span>
+            </router-link>
+          </div>
         </div>
 
-        <a
-          @click="actived(1)"
-          v-if="tree"
-          :style="{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: activeProduct === 1 ? 'rgba(8, 56, 92, 1)' : '',
-          }"
-        >
-          <span> <i class="fa fa-users"></i> ORGANIZACIÓN </span>
-          <i class="fa fa-angle-down" style="margin-left: 16px"></i>
-        </a>
-        <div class="sub-menu" :class="{ active: network }">
-          <router-link to="/tree" @click.native="close">
-            <i class="fas fa-project-diagram"></i> RED
-          </router-link>
-          <router-link to="/directs" @click.native="close">
-            <i class="fas fa-users"></i> REGISTROS
-          </router-link>
-          <!-- <router-link to="/closeds" @click.native="close">
-            <i class="fas fa-users"></i> CIERRES
-          </router-link> -->
+        <!-- Organización -->
+        <div class="menu-group" :class="{ 'is-open': openSections.network }" v-if="tree">
+          <a class="menu-link menu-parent" @click.stop="toggleSection('network')">
+            <div class="menu-link-left">
+              <i class="fas fa-sitemap menu-icon"></i>
+              <span>Organización</span>
+            </div>
+            <i :class="openSections.network ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="chevron-icon"></i>
+          </a>
+          <div class="sub-menu" v-show="openSections.network">
+            <router-link to="/tree" exact class="sub-link" @click.native="close">
+              <i class="fas fa-project-diagram sub-icon"></i>
+              <span>Red</span>
+            </router-link>
+            <router-link to="/directs" exact class="sub-link" @click.native="close">
+              <i class="fas fa-users sub-icon"></i>
+              <span>Registros</span>
+            </router-link>
+          </div>
         </div>
 
-        <a
-          @click="actived(2)"
-          v-if="tree"
-          :style="{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: activeProduct === 2 ? 'rgba(8, 56, 92, 1)' : '',
-          }"
-        >
-          <span> <i class="fa fa-money"></i> COMISIONES </span>
-          <i class="fa fa-angle-down" style="margin-left: 16px"></i>
-        </a>
-        <div class="sub-menu" :class="{ active: commissions }">
-          <!-- <router-link to="/bonuses" @click.native="close">
-            <i class="fas fa-gem"></i> BONOS
-          </router-link> -->
-          <router-link to="/transfer" @click.native="close">
-            <i class="fas fa-wallet"></i> MONEDERO
-          </router-link>
-          <router-link to="/transactions" @click.native="close">
-            <i class="fas fa-dollar-sign"></i> MOVIMIENTOS
-          </router-link>
-          <router-link to="/collect" @click.native="close">
-            <i class="fas fa-hand-holding-usd"></i> RETIROS
-          </router-link>
+        <!-- Comisiones -->
+        <div class="menu-group" :class="{ 'is-open': openSections.commissions }" v-if="tree">
+          <a class="menu-link menu-parent" @click.stop="toggleSection('commissions')">
+            <div class="menu-link-left">
+              <i class="fas fa-coins menu-icon"></i>
+              <span>Comisiones</span>
+            </div>
+            <i :class="openSections.commissions ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="chevron-icon"></i>
+          </a>
+          <div class="sub-menu" v-show="openSections.commissions">
+            <router-link
+              to="/transfer"
+              class="sub-link"
+              :class="{ 'router-link-active': $route.path === '/transfer' || $route.path === '/transfers' }"
+              @click.native="close"
+            >
+              <i class="fas fa-wallet sub-icon"></i>
+              <span>Monedero</span>
+            </router-link>
+            <router-link to="/transactions" exact class="sub-link" @click.native="close">
+              <i class="fas fa-dollar-sign sub-icon"></i>
+              <span>Movimientos</span>
+            </router-link>
+            <router-link
+              to="/collect"
+              class="sub-link"
+              :class="{ 'router-link-active': $route.path === '/collect' || $route.path === '/collects' }"
+              @click.native="close"
+            >
+              <i class="fas fa-hand-holding-usd sub-icon"></i>
+              <span>Retiros</span>
+            </router-link>
+          </div>
         </div>
 
-        <a
-          @click="actived(3)"
-          v-if="tree && office_id == null"
-          :style="{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: activeProduct === 3 ? 'rgba(8, 56, 92, 1)' : '',
-          }"
-        >
-          <span> <i class="fa fa-file-text"></i> RESUMEN </span>
-          <i class="fa fa-angle-down" style="margin-left: 16px"></i>
-        </a>
-        <div class="sub-menu" :class="{ active: resume }">
-          <router-link to="/bonuses" @click.native="close" v-if="affiliated">
-            <i class="fas fa-shopping-bag"></i> BONIFICACIONES
-          </router-link>
-          <router-link to="/resume" @click.native="close">
-            <i class="fas fa-users"></i> PERSONAL
-          </router-link>
-          <router-link to="/closeds" @click.native="close">
-            <i class="fas fa-users"></i> CIERRES
-          </router-link>
+        <!-- Resumen -->
+        <div class="menu-group" :class="{ 'is-open': openSections.resume }" v-if="tree && office_id == null">
+          <a class="menu-link menu-parent" @click.stop="toggleSection('resume')">
+            <div class="menu-link-left">
+              <i class="fas fa-file-alt menu-icon"></i>
+              <span>Resumen</span>
+            </div>
+            <i :class="openSections.resume ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="chevron-icon"></i>
+          </a>
+          <div class="sub-menu" v-show="openSections.resume">
+            <router-link to="/bonuses" exact class="sub-link" @click.native="close" v-if="affiliated">
+              <i class="fas fa-shopping-bag sub-icon"></i>
+              <span>Bonificaciones</span>
+            </router-link>
+            <router-link to="/resume" exact class="sub-link" @click.native="close">
+              <i class="fas fa-users sub-icon"></i>
+              <span>Personal</span>
+            </router-link>
+            <router-link to="/closeds" exact class="sub-link" @click.native="close">
+              <i class="fas fa-calendar-check sub-icon"></i>
+              <span>Cierres</span>
+            </router-link>
+          </div>
         </div>
 
-        <!-- <router-link to="/tools" @click.native="close" v-if="office_id == null">
-          <i class="fas fa-file-pdf"></i> HERRAMIENTAS
-        </router-link> -->
-
+        <!-- Proyectos -->
         <router-link
           to="/tools"
+          exact
+          class="menu-link"
           @click.native="close"
           v-if="office_id == null && affiliated"
         >
-          <i class="fas fa-building"></i> PROYECTOS
+          <div class="menu-link-left">
+            <i class="fas fa-building menu-icon"></i>
+            <span>Proyectos</span>
+          </div>
         </router-link>
 
+        <!-- Perfil -->
         <router-link
           to="/profile"
+          exact
+          class="menu-link"
           @click.native="close"
           v-if="office_id == null"
         >
-          <i class="fas fa-user"></i> PERFIL
+          <div class="menu-link-left">
+            <i class="fas fa-user menu-icon"></i>
+            <span>Perfil</span>
+          </div>
         </router-link>
 
-        <br />
-        <a @click="logout" style="background-color: black">
-          <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
+        <div class="menu-divider"></div>
+
+        <!-- Cerrar sesión -->
+        <a class="menu-link menu-logout" @click="logout">
+          <div class="menu-link-left">
+            <i class="fas fa-sign-out-alt menu-icon"></i>
+            <span>Cerrar sesión</span>
+          </div>
         </a>
       </div>
 
@@ -316,10 +334,23 @@ export default {
       photoState: "default",
       photoFile: null,
       c_affiliation_link: false,
-      activeProduct: false,
       startX: 0,
       endX: 0,
+      openSections: {
+        products: false,
+        network: false,
+        commissions: false,
+        resume: false,
+      },
     };
+  },
+  watch: {
+    "$route.path"() {
+      this.syncOpenSections();
+    },
+  },
+  mounted() {
+    this.syncOpenSections();
   },
   computed: {
     // user
@@ -410,45 +441,59 @@ export default {
         this.$store.commit("SET_OPEN");
       }
     },
-    actived(i) {
-      if (this.activeProduct === i) {
-        this.activeProduct = false;
-      } else {
-        this.activeProduct = i;
-      }
-      if (i == 0) this.$store.commit("SET_BUYS");
-      if (i == 1) this.$store.commit("SET_NETWORK");
-      if (i == 2) this.$store.commit("SET_COMMISSIONS");
-      if (i == 3) this.$store.commit("SET_RESUME");
-    },
     close() {
-      this.$store.commit("SET_OPEN");
+      if (this.open) {
+        this.$store.commit("SET_OPEN");
+      }
+    },
+    syncOpenSections() {
+      const path = this.$route.path;
+      if (path === "/activation" || path === "/membership") {
+        this.openSections.products = true;
+      } else if (path === "/tree" || path === "/directs") {
+        this.openSections.network = true;
+      } else if (
+        path === "/transfer" ||
+        path === "/transfers" ||
+        path === "/transactions" ||
+        path === "/collect" ||
+        path === "/collects"
+      ) {
+        this.openSections.commissions = true;
+      } else if (path === "/bonuses" || path === "/resume" || path === "/closeds") {
+        this.openSections.resume = true;
+      }
+    },
+    toggleSection(section) {
+      const willOpen = !this.openSections[section];
+      this.openSections.products = false;
+      this.openSections.network = false;
+      this.openSections.commissions = false;
+      this.openSections.resume = false;
+      this.openSections[section] = willOpen;
     },
     changePhoto(e) {
-      this.photoFile = e.target.files[0]
+      this.photoFile = e.target.files[0];
 
-      if(!this.photoFile) return
+      if (!this.photoFile) return;
 
-      const reader = new FileReader()
+      const reader = new FileReader();
 
       reader.onload = (e) => {
-        this.newPhoto = e.target.result
-        this.photoState = 'changed'
-      }
+        this.newPhoto = e.target.result;
+        this.photoState = "changed";
+      };
 
-      reader.readAsDataURL(this.photoFile)
+      reader.readAsDataURL(this.photoFile);
     },
     async changeNewPhoto() {
-      const ret = await lib.upload(this.photoFile, this.photoFile.name, 'photos')
+      const ret = await lib.upload(this.photoFile, this.photoFile.name, "photos");
 
-      this.$store.commit('SET_PHOTO', ret)
+      this.$store.commit("SET_PHOTO", ret);
 
-      this.photoState = 'default'
+      this.photoState = "default";
 
-      await api.photo(this.session, { photo: this.photo })
-    },
-    cancelNewPhoto() {
-      this.photoState = 'default'
+      await api.photo(this.session, { photo: this.photo });
     },
     cancelNewPhoto() {
       this.photoState = "default";
