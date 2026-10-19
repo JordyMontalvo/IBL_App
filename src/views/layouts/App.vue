@@ -81,23 +81,23 @@
           </div>
         </div>
 
-        <!-- Organización -->
+        <!-- Equipo comercial -->
         <div class="menu-group" :class="{ 'is-open': openSections.network }" v-if="tree">
           <a class="menu-link menu-parent" @click.stop="toggleSection('network')">
             <div class="menu-link-left">
-              <i class="fas fa-sitemap menu-icon"></i>
-              <span>Organización</span>
+              <i class="fas fa-users menu-icon"></i>
+              <span>Equipo comercial</span>
             </div>
             <i :class="openSections.network ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="chevron-icon"></i>
           </a>
           <div class="sub-menu" v-show="openSections.network">
             <router-link to="/tree" exact class="sub-link" @click.native="close">
-              <i class="fas fa-project-diagram sub-icon"></i>
-              <span>Red</span>
+              <i class="fas fa-users sub-icon"></i>
+              <span>Mi equipo</span>
             </router-link>
             <router-link to="/directs" exact class="sub-link" @click.native="close">
-              <i class="fas fa-users sub-icon"></i>
-              <span>Registros</span>
+              <i class="fas fa-user-plus sub-icon"></i>
+              <span>Incorporar vendedores</span>
             </router-link>
           </div>
         </div>

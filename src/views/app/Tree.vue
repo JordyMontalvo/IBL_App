@@ -128,7 +128,7 @@ export default {
     office_id() { return this.$store.state.office_id },
     name()      { return this.$store.state.name },
     activated() { return this.$store.state.activated },
-    title() { return 'Organización' },
+    title() { return 'Equipo comercial' },
   },
 
   filters: {
