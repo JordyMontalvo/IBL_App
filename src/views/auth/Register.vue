@@ -1,214 +1,193 @@
 <template>
-  <Auth>
-    <template #hero>
-      <div class="hero-banner">
-        <div class="hero-divider"></div>
-        <h2 class="hero-title">Forma parte del equipo comercial</h2>
-        <p class="hero-desc">Regístrate para ofrecer membresías IBL.</p>
+  <Auth :showLogo="false">
+    <template #custom-layout>
+      <div class="auth-split-wrapper">
+        <!-- Columna Izquierda: Hero Informativo -->
+        <div class="auth-hero-col">
+          <img class="hero-brand-logo" src="@/assets/img/logo/logoibl.png" alt="IBL Inmobiliaria" />
+          <div class="hero-accent-dash"></div>
+          <h1 class="hero-headline">Forma parte del equipo comercial</h1>
+          <p class="hero-tagline">Regístrate para ofrecer membresías IBL.</p>
+        </div>
+
+        <!-- Columna Derecha: Tarjeta Blanca de Registro -->
+        <div class="register-card-box">
+          <h2 class="card-title-main">Registro de vendedor</h2>
+          <p class="card-subtitle-main">Únete al equipo comercial de IBL y empieza a ofrecer nuestras membresías.</p>
+          <p class="card-account-link">
+            ¿Ya tienes cuenta? <router-link to="/login" class="link-bold">Inicia sesión aquí</router-link>
+          </p>
+
+          <form @submit.prevent="submit" class="register-form">
+            <!-- Fila 1: País y Documento -->
+            <div class="form-grid-row">
+              <div class="form-item">
+                <label class="input-label">País</label>
+                <div class="select-container">
+                  <select
+                    class="form-ctrl select-ctrl"
+                    v-model="country"
+                    :class="{ 'has-error': error.country }"
+                    @change="reset('country')"
+                  >
+                    <option :value="null" disabled>Selecciona tu país</option>
+                    <option value="Perú">Perú</option>
+                    <option value="Bolivia">Bolivia</option>
+                    <option value="Ecuador">Ecuador</option>
+                    <option value="Colombia">Colombia</option>
+                  </select>
+                  <i class="fas fa-chevron-down select-arrow"></i>
+                </div>
+              </div>
+
+              <div class="form-item">
+                <label class="input-label">Documento de identidad</label>
+                <input
+                  type="text"
+                  class="form-ctrl"
+                  placeholder="Ingresa tu documento"
+                  oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
+                  v-model="dni"
+                  :class="{ 'has-error': error.dni }"
+                  @keydown="reset('dni')"
+                />
+                <label class="checkbox-subtext">
+                  <input type="checkbox" v-model="younger" class="chk-box" />
+                  <span>Menor de edad / extranjero</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Fila 2: Nombre y Apellidos -->
+            <div class="form-grid-row">
+              <div class="form-item">
+                <label class="input-label">Nombre</label>
+                <input
+                  type="text"
+                  class="form-ctrl"
+                  placeholder="Tus nombres"
+                  v-model="name"
+                  :class="{ 'has-error': error.name }"
+                  @keydown="reset('name')"
+                />
+              </div>
+
+              <div class="form-item">
+                <label class="input-label">Apellidos</label>
+                <input
+                  type="text"
+                  class="form-ctrl"
+                  placeholder="Tus apellidos"
+                  v-model="lastName"
+                  :class="{ 'has-error': error.lastName }"
+                  @keydown="reset('lastName')"
+                />
+              </div>
+            </div>
+
+            <!-- Fila 3: Fecha de nacimiento y Celular -->
+            <div class="form-grid-row">
+              <div class="form-item">
+                <label class="input-label">Fecha de nacimiento</label>
+                <div class="date-ctrl-wrapper">
+                  <input
+                    type="date"
+                    class="form-ctrl date-ctrl"
+                    placeholder="dd/mm/aaaa"
+                    v-model="date"
+                  />
+                  <i class="far fa-calendar-alt date-icon"></i>
+                </div>
+              </div>
+
+              <div class="form-item">
+                <label class="input-label">Celular</label>
+                <input
+                  type="text"
+                  class="form-ctrl"
+                  placeholder="Número de celular"
+                  maxlength="12"
+                  v-model="phone"
+                  :class="{ 'has-error': error.phone }"
+                  @keydown="reset('phone')"
+                />
+              </div>
+            </div>
+
+            <!-- Fila 4: Correo electrónico y Contraseña -->
+            <div class="form-grid-row">
+              <div class="form-item">
+                <label class="input-label">Correo electrónico</label>
+                <input
+                  type="email"
+                  class="form-ctrl"
+                  placeholder="Tu correo electrónico"
+                  v-model.trim="email"
+                  :class="{ 'has-error': error.email }"
+                  @keydown="reset('email')"
+                />
+              </div>
+
+              <div class="form-item">
+                <label class="input-label">Contraseña</label>
+                <div class="pass-ctrl-wrapper">
+                  <input
+                    :type="show ? 'text' : 'password'"
+                    class="form-ctrl pass-ctrl"
+                    placeholder="Crea una contraseña"
+                    v-model="password"
+                    :class="{ 'has-error': error.password }"
+                    @keydown="reset('password')"
+                  />
+                  <i
+                    class="pass-toggle-icon"
+                    :class="show ? 'far fa-eye-slash' : 'far fa-eye'"
+                    @click="show = !show"
+                  ></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila 5: Código de quien te invita (Ancho completo) -->
+            <div class="form-grid-row single-column">
+              <div class="form-item">
+                <label class="input-label">Código de quien te invita</label>
+                <input
+                  type="text"
+                  class="form-ctrl invite-code-ctrl"
+                  placeholder="Y7PJPB"
+                  :disabled="disabled"
+                  v-model="code"
+                  :class="{ 'has-error': error.code }"
+                  @keydown="reset('code')"
+                />
+              </div>
+            </div>
+
+            <!-- Alerta de validación / error -->
+            <p v-if="alert" class="register-alert-msg">{{ alert | alert }}</p>
+
+            <!-- Fila 6: Aceptación de términos -->
+            <div class="terms-container">
+              <label class="terms-chk-label">
+                <input type="checkbox" v-model="check" class="chk-box" />
+                <span>Acepto los <a href="#" target="_blank" class="terms-hyperlink">términos de uso</a></span>
+              </label>
+            </div>
+
+            <!-- Fila 7: Botón Registrarme como vendedor -->
+            <button type="submit" class="submit-vendor-btn" :disabled="sending">
+              {{ sending ? 'Creando cuenta ...' : 'Registrarme como vendedor' }}
+            </button>
+
+            <!-- Fila 8: Regresar -->
+            <div class="back-link-container">
+              <router-link to="/welcome" class="back-nav-link">Regresar</router-link>
+            </div>
+          </form>
+        </div>
       </div>
     </template>
-
-    <section>
-      <h1>Registro de vendedor</h1>
-      <p class="register-subtitle">
-        Únete al equipo comercial de IBL y empieza a ofrecer nuestras membresías.
-      </p>
-      <p class="forgot-text">
-        ¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a>
-      </p>
-
-      <br />
-
-      <div>
-        <div class="input-wrapper">
-          <select
-            class="input"
-            v-model="country"
-            :class="{ error: error.country }"
-            @change="reset('country')"
-          >
-            <option value="null" disabled>Selecciona un país</option>
-            <option value="Perú">🇵🇪 Perú</option>
-            <!-- <option value="Ecuador"   >🇪🇨 Ecuador</option>
-            <option value="Argentina" >🇦🇷 Argentina</option>
-            <option value="Bolivia"   >🇧🇴 Bolivia</option>
-            <option value="Colombia"  >🇨�� Colombia</option>
-            <option value="Costa Rica">🇨🇷 Costa Rica</option>
-            <option value="Chile"     >🇨🇱 Chile</option> -->
-          </select>
-          <i class="fa-solid fa-flag icon"></i>
-        </div>
-      </div>
-
-      <div>
-        <div class="input-wrapper">
-          <input
-            type="text"
-            class="input"
-            placeholder="Documento de identidad"
-            oninput="this.value=this.value.replace(/(?![0-9])./gmi,'')"
-            v-model="dni"
-            :class="{ error: error.dni }"
-            @keydown="reset('dni')"
-          />
-          <i class="fa-solid fa-id-card icon"></i>
-        </div>
-      </div>
-
-      <div>
-        <label>
-          <small>
-            <input type="checkbox" v-model="younger" />menor de edad /
-            extranjero
-          </small>
-        </label>
-      </div>
-      <br />
-
-      <div>
-        <div class="input-wrapper">
-          <input
-            type="text"
-            class="input"
-            placeholder="Nombre"
-            v-model="name"
-            :class="{ error: error.name }"
-            @keydown="reset('name')"
-          />
-          <i class="fa-solid fa-user icon"></i>
-        </div>
-      </div>
-
-      <div>
-        <div class="input-wrapper">
-          <input
-            type="text"
-            class="input"
-            placeholder="Apellidos"
-            v-model="lastName"
-            :class="{ error: error.lastName }"
-            @keydown="reset('lastName')"
-          />
-          <i class="fa-solid fa-user icon"></i>
-        </div>
-      </div>
-
-      <div class="input-wrapper">
-        <input
-          placeholder="Fecha de nacimiento"
-          class="input"
-          type="date"
-          />
-
-      </div>
-
-      <div>
-        <div class="input-wrapper-error">
-          <small
-            v-if="country"
-            style="min-width: 25px; margin-right: 8px; display: inline-block"
-            >{{ prefix }}</small
-          >
-          <input
-            type="text"
-            class="input-celular"
-            placeholder="Celular"
-            maxlength="12"
-            v-model="phone"
-          />
-          <i class="fa-solid fa-mobile-alt icon" v-if="!country"></i>
-        </div>
-      </div>
-
-      <div>
-        <div class="input-wrapper">
-          <input
-            type="email"
-            class="input"
-            placeholder="Correo"
-            v-model.trim="email"
-          />
-          <i class="fa-solid fa-envelope icon"></i>
-        </div>
-      </div>
-
-      <div>
-        <div class="input-wrapper">
-          <input
-            :type="show ? 'text' : 'password'"
-            class="input"
-            placeholder="Contraseña"
-            v-model="password"
-            :class="{ error: error.password }"
-            @keydown="reset('password')"
-          />
-          <i class="fa-solid fa-lock icon"  @click="show = !show"></i>
-         
-        </div>
-      </div>
-
-      <div>
-        <label class="field-label">Código de quien te invita</label>
-        <div class="input-wrapper">
-          <input
-            type="text"
-            class="input"
-            placeholder="Código de quien te invita"
-            :disabled="disabled"
-            v-model="code"
-            :class="{ error: error.code }"
-            @keydown="reset('code')"
-          />
-          <i class="fa-solid fa-paper-plane icon"></i>
-        </div>
-      </div>
-
-      <p class="alert">{{ alert | alert }}</p>
-
-      <small
-        ><input type="checkbox" v-model="check" />Acepto los
-        <a href="" target="_blank" style="color: white; font-weight: 600"
-          >términos de uso</a
-        ></small
-      >
-      <br />
-
-      <button class="button" v-show="!sending" @click="submit">
-        Registrarme como vendedor
-      </button>
-      <button class="button" v-show="sending" disabled>
-        Creando cuenta ...
-      </button>
-      <br /><br />
-    </section>
-    <footer>
-      <router-link to="/welcome" class="footer-register">Regresar</router-link>
-      <br />
-      <header>
-        <div class="social">
-          <!-- <a class="fab fa-facebook-square" :href="fb" target="_blank"></a>
-          <a class="fab fa-instagram"       :href="is" target="_blank"></a>
-          <a class="fab fa-tiktok"          :href="tk" target="_blank"></a>
-          <a class="fab fa-youtube"         :href="yt" target="_blank"></a> -->
-          <a
-            class="fab fa-facebook-square"
-            target="_blank"
-            style="color: white"
-          ></a>
-          <a
-            class="fab fa-instagram"
-            target="_blank"
-            style="color: white"
-          ></a>
-          <!-- <a class="fab fa-tiktok"          target="_blank"></a> -->
-          <a
-            class="fab fa-youtube"
-            target="_blank"
-            style="color: white"
-          ></a>
-        </div>
-      </header>
-    </footer>
   </Auth>
 </template>
 
@@ -220,20 +199,15 @@ export default {
   components: { Auth },
   data() {
     return {
-      // country: 'Perú',
-      // country: 'Bolivia',
-      // country: 'Ecuador',
-      country: null,
-
+      country: "Perú",
       younger: false,
       dni: null,
       name: null,
       lastName: null,
-      // username: null,
       date: null,
       email: null,
       phone: null,
-      password: "123456",
+      password: null,
       code: null,
       check: false,
       error: {
@@ -241,7 +215,6 @@ export default {
         dni: false,
         name: false,
         lastName: false,
-        // username: false,
         email: false,
         phone: false,
         password: false,
@@ -264,7 +237,6 @@ export default {
     },
   },
   computed: {
-    // social
     fb() {
       return this.$store.state.fb;
     },
@@ -277,7 +249,6 @@ export default {
     yt() {
       return this.$store.state.yt;
     },
-
     prefix() {
       if (this.country == "Ecuador") return "+593";
       if (this.country == "Perú") return "+51";
@@ -286,35 +257,12 @@ export default {
       if (this.country == "Colombia") return "+57";
       if (this.country == "Costa Rica") return "+506";
       if (this.country == "Chile") return "+56";
+      return "";
     },
   },
   created() {
     this.code = this.$route.params.code;
-
     if (this.code) this.disabled = true;
-  },
-  watch: {
-    /* async dni(dni) {
-      if(this.country != 'Perú' || this.younger) return
-
-      if(dni.length < 8) return
-
-      const response = await fetch(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhbnNldmFuZ2VsaXN0YUBnbWFpbC5jb20ifQ.Fa2w9sYLXtcgMbtM58YRiwYvomChYwwMAoIDmYmo1H8`)
-
-      var data = await response.json()
-      console.log(data)
-
-      if(data.success == false) {
-        console.log('person not found ...')
-        this.error.name = true
-        return
-      }
-
-      this.error.name = false
-
-      this.name     = data.nombres
-      this.lastName = data.apellidoPaterno + ' ' + data.apellidoMaterno
-    } */
   },
   methods: {
     async submit() {
@@ -331,36 +279,19 @@ export default {
         check,
       } = this;
 
-      // valid fields
-      if (!country) {
-        return (this.error.country = true);
-      }
-      if (!dni) {
-        return (this.error.dni = true);
-      }
-      if (!name) {
-        return (this.error.name = true);
-      }
-      if (!lastName) {
-        return (this.error.lastName = true);
-      }
+      if (!country) return (this.error.country = true);
+      if (!dni) return (this.error.dni = true);
+      if (!name) return (this.error.name = true);
+      if (!lastName) return (this.error.lastName = true);
       if (!email) {
         this.error.email = true;
         this.alert = "invalid email";
         return;
       }
-      if (!password) {
-        return (this.error.password = true);
-      }
-      // if(!phone)    { return this.error.phone    = true }
-      if (!code) {
-        return (this.error.code = true);
-      }
-      if (!check) {
-        return;
-      }
+      if (!password) return (this.error.password = true);
+      if (!code) return (this.error.code = true);
+      if (!check) return;
 
-      // Validar formato de email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         this.error.email = true;
@@ -368,7 +299,6 @@ export default {
         return;
       }
 
-      // POST Register
       this.sending = true;
 
       try {
@@ -400,7 +330,6 @@ export default {
           return;
         }
 
-        // Si todo está bien, proceder con el login
         this.$store.commit("SET_SESSION", data.session);
         this.$router.push("/dashboard");
       } catch (error) {
@@ -425,20 +354,338 @@ export default {
 </script>
 
 <style scoped>
-.register-subtitle {
-  color: rgba(255, 255, 255, 0.9);
+.auth-split-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 70px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  box-sizing: border-box;
+}
+
+.auth-hero-col {
+  flex: 0 0 380px;
+  max-width: 400px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-brand-logo {
+  width: 220px;
+  height: auto;
+  display: block;
+}
+
+.hero-accent-dash {
+  width: 34px;
+  height: 3px;
+  background: #38bdf8;
+  border-radius: 2px;
+  margin: 22px auto 18px auto;
+}
+
+.hero-headline {
+  font-size: 34px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.18;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+.hero-tagline {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.register-card-box {
+  flex: 1;
+  max-width: 580px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 44px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+}
+
+.card-title-main {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f2844;
+  text-align: center;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.4px;
+}
+
+.card-subtitle-main {
   font-size: 14px;
-  line-height: 1.4;
-  margin: -0.25rem 0 1rem;
+  color: #64748b;
+  text-align: center;
+  line-height: 1.45;
+  margin: 0 0 10px 0;
+}
+
+.card-account-link {
+  font-size: 13.5px;
+  color: #64748b;
+  text-align: center;
+  margin: 0 0 24px 0;
+}
+
+.link-bold {
+  color: #1e88e5;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-grid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-grid-row.single-column {
+  grid-template-columns: 1fr;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
   text-align: left;
 }
 
-.field-label {
-  display: block;
-  text-align: left;
+.input-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 5px;
+}
+
+.form-ctrl {
+  width: 100%;
+  height: 42px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13.5px;
+  color: #334155;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-ctrl:focus {
+  border-color: #2196f3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.12);
+}
+
+.form-ctrl.has-error {
+  border-color: #ef4444;
+  background: #fff5f5;
+}
+
+.select-container {
+  position: relative;
+}
+
+.select-ctrl {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 32px;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.checkbox-subtext {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.chk-box {
+  cursor: pointer;
+}
+
+.pass-ctrl-wrapper {
+  position: relative;
+}
+
+.pass-ctrl {
+  padding-right: 36px;
+}
+
+.pass-toggle-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.date-ctrl-wrapper {
+  position: relative;
+}
+
+.date-ctrl {
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.date-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.date-ctrl::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 36px;
+  height: 100%;
+}
+
+.invite-code-ctrl {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.register-alert-msg {
+  color: #ef4444;
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 4px;
+  margin: 0;
+  text-align: center;
+}
+
+.terms-container {
+  margin-top: 2px;
+}
+
+.terms-chk-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #475569;
+  cursor: pointer;
+}
+
+.terms-hyperlink {
+  color: #1e88e5;
+  text-decoration: underline;
+}
+
+.submit-vendor-btn {
+  width: 100%;
+  height: 46px;
+  background: #1e88e5;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  margin-top: 6px;
+  box-shadow: 0 4px 14px rgba(30, 136, 229, 0.35);
+}
+
+.submit-vendor-btn:hover:not(:disabled) {
+  background: #1976d2;
+}
+
+.submit-vendor-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.back-link-container {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.back-nav-link {
+  color: #1e88e5;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Layout */
+@media (max-width: 960px) {
+  .auth-split-wrapper {
+    flex-direction: column;
+    gap: 32px;
+    padding: 16px;
+  }
+
+  .auth-hero-col {
+    flex: auto;
+    max-width: 100%;
+  }
+
+  .hero-headline {
+    font-size: 26px;
+  }
+
+  .register-card-box {
+    width: 100%;
+    padding: 28px 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-grid-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .register-card-box {
+    padding: 24px 16px;
+  }
+
+  .card-title-main {
+    font-size: 24px;
+  }
 }
 </style>

@@ -1,38 +1,17 @@
 <template>
   <div class="auth">
-    <!-- <header>
-      <img class="logo" src="@/assets/img/logo-big.svg" style="width: 400px;">
-      <p style="color: white; font-size: 14px; margin: 12px 0 8px 0;">Siguenos</p>
-      <div class="social">
-        <a class="fab fa-facebook-square" :href="fb" target="_blank"></a>
-        <a class="fab fa-instagram"       :href="is" target="_blank"></a>
-        <a class="fab fa-tiktok"          :href="tk" target="_blank"></a>
-        <a class="fab fa-youtube"         :href="yt" target="_blank"></a>
-      </div>
-    </header> -->
-    <section>
-     
-        
-          <header v-if="showLogo">
-            <div class="logo-container">
-              <img src="@/assets/img/logo/logoibl.png" alt="IBL Inmobiliaria">
-              <slot name="hero"></slot>
-            </div>
-          </header>
+    <slot name="custom-layout">
+      <section>
+        <header v-if="showLogo">
+          <div class="logo-container">
+            <img src="@/assets/img/logo/logoibl.png" alt="IBL Inmobiliaria">
+            <slot name="hero"></slot>
+          </div>
+        </header>
 
-          <slot/>
-
-       
-        <!-- <div class="links">
-          <a :href="msn"  target="_blank" class="link"><small>Ayuda</small></a>
-          <a :href="site" target="_blank" class="link"><small></small></a>
-          <a :href="wsp"  target="_blank" class="link"><small>Whatsapp de Ayuda</small></a>
-        </div> -->
-     
-    </section>
-    <!-- <footer>
-      <img class="logo--white" src="@/assets/img/logo/logo-white.png">
-    </footer> -->
+        <slot/>
+      </section>
+    </slot>
   </div>
 </template>
 
