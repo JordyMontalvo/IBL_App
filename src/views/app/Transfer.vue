@@ -20,12 +20,12 @@
 
         <div class="balance-card">
           <small class="cole-label">Total disponible: S/. {{ balance }}</small> <br>
-          <small style="font-size: 10px; color: #4caf50;">Lotes: S/. {{ available_lote }} | Membresías: S/. {{ available_membresia }}</small>
+          <small style="font-size: 10px; color: #4caf50;">Membresías: S/. {{ available_membresia }}</small>
         </div>
         <br>
-        <div class="balance-card" v-if="unavailable_lote > 0 || unavailable_membresia > 0">
-           <small class="cole-label" style="color: #e74c3c;">No disponible: S/. {{ (Number(unavailable_lote) + Number(unavailable_membresia)).toFixed(2) }}</small> <br>
-           <small style="font-size: 10px; color: #e74c3c;">Lotes: S/. {{ unavailable_lote }} | Membresías: S/. {{ unavailable_membresia }}</small>
+        <div class="balance-card" v-if="unavailable_membresia > 0">
+           <small class="cole-label" style="color: #e74c3c;">No disponible: S/. {{ unavailable_membresia }}</small> <br>
+           <small style="font-size: 10px; color: #e74c3c;">Membresías: S/. {{ unavailable_membresia }}</small>
         </div>
         <br>
 
