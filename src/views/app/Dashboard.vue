@@ -194,14 +194,6 @@
             <div class="sub-items">
               <div class="sub-item">
                 <div class="sub-item-info">
-                  <i class="fas fa-home sub-icon" style="color: #4caf50;"></i>
-                  <span>No disponible - Lotes</span>
-                </div>
-                <span class="sub-amount">S/. {{ _balance_lote }}</span>
-              </div>
-              
-              <div class="sub-item">
-                <div class="sub-item-info">
                   <i class="fas fa-id-card sub-icon" style="color: #2196f3;"></i>
                   <span>No disponible - Membresías</span>
                 </div>
@@ -223,22 +215,6 @@
                 <div class="activation-info">
                   <span class="activation-label">Membresía</span>
                   <span class="activation-badge" v-if="_activated">
-                    <i class="fas fa-check-circle"></i> Activo
-                  </span>
-                  <span class="activation-badge inactive" v-else>
-                    <i class="fas fa-times-circle"></i> No activo
-                  </span>
-                </div>
-              </div>
-
-              <!-- Lotes Status -->
-              <div class="activation-item" :class="{ 'active': activated }">
-                <div class="activation-icon">
-                  <i class="fas fa-map-marked-alt"></i>
-                </div>
-                <div class="activation-info">
-                  <span class="activation-label">Lotes</span>
-                  <span class="activation-badge" v-if="activated">
                     <i class="fas fa-check-circle"></i> Activo
                   </span>
                   <span class="activation-badge inactive" v-else>

@@ -225,7 +225,11 @@
               </small>
 
               <div v-if="payChoice === 'bank'" class="pay-extra">
-                <input v-model="bank" placeholder="Banco" />
+                <select v-if="banks.length" v-model="bank">
+                  <option :value="null" disabled>Selecciona un banco</option>
+                  <option v-for="b in banks" :key="b" :value="b">{{ b }}</option>
+                </select>
+                <input v-else v-model="bank" placeholder="Banco" />
                 <input v-model="date" type="date" />
                 <input v-model="voucher_number" placeholder="Número de operación / voucher" @input="onlyVoucher($event, 'voucher_number')" />
                 <div class="file-label">
@@ -321,6 +325,7 @@ export default {
       pay_method: null,
       payChoice: "balance",
       bank: null,
+      banks: [],
       date: null,
       voucher_number: null,
       voucher_number2: null,
@@ -418,6 +423,7 @@ export default {
     this.current_profit = data.profit;
     this.products = data.products.map((item) => ({ ...item, total: 0 }));
     this.balance = data.balance;
+    this.banks = data.banks || [];
     this._balance = data._balance;
     this.offices = data.offices;
 

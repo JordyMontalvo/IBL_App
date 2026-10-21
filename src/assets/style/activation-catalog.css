@@ -414,7 +414,8 @@
 
 .field input,
 .field select,
-.pay-extra input {
+.pay-extra input,
+.pay-extra select {
   width: 100%;
   border: 1px solid #dbe3ea;
   background: #fbfcfd;
@@ -427,7 +428,8 @@
 
 .field input:focus,
 .field select:focus,
-.pay-extra input:focus {
+.pay-extra input:focus,
+.pay-extra select:focus {
   border-color: #8eb7f5;
   background: #fff;
 }
