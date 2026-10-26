@@ -1,337 +1,159 @@
 <template>
   <App :session="session" :title="title">
-    <!-- <figure class="slide" style="display: flex; margin: 0">
-      <img
-        src="../../assets/img/banner/banner1ibl.webp"
-        style="width: 100%; max-width: 850px; transition: all 2s"
-        :style="{ opacity: op }"
-      />
-      <img
-        src="../../assets/img/banner/banner2ibl.webp"
-        style="
-          width: 100%;
-          max-width: 850px;
-          transition: all 2s;
-          transform: translate(-100%);
-          opacity: 0;
-        "
-        :style="{ opacity: op2 }"
-      />
-      <img
-        src="../../assets/img/banner/banner3ibl.webp"
-        style="
-          width: 100%;
-          max-width: 850px;
-          transition: all 2s;
-          transform: translate(-200%);
-          opacity: 0;
-        "
-        :style="{ opacity: op3 }"
-      />
-    </figure>
-    <br /> -->
-
-
-    <figure class="slide" style="display: flex; margin: 0;">
-      <img :src="banner.img" style="width: 100%; max-width: 850px; transition: all 2s;" :style="{ opacity: op }" >
-      <img :src="banner.img2" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-100%); opacity:0;" :style="{ opacity: op2 }">
-      <img :src="banner.img3" style="width: 100%; max-width: 850px; transition: all 2s; transform: translate(-200%); opacity:0;" :style="{ opacity: op3 }">
-    </figure> <br>
-
-    
-    <i class="load" v-if="loading"></i>
-
-    <div class="boxes" v-if="!loading">
-      <div class="box white nivel-actual-card">
-        <h2>Nivel Actual</h2>
-        <div class="rank-image">
-          <img
-            src="../../assets/img/insignias colores.png"
-            alt="Rango"
-          />
-          <h3>Nivel Principiante</h3>
-        </div>
-
-        <div class="stats-container">
-          <div class="stat-item">
-            <div class="stat-icon">
-              <i class="fas fa-user" style="font-size: 20px;"></i>
-            </div>
-            <div class="stat-info">
-              <span class="stat-label">Volumen Personal</span>
-              <span class="stat-value">{{ personalVolume }}</span>
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <div class="stat-icon">
-              <i class="fas fa-users" style="font-size: 20px;"></i>
-            </div>
-            <div class="stat-info">
-              <span class="stat-label">Volumen Grupal</span>
-              <span class="stat-value">{{ groupVolume }}</span>
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <div class="stat-icon">
-              <i class="fas fa-building " style="font-size: 20px;"></i>
-            </div>
-            <div class="stat-info">
-              <span class="stat-label">Socios</span>
-              <span class="stat-value">{{ team }}</span>
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <div class="stat-icon">
-              <i class="fas fa-network-wired" style="font-size: 20px;"></i>
-            </div>
-            <div class="stat-info">
-              <span class="stat-label">Frontales</span>
-              <span class="stat-value">{{ frontales }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="box white nivel-alcanzado-card"
-        style="text-align: center; padding: 1rem; border-radius: 8px"
-      >
-        <h3 style="color: #1a3b5d; font-size: 1.5rem; margin-bottom: 0.5rem">
-          Rango Alcanzado
-        </h3>
+    <div class="home">
+      <!-- Banner -->
+      <figure class="home-banner" v-if="bannerImages.length">
         <img
-        src="../../assets/img/insignias colores.png"
-        alt="Rango Diamante" style="width: 100px; height: 100px; margin-bottom:
-        0.5rem" />
-        <p style="font-weight: bold">{{ achievedRank }}</p>
+          v-for="(img, i) in bannerImages"
+          :key="i"
+          :src="img"
+          alt="IBL Inmobiliaria"
+          :class="{ visible: i === slide }"
+        />
+      </figure>
 
-        <div class="stats-container" style="margin: 0.5rem 0">
-          <div
-            class="stat-item"
-            style="
-              background-color: #f8faff;
-              padding: 0.5rem;
-              border-radius: 8px;
-            "
-          >
-            <i class="fas fa-users"></i>
-            <span
-              >Puntos Grupales: <strong>{{ groupPoints }}</strong></span
-            >
+      <i class="load" v-if="loading"></i>
+
+      <template v-if="!loading">
+        <!-- Fila 1: rango, total ganado, activación -->
+        <div class="home-row row-top">
+          <div class="home-card rank-card">
+            <div class="card-head">
+              <i class="fas fa-award head-icon green"></i>
+              <h3>Rango alcanzado</h3>
+            </div>
+            <div class="badge">
+              <img src="../../assets/img/insignias colores.png" alt="Rango" />
+              <span class="badge-ribbon">{{ rankName }}</span>
+            </div>
+            <p class="rank-name">{{ rankName }}</p>
           </div>
-          <div
-            class="stat-item"
-            style="
-              background-color: #f8faff;
-              padding: 0.5rem;
-              border-radius: 8px;
-            "
-          >
-            <i class="fas fa-users"></i>
-            <span
-              >Frontales: <strong>{{ frontales }}</strong></span
-            >
+
+          <div class="home-card earned-card">
+            <div class="earned-info">
+              <div class="card-head">
+                <i class="fas fa-coins head-icon gold"></i>
+                <h3>Total ganado</h3>
+              </div>
+              <p class="earned-label">Ganancias acumuladas</p>
+              <p class="earned-amount">S/ {{ money(totalEarned) }}</p>
+            </div>
+            <div class="earned-art" aria-hidden="true">
+              <i class="fas fa-coins"></i>
+              <i class="fas fa-arrow-up arrow"></i>
+            </div>
           </div>
-          <div
-            class="stat-item"
-            style="
-              background-color: #f8faff;
-              padding: 0.5rem;
-              border-radius: 8px;
-            "
-          >
-            <i class="fas fa-users"></i>
-            <span
-              >Volumen Grupal: <strong>{{ groupVolume }}</strong></span
-            >
+
+          <div class="home-card activation-card">
+            <div class="card-head">
+              <i class="fas fa-check-circle head-icon green"></i>
+              <h3>Mi activación</h3>
+            </div>
+            <div class="activation-box" :class="{ inactive: !isActive }">
+              <div class="activation-status">
+                <i class="fas" :class="isActive ? 'fa-check-circle' : 'fa-times-circle'"></i>
+                <span>{{ isActive ? 'ACTIVO' : 'INACTIVO' }}</span>
+              </div>
+              <p class="activation-type">Activación anual</p>
+              <p class="activation-expiry" v-if="isActive && expiryText">Vence en {{ expiryText }}</p>
+              <router-link to="/activation" class="activation-link" v-else-if="!isActive">Activar ahora</router-link>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="box white earnings-card">
-        <div class="earnings-header">
-          <i class="fas fa-coins header-icon"></i>
-          <h2>Ganancias</h2>
+
+        <!-- Mi actividad comercial -->
+        <div class="section-head">
+          <i class="fas fa-chart-bar head-icon green"></i>
+          <h3>Mi actividad comercial</h3>
         </div>
-        
-        <div class="earnings-content">
-          <!-- Total Ganado Section -->
-          <div class="earnings-main-section">
-            <div class="section-title">
-              <i class="fas fa-trophy"></i>
-              <span>Total Ganado</span>
-            </div>
-            <div class="amount-row">
-              <span class="currency">S/.</span>
-              <span class="amount">{{ (Number(ins) + Number(insVirtual)).toFixed(2) }}</span>
-            </div>
-            <button class="retirar-btn">
-              <i class="fas fa-money-bill-wave"></i> Retirar
-            </button>
-          </div>
-
-          <!-- Saldo Disponible Section -->
-          <div class="earnings-sub-section">
-            <div class="section-title">
-              <i class="fas fa-wallet"></i>
-              <span>Saldo Disponible</span>
-            </div>
-            <div class="amount-row small">
-              <span class="currency">S/.</span>
-              <span class="amount">{{ balance }}</span>
+        <div class="home-row row-stats">
+          <div class="home-card stat-card">
+            <i class="fas fa-shopping-cart stat-icon"></i>
+            <div>
+              <p class="stat-label">Ventas personales</p>
+              <p class="stat-value">{{ stats.personalSales }}</p>
+              <p class="stat-sub">Membresías vendidas</p>
             </div>
           </div>
-
-          <!-- Saldo No Disponible Section -->
-          <div class="earnings-sub-section no-border">
-            <div class="section-title">
-              <i class="fas fa-hourglass-half"></i>
-              <span>Saldo No Disponible</span>
+          <div class="home-card stat-card">
+            <i class="fas fa-users stat-icon"></i>
+            <div>
+              <p class="stat-label">Ventas grupales</p>
+              <p class="stat-value">{{ stats.groupSales }}</p>
             </div>
-            
-            <div class="sub-items">
-              <div class="sub-item">
-                <div class="sub-item-info">
-                  <i class="fas fa-id-card sub-icon" style="color: #2196f3;"></i>
-                  <span>No disponible - Membresías</span>
+          </div>
+          <div class="home-card stat-card">
+            <i class="fas fa-user stat-icon"></i>
+            <div>
+              <p class="stat-label">Socios directos</p>
+              <p class="stat-value">{{ stats.directs }}</p>
+            </div>
+          </div>
+          <div class="home-card stat-card">
+            <i class="fas fa-project-diagram stat-icon"></i>
+            <div>
+              <p class="stat-label">Mi red comercial</p>
+              <p class="stat-value">{{ stats.network }}</p>
+              <router-link to="/tree" class="card-link">Ver mi red <i class="fas fa-arrow-right"></i></router-link>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 3: próxima meta y saldos -->
+        <div class="home-row row-bottom">
+          <div class="home-card goal-card">
+            <div class="card-head">
+              <i class="fas fa-bullseye head-icon green"></i>
+              <h3>Próxima meta</h3>
+            </div>
+            <div class="goal-body">
+              <div class="badge small">
+                <img src="../../assets/img/insignias colores.png" alt="Próximo rango" />
+                <span class="badge-ribbon">{{ nextGoal.name }}</span>
+              </div>
+              <div class="goal-info">
+                <p class="goal-name">{{ nextGoal.name }}</p>
+                <p class="goal-count">{{ nextGoal.current }} de {{ nextGoal.target }} ventas personales</p>
+                <div class="goal-bar">
+                  <div class="goal-fill" :style="{ width: goalPercent + '%' }">
+                    <span v-if="goalPercent >= 12">{{ goalPercent }}%</span>
+                  </div>
                 </div>
-                <span class="sub-amount">S/. {{ _balance_membresia }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-          <div class="box white activation-pack-card">
-            <h3 style="color: #1a3b5d; margin-bottom: 1rem;">Pack de Activación</h3>
-            
-            <div class="activation-status">
-              <!-- Membresía Status -->
-              <div class="activation-item" :class="{ 'active': _activated }">
-                <div class="activation-icon">
-                  <i class="fas fa-id-card"></i>
-                </div>
-                <div class="activation-info">
-                  <span class="activation-label">Membresía</span>
-                  <span class="activation-badge" v-if="_activated">
-                    <i class="fas fa-check-circle"></i> Activo
-                  </span>
-                  <span class="activation-badge inactive" v-else>
-                    <i class="fas fa-times-circle"></i> No activo
-                  </span>
+                <div class="goal-foot">
+                  <span v-if="goalMissing > 0">Te faltan {{ goalMissing }} ventas personales</span>
+                  <span v-else>¡Meta alcanzada!</span>
+                  <router-link to="/resume" class="card-link">Ver requisitos <i class="fas fa-arrow-right"></i></router-link>
                 </div>
               </div>
             </div>
-
-            <!-- Overall Package Status -->
-            <div class="package-summary" v-if="activated">
-              <i class="fas fa-crown"></i>
-              <span>Pack Full Completo</span>
-            </div>
-            <div class="package-summary partial" v-else-if="_activated">
-              <i class="fas fa-star-half-alt"></i>
-              <span>Pack Simple</span>
-            </div>
-            <div class="package-summary none" v-else>
-              <i class="fas fa-exclamation-circle"></i>
-              <span>Sin activación</span>
-            </div>
           </div>
 
-      <!-- Bono Constructor Card -->
-      <div class="box white bono-constructor-card">
-        <div class="bono-header">
-          <div class="bono-title">
-            <span class="coin-icon">💰</span>
-            <h2>Bono Constructor</h2>
-          </div>
-        </div>
-
-        <div class="bono-subheader">
-          <span>Ciclo activo • 3 períodos</span>
-        </div>
-
-        <div class="bono-status-bar">
-          <div class="status-text">
-            <i class="fas fa-check-circle check-icon"></i>
-            <span>Lotes acumulados: <strong>{{ bonoConstructor.accumulatedLots }} / {{ bonoConstructor.totalLots }}</strong></span>
-            <div class="status-icons">
-              <i class="fas fa-briefcase"></i>
-              <i class="fas fa-briefcase"></i>
+          <div class="home-card balance-card">
+            <div class="card-head">
+              <i class="fas fa-wallet head-icon green"></i>
+              <h3>Mis saldos</h3>
             </div>
-          </div>
-          <div class="progress-container">
-            <div class="progress-bar">
-              <div class="progress-fill" :style="{ width: (bonoConstructor.accumulatedLots / bonoConstructor.totalLots * 100) + '%' }">
-                <div class="progress-dot"></div>
+            <div class="balance-item available">
+              <i class="fas fa-money-bill-wave balance-icon"></i>
+              <div class="balance-info">
+                <p class="balance-label">Saldo disponible</p>
+                <p class="balance-amount">S/ {{ money(balance) }}</p>
               </div>
+              <router-link to="/collect" class="withdraw-btn">
+                <i class="fas fa-money-bill-wave"></i> Retirar
+              </router-link>
             </div>
-            <div class="progress-markers">
-              <span>1</span>
-              <span>4</span>
-              <span>7</span>
-              <span>10</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="periods-grid">
-          <div v-for="(period, index) in bonoConstructor.periods" :key="index" class="period-card" :class="period.status">
-            <div class="period-label">{{ period.label }}</div>
-            <div class="period-month">
-              <i class="far fa-calendar-alt"></i>
-              <span>{{ period.month }}</span>
-            </div>
-            <div class="period-lots" :class="period.status">
-              <i class="fas" :class="period.status === 'completed' ? 'fa-check' : 'fa-lock'"></i>
-              <span>{{ period.lots }} Lote{{ period.lots !== 1 ? 's' : '' }}</span>
-            </div>
-            <div class="period-footer">
-              <span class="prize-text">Premio de {{ period.prize }}</span>
-              <span class="date-text">Iniciado el {{ period.date }}.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="prizes-section">
-          <h3>Premios del Ciclo</h3>
-          <div class="prizes-list">
-            <div v-for="(prize, index) in bonoConstructor.prizes" :key="index" class="prize-item">
-              <div class="prize-info">
-                <i class="fas" :class="prize.status === 'completed' ? 'fa-check green' : 'fa-lock gray'"></i>
-                <span><strong>{{ prize.lots }} Lotes:</strong> {{ prize.label }}</span>
-              </div>
-              <div class="prize-status-tab" :class="[prize.status, 'prize-' + prize.lots]">
-                <i class="fas fa-lock"></i>
-                <span>{{ prize.label }}</span>
-                <i v-if="prize.lots === 10" class="fas fa-money-bill-wave-alt ml-1"></i>
+            <div class="balance-item locked">
+              <i class="fas fa-lock balance-icon"></i>
+              <div class="balance-info">
+                <p class="balance-label">Saldo no disponible</p>
+                <p class="balance-amount">S/ {{ money(_balance) }}</p>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-
-
-      <div class="box white" v-if="node">
-        <i class="fas fa-gem"></i>
-        <div>
-          <p>{{ node.rank | _rank }}</p>
-          <span>RANGO ACTUAL</span>
-        </div>
-      </div>
-
-      <div class="box white" v-if="node">
-        <i class="fa fa-tachometer"></i>
-        <div>
-          <p>{{ node.next_rank.name | _rank }}</p>
-          <span>SIGUIENTE RANGO</span>
-        </div>
-      </div>
+      </template>
     </div>
-
-
   </App>
 </template>
 
@@ -339,44 +161,42 @@
 import App from "@/views/layouts/App";
 import api from "@/api";
 
+const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
 export default {
   components: {
     App,
   },
   data() {
     return {
-      banner: { img: null },
-      ins: null,
-      outs: null,
-      balance: null,
-      _balance: null,
-      _balance_lote: null,
-      _balance_membresia: null,
-      team: null,
-      rank: null,
-      points: null,
+      banner: {},
+      ins: 0,
+      insVirtual: 0,
+      balance: 0,
+      _balance: 0,
+
+      rankName: "Sin rango",
+      activationExpires: null,
+      stats: {
+        personalSales: 0,
+        groupSales: 0,
+        directs: 0,
+        network: 0,
+      },
+      nextGoal: {
+        name: "Emprendedor",
+        current: 0,
+        target: 1,
+      },
 
       loading: true,
-
-      op: 1,
-      op2: 0,
-      op3: 0,
-
-      bonoConstructor: {
-        accumulatedLots: 0,
-        totalLots: 10,
-        activePeriods: 0,
-        periods: [],
-        prizes: []
-      },
+      slide: 0,
+      timer: null,
     };
   },
   computed: {
     session() {
       return this.$store.state.session;
-    },
-    plan() {
-      return this.$store.state.plan;
     },
     _activated() {
       return this.$store.state._activated;
@@ -385,35 +205,47 @@ export default {
       return this.$store.state.activated;
     },
     title() {
-      return "Dashboard";
+      return "Inicio";
+    },
+    isActive() {
+      return !!(this._activated || this.activated);
+    },
+    bannerImages() {
+      const b = this.banner || {};
+      return [b.img, b.img2, b.img3].filter(Boolean);
+    },
+    totalEarned() {
+      return Number(this.ins || 0) + Number(this.insVirtual || 0);
+    },
+    expiryText() {
+      if (!this.activationExpires) return null;
+      const d = new Date(this.activationExpires);
+      if (isNaN(d)) return null;
+      return `${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+    },
+    goalPercent() {
+      const { current, target } = this.nextGoal;
+      if (!target) return 0;
+      return Math.min(100, Math.round((current / target) * 100));
+    },
+    goalMissing() {
+      return Math.max(0, this.nextGoal.target - this.nextGoal.current);
     },
   },
-  filters: {
-    _rank(val) {
-      if (val == "none") return "Ninguno";
-      if (val == "active") return "ACTIVO";
-      if (val == "star") return "MASTER";
-      if (val == "master") return "PLATA";
-      if (val == "silver") return "PLATINO";
-      if (val == "gold") return "ORO";
-      if (val == "sapphire") return "ZAFIRO";
-      if (val == "RUBI") return "DIAMANTE RUBI";
-      if (val == "DIAMANTE") return "DIAMANTE ESTRELLA";
-      if (val == "DOBLE DIAMANTE") return "DIAMANTE DOS ESTRELLAS";
-      if (val == "TRIPLE DIAMANTE") return "DIAMANTE TRES ESTRELLAS";
-      if (val == "DIAMANTE ESTRELLA") return "DIAMANTE CBM";
+  methods: {
+    money(val) {
+      return Number(val || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     },
   },
   async created() {
     // GET data
     const { data } = await api.dashboard(this.session);
-    console.log({ data });
 
     this.loading = false;
 
     // error
     if (data.error && data.msg == "invalid session")
-      this.$router.push("/login");
+      return this.$router.push("/login");
 
     // success
     this.$store.commit("SET_NAME", data.name);
@@ -428,652 +260,504 @@ export default {
     this.$store.commit("SET_EMAIL", data.email);
     this.$store.commit("SET_TOKEN", data.token);
 
-    this.banner = data.banner;
+    this.banner = data.banner || {};
     this.ins = data.ins;
     this.insVirtual = data.insVirtual;
-    this.outs = data.outs.toFixed(2);
-    this.balance = data.balance.toFixed(2);
-    this._balance = data._balance.toFixed(2);
-    this._balance_lote = data._balance_lote ? data._balance_lote.toFixed(2) : "0.00";
-    this._balance_membresia = data._balance_membresia ? data._balance_membresia.toFixed(2) : "0.00";
-    this.team = data.team;
-    this.rank = data.rank;
-    this.points = data.points;
-    this.node = data.node;
-    this.n_affiliates = data.n_affiliates;
-    this.bonoConstructor = data.bonoConstructor;
+    this.balance = data.balance;
+    this._balance = data._balance;
 
-    const time = 4000;
-    let i = 0;
-    const n = 3;
+    // campos de la nueva pantalla de inicio (se completan con la lógica del servidor)
+    if (data.rankName) this.rankName = data.rankName;
+    if (data.activationExpires) this.activationExpires = data.activationExpires;
+    if (data.stats) this.stats = { ...this.stats, ...data.stats };
+    if (data.nextGoal) this.nextGoal = { ...this.nextGoal, ...data.nextGoal };
 
-    setInterval(() => {
-      i += 1;
-      console.log(i);
-
-      if (i == 0) {
-        // reset all
-        this.op = 0;
-        this.op2 = 0;
-        this.op3 = 0;
-        // show 0
-        this.op = 1;
-      }
-
-      if (i == 1) {
-        // reset all
-        this.op = 0;
-        this.op2 = 0;
-        this.op3 = 0;
-        // show 0
-        this.op2 = 1;
-      }
-
-      if (i == 2) {
-        // reset all
-        this.op = 0;
-        this.op2 = 0;
-        this.op3 = 0;
-        // show 0
-        this.op3 = 1;
-      }
-
-      if (i == n - 1) i = -1;
-    }, time);
-
-    setTimeout(() => {
-      var elem = document.querySelector('.boxes');
-      new Masonry( elem, {
-        itemSelector: '.box',
-      });
-    }, 200);
+    this.timer = setInterval(() => {
+      const n = this.bannerImages.length;
+      if (n > 1) this.slide = (this.slide + 1) % n;
+    }, 4000);
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
 };
 </script>
 
 <style scoped>
+.home {
+  --navy: #10284a;
+  --green: #1f8a3b;
+  --green-soft: #e9f6ec;
+  --muted: #5d6b7c;
+  --card-shadow: 0 4px 16px rgba(16, 40, 74, 0.07);
+  color: var(--navy);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 1200px;
+}
 
-.nivel-actual-card {
-  padding: 2rem;
+p {
+  margin: 0;
+}
+
+/* Banner */
+.home-banner {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 1200 / 290;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  background: #0b1f3a;
+}
+
+.home-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s;
+}
+
+.home-banner img.visible {
+  opacity: 1;
+}
+
+/* Layout de filas */
+.home-row {
+  display: grid;
+  gap: 18px;
+}
+
+.row-top {
+  grid-template-columns: 1fr 1.6fr 1fr;
+}
+
+.row-stats {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.row-bottom {
+  grid-template-columns: 2fr 1.2fr;
+}
+
+/* Tarjeta base */
+.home-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+  padding: 20px 22px;
+  min-width: 0;
+}
+
+.card-head,
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-head h3,
+.section-head h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.section-head {
+  margin-bottom: -6px;
+}
+
+.head-icon {
+  font-size: 1.5rem;
+}
+
+.head-icon.green {
+  color: var(--green);
+}
+
+.head-icon.gold {
+  color: #f2b705;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1c6fd1;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+/* Insignia */
+.badge {
+  position: relative;
+  width: 150px;
+  margin: 14px auto 6px;
   text-align: center;
 }
 
-.rank-image {
-  margin: 2rem 0;
+.badge img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.18));
 }
 
-.rank-image img {
-  width: 150px;
-  height: 150px;
-  margin-bottom: 1rem;
+.badge-ribbon {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: linear-gradient(180deg, #f7d460 0%, #d9a520 100%);
+  color: #10284a;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.rank-image h3 {
-  color: #1a3b5d;
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
+.badge.small {
+  width: 140px;
+  margin: 0;
+  flex-shrink: 0;
 }
 
-.stats-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.badge.small img {
+  width: 120px;
+  height: 120px;
 }
 
-.stat-item {
+.rank-card {
+  text-align: center;
+}
+
+.rank-card .card-head {
+  justify-content: flex-start;
+}
+
+.rank-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Total ganado */
+.earned-card {
   display: flex;
   align-items: center;
-  background-color: #f8faff;
-  padding: 1rem;
-  border-radius: 8px;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.stat-icon {
-  background-color: #4caf50;
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+.earned-label {
+  margin-top: 40px;
+  color: var(--muted);
+  font-size: 1.15rem;
+}
+
+.earned-amount {
+  margin-top: 6px;
+  color: var(--green);
+  font-size: clamp(1.8rem, 3vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.earned-info {
+  min-width: 0;
+}
+
+.earned-art {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e3f4e7 0%, #f3faf5 70%, transparent 71%);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 1rem; 
 }
 
-.stat-info {
-  flex: 1;
-  text-align: left;
+.earned-art .fa-coins {
+  font-size: 4.5rem;
+  color: #f2b705;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.15));
 }
 
-.stat-label {
-  display: block;
-  color: #666;
-  font-size: 0.9rem;
+.earned-art .arrow {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 2.2rem;
+  color: #2aa84a;
+  transform: rotate(35deg);
 }
 
-.stat-value {
-  display: block;
-  color: #1a3b5d;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-/* Activation Pack Card Styles */
-.activation-pack-card {
-  padding: 1.5rem !important;
+/* Activación */
+.activation-box {
+  margin-top: 16px;
+  background: var(--green-soft);
+  border-radius: 12px;
+  padding: 18px 12px;
+  text-align: center;
 }
 
 .activation-status {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.activation-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: #f8faff;
-  border-radius: 8px;
-  border-left: 4px solid #e0e0e0;
-  transition: all 0.3s ease;
-}
-
-.activation-item.active {
-  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
-  border-left-color: #4caf50;
-}
-
-.activation-icon {
-  width: 45px;
-  height: 45px;
-  border-radius: 10px;
-  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
-  background: #e0e0e0;
-  color: #666;
-  transition: all 0.3s ease;
+  gap: 14px;
+  color: var(--green);
 }
 
-.activation-item.active .activation-icon {
-  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-  color: white;
-  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+.activation-status i {
+  font-size: 3rem;
 }
 
-.activation-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+.activation-status span {
+  font-size: 2rem;
+  font-weight: 800;
 }
 
-.activation-label {
-  font-weight: 600;
-  color: #1a3b5d;
-  font-size: 1rem;
-}
-
-.activation-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.85rem;
-  color: #4caf50;
-  font-weight: 500;
-}
-
-.activation-badge i {
-  font-size: 0.9rem;
-}
-
-.activation-badge.inactive {
-  color: #999;
-}
-
-.package-summary {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  color: #1a3b5d;
-  box-shadow: 0 3px 8px rgba(255, 215, 0, 0.3);
-}
-
-.package-summary i {
-  font-size: 1.1rem;
-}
-
-.package-summary.partial {
-  background: linear-gradient(135deg, #64b5f6 0%, #81c784 100%);
-  color: white;
-  box-shadow: 0 3px 8px rgba(100, 181, 246, 0.3);
-}
-
-.package-summary.none {
-  background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
-  color: #757575;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Earnings Card Styling */
-.earnings-card {
-  padding: 1.5rem !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 1.5rem;
-}
-
-.earnings-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.earnings-header .header-icon {
-  font-size: 1.8rem;
-  color: #ffd700;
-}
-
-.earnings-header h2 {
-  font-size: 1.4rem !important;
-  font-weight: 700 !important;
-  color: #1a3b5d !important;
-  margin: 0 !important;
-}
-
-.earnings-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.earnings-main-section, .earnings-sub-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 0.75rem 1rem;
-  border: 1px solid #eef2f7;
-  border-radius: 12px;
-  background: white;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: #1a3b5d;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.section-title i {
-  color: #4a5568;
-  font-size: 1.5rem;
-}
-
-.amount-row {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  justify-content: flex-start;
-  padding-left: 2rem;
-  margin-top: -0.2rem;
-}
-
-.amount-row .currency {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1a3b5d;
-}
-
-.amount-row .amount {
-  font-size: 1.3rem;
+.activation-type {
+  margin-top: 10px;
   font-weight: 700;
-  color: #1a3b5d;
+  font-size: 1.05rem;
 }
 
-.amount-row.small .amount {
-  font-size: 1.3rem;
+.activation-expiry {
+  margin-top: 6px;
+  color: var(--muted);
 }
 
-.retirar-btn {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 0;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 1rem;
-  height: 40px;
-  cursor: pointer;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.5rem;
-  width: 100%;
-  margin-top: 0.6rem;
-  transition: background 0.2s;
+.activation-box.inactive {
+  background: #f3f4f6;
 }
 
-.retirar-btn i {
-  margin-top: -2px;
+.activation-box.inactive .activation-status {
+  color: #8a94a3;
 }
 
-.retirar-btn:hover {
-  background: #43a047;
-}
-
-.sub-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.sub-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 0.5rem;
-  border-top: 1px solid #f0f4f8;
-}
-
-.sub-item:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-.sub-item-info {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  color: #4a5568;
-  font-size: 0.9rem;
-}
-
-.sub-icon {
-  font-size: 0.7rem;
-  width: 16px;
-  text-align: center;
-  opacity: 0.8;
-}
-
-.sub-amount {
+.activation-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #1c6fd1;
   font-weight: 600;
-  color: #1a3b5d;
 }
 
-/* Bono Constructor Styles */
-.bono-constructor-card {
-  padding: 1.2rem !important;
-  color: #1a3b5d;
-}
-
-.bono-header {
+/* Actividad comercial */
+.stat-card {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
+  gap: 18px;
+  align-items: flex-start;
 }
 
-.bono-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.coin-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transform: scale(2.5); /* Scale the icon */
-  margin-right: 0.8rem; /* Reduced margin to move text to the left */
-  margin-left: 0.5rem; /* Shift slightly to the right */
-  transform-origin: center;
-}
-
-.bono-title h2 {
-  font-size: 1.3rem !important;
-  font-weight: 700 !important;
-  margin: 0 !important;
-  color: #1a3b5d !important;
-}
-
-.info-icon {
-  color: #a0c4ff;
-  font-size: 1.2rem;
-}
-
-.bono-actions {
-  display: flex;
-  gap: 1rem;
-  color: #94a3b8;
-}
-
-.bono-subheader {
-  background: #f1f5f9;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-
-.bono-status-bar {
-  margin-bottom: 1.5rem;
-}
-
-.status-text {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.check-icon {
-  color: #4caf50;
-  font-size: 1.2rem;
-}
-
-.status-icons {
-  margin-left: auto;
-  display: flex;
-  gap: 0.3rem;
-  color: #cbd5e1;
-}
-
-.progress-container {
-  position: relative;
-  padding-bottom: 1.5rem;
-}
-
-.progress-bar {
-  height: 10px;
-  background: #e2e8f0;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #4caf50;
-  position: relative;
-  transition: width 1s ease;
-}
-
-.progress-dot {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  margin-right: 2px;
-}
-
-.progress-markers {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  color: #64748b;
-  padding: 0 5%;
-}
-
-.periods-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.8rem;
-  margin-bottom: 1.5rem;
-}
-
-.period-card {
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  overflow: hidden;
+.stat-icon {
+  font-size: 1.7rem;
+  color: var(--green);
+  margin-top: 4px;
+  width: 30px;
   text-align: center;
 }
 
-.period-label {
-  padding: 0.4rem;
-  font-size: 0.9rem;
+.stat-label {
   font-weight: 600;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.period-month {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.6rem;
-  background: #f8fafc;
   font-size: 0.95rem;
 }
 
-.period-month i {
-  color: #94a3b8;
-}
-
-.period-lots {
-  padding: 0.6rem 0.4rem;
-  margin: 0.4rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  font-weight: 600;
-  font-size: 0.85rem;
-}
-
-.period-lots i {
-  font-size: 1.0rem;
-}
-
-.period-lots i.fa-lock {
-  margin-top: -2px; /* Shift lock up */
-}
-
-.period-lots i.fa-check {
-  margin-top: 2px; /* Shift check down slightly */
-}
-
-.period-lots.completed {
-  background: #4caf50;
-  color: white;
-}
-
-.period-lots.locked {
-  background: #e2e8f0;
-  color: #64748b;
-}
-
-.period-lots.pending {
-  background: #4caf50; /* Based on image color which looks greenish but has lock */
-  opacity: 0.8;
-  color: white;
-}
-
-.period-footer {
-  padding: 0.6rem;
-  font-size: 0.75rem;
-  color: #64748b;
+.stat-value {
+  font-size: 2.4rem;
+  font-weight: 800;
   line-height: 1.2;
 }
 
-.prize-text {
-  display: block;
-  font-weight: 500;
-}
-
-.prizes-section h3 {
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 0.8rem !important;
-  color: #1a3b5d !important;
-}
-
-.prizes-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.prize-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.prize-info {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+.stat-sub {
+  color: var(--muted);
   font-size: 0.9rem;
 }
 
-.prize-info i.green {
-  color: #4caf50;
-}
-
-.prize-info i.gray {
-  color: #94a3b8;
-}
-
-.prize-status-tab {
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
+/* Próxima meta */
+.goal-body {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  min-width: 100px;
-  background: #f1f5f9;
-  color: #64748b;
+  gap: 24px;
+  margin-top: 12px;
 }
 
-.prize-status-tab.completed {
-  background: #fefce8;
-  color: #854d0e;
-  border: 1px solid #fef08a;
+.goal-info {
+  flex: 1;
+  min-width: 0;
 }
 
-.prize-status-tab i {
-  font-size: 0.8rem;
+.goal-name {
+  font-size: 1.4rem;
+  font-weight: 700;
 }
 
-.ml-1 {
-  margin-left: auto;
+.goal-count {
+  color: var(--muted);
+  margin: 6px 0 10px;
+}
+
+.goal-bar {
+  height: 30px;
+  background: #e8ebef;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.goal-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1f8a3b 0%, #2ea44f 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: width 1s ease;
+}
+
+.goal-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+/* Saldos */
+.balance-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.balance-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: 12px;
+}
+
+.balance-item.available {
+  background: var(--green-soft);
+}
+
+.balance-item.locked {
+  background: #f0f3f8;
+}
+
+.balance-icon {
+  font-size: 1.5rem;
+  color: #7d8aa0;
+  width: 26px;
+  text-align: center;
+}
+
+.balance-info {
+  flex: 1;
+}
+
+.balance-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.balance-amount {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.withdraw-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.withdraw-btn:hover {
+  background: #197432;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .row-top {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .earned-card {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+
+  .row-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .row-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .row-top,
+  .row-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .earned-art {
+    width: 90px;
+    height: 90px;
+  }
+
+  .earned-art .fa-coins {
+    font-size: 2.8rem;
+  }
+
+  .earned-label {
+    margin-top: 16px;
+  }
+
+  .goal-body {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .goal-foot {
+    justify-content: center;
+  }
+
+  .balance-item {
+    flex-wrap: wrap;
+  }
+
+  .withdraw-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>
