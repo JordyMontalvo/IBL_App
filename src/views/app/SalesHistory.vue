@@ -219,7 +219,6 @@ export default {
   --line: #e2e9f1;
   --card-shadow: 0 4px 16px rgba(16, 40, 74, 0.07);
   color: var(--navy);
-  max-width: 1300px;
 }
 
 p {
