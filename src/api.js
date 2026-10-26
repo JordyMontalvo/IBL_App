@@ -156,6 +156,9 @@ class Transfers {
 }
 
 class Sales {
+  GET(session) {
+    return axios.get(`/app/sales?session=${session}`)
+  }
   POST(session, data) {
     return axios.post(`/app/sales?session=${session}`, data)
   }

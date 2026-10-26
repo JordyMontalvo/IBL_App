@@ -78,6 +78,10 @@
               <i class="fas fa-users sub-icon"></i>
               <span>Venta de Membresías</span>
             </router-link>
+            <router-link to="/sales-history" exact class="sub-link" @click.native="close" v-if="affiliated">
+              <i class="fas fa-history sub-icon"></i>
+              <span>Historial de ventas</span>
+            </router-link>
           </div>
         </div>
 
@@ -448,7 +452,7 @@ export default {
     },
     syncOpenSections() {
       const path = this.$route.path;
-      if (path === "/activation" || path === "/membership") {
+      if (path === "/activation" || path === "/membership" || path === "/sales-history") {
         this.openSections.products = true;
       } else if (path === "/tree" || path === "/directs") {
         this.openSections.network = true;

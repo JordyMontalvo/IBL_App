@@ -17,6 +17,7 @@ import Status       from './views/app/Status.vue'
 import Affiliation  from './views/app/Affiliation.vue'
 import Activation   from './views/app/Activation.vue'
 import Activations  from './views/app/Activations.vue'
+import SalesHistory from './views/app/SalesHistory.vue'
 import Transfer     from './views/app/Transfer.vue'
 import Transfers    from './views/app/Transfers.vue'
 import Directs      from './views/app/Directs.vue'
@@ -100,6 +101,11 @@ const routes = [
   {
     path: '/membership',
     component: Activation,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/sales-history',
+    component: SalesHistory,
     meta: { requiresAuth: true }
   },
   {
