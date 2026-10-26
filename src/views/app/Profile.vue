@@ -80,9 +80,9 @@
       v-model="age"> <br> -->
 
       <div class = "input-wrapper">
-      <input type="date" class="input" placeholder="Fecha de Nacimiento"
-      min="1900-01-01" :max="today" v-model="birthdate">
-    <i class ="fa fa-calendar icon "></i> 
+      <input type="date" class="input" placeholder="Fecha de Nacimiento" ref="birthdate"
+      min="1900-01-01" :max="today" v-model="birthdate" @click="openPicker">
+    <i class ="fa fa-calendar icon " style="cursor: pointer;" @click="openPicker"></i>
   </div>
       
       <div class = "input-wrapper">
@@ -90,6 +90,10 @@
       v-model="address"> 
         <i class ="fa fa-map-marker icon"></i>
     </div>
+
+      <button class="button" v-show="!sending" @click="UPDATE('profile')">Guardar datos</button>
+      <button class="button" v-show= "sending" disabled>Guardando datos ...</button>
+      <p v-if="message && messageSection === 'profile'" :style="{ color: messageError ? '#c62828' : '#1f8a3b', margin: '4px 0 8px' }">{{ message }}</p>
 
       <router-link to="/security">
         <button class="button">Persona de confianza</button>
@@ -136,9 +140,9 @@
       <input class="input" placeholder="Código interbancario" :disabled="ibk_disabled"
       v-model="ibk"> <br> -->
 
-      <button class="button" v-show="!sending" @click="UPDATE">Guardar</button>
+      <button class="button" v-show="!sending" @click="UPDATE('bank')">Guardar</button>
       <button class="button" v-show= "sending" disabled>Guardando datos ...</button>
-      <p v-if="message" :style="{ color: messageError ? '#c62828' : '#1f8a3b', marginTop: '8px' }">{{ message }}</p>
+      <p v-if="message && messageSection === 'bank'" :style="{ color: messageError ? '#c62828' : '#1f8a3b', marginTop: '8px' }">{{ message }}</p>
       <br>
       <br>
     </section>
@@ -169,6 +173,7 @@ export default {
       today:      new Date().toISOString().slice(0, 10),
       message:      null,
       messageError: false,
+      messageSection: null,
       address:    null,
       token:      null,
 
@@ -235,7 +240,10 @@ export default {
     if(this.ibk)          this.ibk_disabled          = true
   },
   methods: {
-    async UPDATE() {
+    async UPDATE(section = 'bank') {
+      this.messageSection = section
+      this.message = null
+
 
       const { email, phone, birthdate, address, bank, account_type, account, ibk } = this
 
@@ -257,6 +265,13 @@ export default {
 
       this.messageError = !!data.error
       this.message = data.error ? (data.msg || 'No se pudieron guardar los datos') : 'Datos guardados'
+    },
+    // abre el calendario al tocar el campo o el ícono (el ícono tapa el botón nativo del navegador)
+    openPicker() {
+      const input = this.$refs.birthdate
+      if (!input) return
+      input.focus()
+      try { if (input.showPicker) input.showPicker() } catch (e) { /* navegador sin showPicker */ }
     },
     copy_token() {
       lib.copy('token')
