@@ -39,10 +39,7 @@
               <p class="earned-label">Ganancias acumuladas</p>
               <p class="earned-amount">S/ {{ money(totalEarned) }}</p>
             </div>
-            <div class="earned-art" aria-hidden="true">
-              <i class="fas fa-coins"></i>
-              <i class="fas fa-arrow-up arrow"></i>
-            </div>
+            <img class="earned-art" src="../../assets/img/total-ganado.svg" alt="" aria-hidden="true" />
           </div>
 
           <div class="home-card activation-card">
@@ -495,30 +492,9 @@ p {
 }
 
 .earned-art {
-  position: relative;
-  width: 104px;
-  height: 104px;
+  width: 120px;
+  height: auto;
   flex-shrink: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, #e3f4e7 0%, #f3faf5 70%, transparent 71%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.earned-art .fa-coins {
-  font-size: 3.2rem;
-  color: #f2b705;
-  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.15));
-}
-
-.earned-art .arrow {
-  position: absolute;
-  top: 6px;
-  right: 10px;
-  font-size: 1.6rem;
-  color: #2aa84a;
-  transform: rotate(35deg);
 }
 
 /* Activación */
@@ -750,12 +726,7 @@ p {
   }
 
   .earned-art {
-    width: 90px;
-    height: 90px;
-  }
-
-  .earned-art .fa-coins {
-    font-size: 2.8rem;
+    width: 72px;
   }
 
   .earned-label {

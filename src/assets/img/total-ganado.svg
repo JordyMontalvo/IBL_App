@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 205">
+  <defs>
+    <linearGradient id="side" x1="0" x2="1">
+      <stop offset="0" stop-color="#c88a06"/><stop offset=".45" stop-color="#f2bd2c"/><stop offset="1" stop-color="#b87a04"/>
+    </linearGradient>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#f3b91d"/>
+    </linearGradient>
+    <radialGradient id="face" cx=".38" cy=".32" r=".8">
+      <stop offset="0" stop-color="#ffe680"/><stop offset=".6" stop-color="#f4bd27"/><stop offset="1" stop-color="#d69a0c"/>
+    </radialGradient>
+    <linearGradient id="arrow" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#2fae52"/><stop offset="1" stop-color="#1f8a3b"/>
+    </linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity=".18"/>
+    </filter>
+  </defs>
+  <circle cx="72" cy="78" r="66" fill="#e7f5eb"/>
+  <path d="M44 132 C 74 118, 106 84, 132 34" fill="none" stroke="url(#arrow)" stroke-width="13" stroke-linecap="round"/>
+  <polygon points="150,8 154,52 112,34" fill="#1f8a3b"/>
+  <g filter="url(#sh)">
+  <g>
+    <ellipse cx="58" cy="185" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="176" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="176" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="176" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="58" cy="174.5" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="165.5" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="165.5" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="165.5" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="58" cy="164" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="155" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="155" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="155" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="58" cy="153.5" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="144.5" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="144.5" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="144.5" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="58" cy="143" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="134" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="134" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="134" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="58" cy="132.5" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="123.5" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="123.5" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="123.5" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="58" cy="122" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="113" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="113" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="113" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="58" cy="111.5" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="102.5" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="102.5" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="102.5" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="58" cy="101" rx="30" ry="8" fill="url(#side)"/>
+    <rect x="28" y="92" width="60" height="9" fill="url(#side)"/>
+    <ellipse cx="58" cy="92" rx="30" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="58" cy="92" rx="23" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="100" cy="195" rx="28" ry="8" fill="url(#side)"/>
+    <rect x="72" y="186" width="56" height="9" fill="url(#side)"/>
+    <ellipse cx="100" cy="186" rx="28" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="100" cy="186" rx="21" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="100" cy="184.5" rx="28" ry="8" fill="url(#side)"/>
+    <rect x="72" y="175.5" width="56" height="9" fill="url(#side)"/>
+    <ellipse cx="100" cy="175.5" rx="28" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="100" cy="175.5" rx="21" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="100" cy="174" rx="28" ry="8" fill="url(#side)"/>
+    <rect x="72" y="165" width="56" height="9" fill="url(#side)"/>
+    <ellipse cx="100" cy="165" rx="28" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="100" cy="165" rx="21" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="100" cy="163.5" rx="28" ry="8" fill="url(#side)"/>
+    <rect x="72" y="154.5" width="56" height="9" fill="url(#side)"/>
+    <ellipse cx="100" cy="154.5" rx="28" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="100" cy="154.5" rx="21" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+  <g>
+    <ellipse cx="100" cy="153" rx="28" ry="8" fill="url(#side)"/>
+    <rect x="72" y="144" width="56" height="9" fill="url(#side)"/>
+    <ellipse cx="100" cy="144" rx="28" ry="8" fill="url(#top)" stroke="#d99a0b" stroke-width="1.2"/>
+    <ellipse cx="100" cy="144" rx="21" ry="5.5" fill="none" stroke="#e6ad1a" stroke-width="1"/>
+  </g>
+    <g>
+      <ellipse cx="128" cy="150" rx="35" ry="38" fill="#c08305"/>
+      <ellipse cx="122" cy="148" rx="35" ry="38" fill="url(#face)" stroke="#d1930a" stroke-width="1.5"/>
+      <ellipse cx="122" cy="148" rx="28" ry="31" fill="none" stroke="#e0a417" stroke-width="2"/>
+      <path d="M106 141 L122 127 L138 141" fill="none" stroke="#b07a05" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+      <text x="122" y="161" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18" fill="#b07a05">IBL</text>
+      <text x="122" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="5" letter-spacing=".5" fill="#b07a05">INMOBILIARIA</text>
+    </g>
+  </g>
+</svg>
