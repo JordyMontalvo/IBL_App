@@ -145,7 +145,7 @@
               <i class="fas fa-lock balance-icon"></i>
               <div class="balance-info">
                 <p class="balance-label">Saldo no disponible</p>
-                <p class="balance-amount">S/ {{ money(_balance) }}</p>
+                <p class="balance-amount">S/ {{ money(lockedBalance) }}</p>
               </div>
             </div>
           </div>
@@ -172,7 +172,7 @@ export default {
       insVirtual: 0,
       earned: null,
       balance: 0,
-      _balance: 0,
+      lockedBalance: 0,
 
       rankName: "Sin rango",
       rankPin: null,
@@ -271,7 +271,7 @@ export default {
     this.insVirtual = data.insVirtual;
     this.earned = data.totalEarned != null ? Number(data.totalEarned) : null;
     this.balance = data.balance;
-    this._balance = data._balance;
+    this.lockedBalance = data._balance;
 
     // campos de la nueva pantalla de inicio (se completan con la lógica del servidor)
     this.rankName = data.rankName || "Sin rango";
@@ -742,12 +742,17 @@ p {
   }
 
   .balance-item {
-    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .balance-amount {
+    font-size: 1.2rem;
   }
 
   .withdraw-btn {
-    width: 100%;
-    justify-content: center;
+    padding: 9px 14px;
+    gap: 6px;
   }
 }
 </style>
