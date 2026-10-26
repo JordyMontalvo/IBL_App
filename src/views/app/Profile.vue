@@ -91,9 +91,12 @@
         <i class ="fa fa-map-marker icon"></i>
     </div>
 
-      <button class="button" v-show="!sending" @click="UPDATE('profile')">Guardar datos</button>
-      <button class="button" v-show= "sending" disabled>Guardando datos ...</button>
-      <p v-if="message && messageSection === 'profile'" :style="{ color: messageError ? '#c62828' : '#1f8a3b', margin: '4px 0 8px' }">{{ message }}</p>
+      <!-- el aviso va al costado del botón para no mover lo que está debajo -->
+      <div class="save-row">
+        <button class="button" v-show="!sending" @click="UPDATE('profile')">Guardar datos</button>
+        <button class="button" v-show= "sending" disabled>Guardando datos ...</button>
+        <span class="save-msg" v-if="message && messageSection === 'profile'" :class="{ error: messageError }">{{ message }}</span>
+      </div>
 
       <router-link to="/security">
         <button class="button">Persona de confianza</button>
@@ -140,9 +143,11 @@
       <input class="input" placeholder="Código interbancario" :disabled="ibk_disabled"
       v-model="ibk"> <br> -->
 
-      <button class="button" v-show="!sending" @click="UPDATE('bank')">Guardar</button>
-      <button class="button" v-show= "sending" disabled>Guardando datos ...</button>
-      <p v-if="message && messageSection === 'bank'" :style="{ color: messageError ? '#c62828' : '#1f8a3b', marginTop: '8px' }">{{ message }}</p>
+      <div class="save-row">
+        <button class="button" v-show="!sending" @click="UPDATE('bank')">Guardar</button>
+        <button class="button" v-show= "sending" disabled>Guardando datos ...</button>
+        <span class="save-msg" v-if="message && messageSection === 'bank'" :class="{ error: messageError }">{{ message }}</span>
+      </div>
       <br>
       <br>
     </section>
@@ -265,6 +270,10 @@ export default {
 
       this.messageError = !!data.error
       this.message = data.error ? (data.msg || 'No se pudieron guardar los datos') : 'Datos guardados'
+
+      // el aviso se oculta solo después de unos segundos
+      clearTimeout(this.messageTimer)
+      this.messageTimer = setTimeout(() => { this.message = null }, 4000)
     },
     // abre el calendario al tocar el campo o el ícono (el ícono tapa el botón nativo del navegador)
     openPicker() {
@@ -286,3 +295,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.save-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.save-msg {
+  color: #1f8a3b;
+  font-size: 14px;
+}
+
+.save-msg.error {
+  color: #c62828;
+}
+</style>
