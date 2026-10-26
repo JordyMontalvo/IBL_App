@@ -55,7 +55,7 @@
               </div>
               <template v-if="isActive">
                 <p class="activation-type" v-if="activationMode">Activación {{ activationMode }}</p>
-                <p class="activation-expiry" v-if="activationMode === 'anual' && expiryText">Vence en {{ expiryText }}</p>
+                <p class="activation-expiry" v-if="activationMode && expiryText">Vence en {{ expiryText }}</p>
               </template>
               <router-link to="/activation" class="activation-link" v-else>Activar ahora</router-link>
             </div>
