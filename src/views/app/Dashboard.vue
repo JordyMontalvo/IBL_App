@@ -23,13 +23,10 @@
               <i class="fas fa-award head-icon green"></i>
               <h3>Rango alcanzado</h3>
             </div>
-            <div class="badge" v-if="rankPin">
-              <img :src="rankPin" :alt="rankName" />
+            <!-- pin del rango (subido en Admin > Banner > Pines); sin rango se usa la insignia por defecto -->
+            <div class="badge">
+              <img :src="rankPin || defaultPin" :alt="rankName" />
               <span class="badge-ribbon">{{ rankName }}</span>
-            </div>
-            <!-- espacio reservado para el pin mientras no haya rango -->
-            <div class="pin-empty" v-else>
-              <i class="fas fa-award"></i>
             </div>
             <p class="rank-name">{{ rankName }}</p>
           </div>
@@ -179,6 +176,7 @@ export default {
 
       rankName: "Sin rango",
       rankPin: null,
+      defaultPin: require("../../assets/img/insignias colores.png"),
       activationExpires: null,
       stats: {
         personalSales: 0,
@@ -455,20 +453,6 @@ p {
 .badge.small img {
   width: 120px;
   height: 120px;
-}
-
-.pin-empty {
-  width: 92px;
-  height: 92px;
-  margin: 6px auto 2px;
-  border-radius: 50%;
-  border: 2px dashed #c9d3df;
-  background: #f4f7fa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #b4c0ce;
-  font-size: 2.4rem;
 }
 
 .rank-card {
