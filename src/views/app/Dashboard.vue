@@ -108,21 +108,18 @@
               <h3>Próxima meta</h3>
             </div>
             <div class="goal-body">
+              <!-- pin del próximo rango; mientras no haya uno se usa la insignia por defecto -->
               <div class="badge small">
-                <img src="../../assets/img/insignias colores.png" alt="Próximo rango" />
+                <img :src="nextGoal.pin || defaultPin" :alt="nextGoal.name" />
                 <span class="badge-ribbon">{{ nextGoal.name }}</span>
               </div>
+              <!-- solo visual: el avance, los contadores y la barra se calcularán más adelante -->
               <div class="goal-info">
                 <p class="goal-name">{{ nextGoal.name }}</p>
-                <p class="goal-count">{{ nextGoal.current }} de {{ nextGoal.target }} ventas personales</p>
-                <div class="goal-bar">
-                  <div class="goal-fill" :style="{ width: goalPercent + '%' }">
-                    <span v-if="goalPercent >= 12">{{ goalPercent }}%</span>
-                  </div>
-                </div>
+                <p class="goal-count">Requisitos de calificación</p>
+                <div class="goal-bar"></div>
                 <div class="goal-foot">
-                  <span v-if="goalMissing > 0">Te faltan {{ goalMissing }} ventas personales</span>
-                  <span v-else>¡Meta alcanzada!</span>
+                  <span>El avance se mostrará próximamente</span>
                   <router-link to="/resume" class="card-link">Ver requisitos <i class="fas fa-arrow-right"></i></router-link>
                 </div>
               </div>
@@ -189,9 +186,9 @@ export default {
         network: 0,
       },
       nextGoal: {
+        // por ahora la próxima meta es Emprendedor para todos los socios
         name: "Emprendedor",
-        current: 0,
-        target: 1,
+        pin: null,
       },
 
       loading: true,
@@ -235,14 +232,6 @@ export default {
       const [y, m] = String(this.activationExpires || "").split("-").map(Number);
       if (!y || !m) return null;
       return `${MONTHS[m - 1]} de ${y}`;
-    },
-    goalPercent() {
-      const { current, target } = this.nextGoal;
-      if (!target) return 0;
-      return Math.min(100, Math.round((current / target) * 100));
-    },
-    goalMissing() {
-      return Math.max(0, this.nextGoal.target - this.nextGoal.current);
     },
   },
   methods: {
@@ -290,7 +279,6 @@ export default {
     this.activationMode = data.activationMode || null;
     this.activationExpires = data.activationExpires || null;
     if (data.stats) this.stats = { ...this.stats, ...data.stats };
-    if (data.nextGoal) this.nextGoal = { ...this.nextGoal, ...data.nextGoal };
 
     this.timer = setInterval(() => {
       const n = this.bannerImages.length;
