@@ -2,13 +2,14 @@
   <App :session="session" :title="title">
     <div class="home">
       <!-- Banner -->
-      <figure class="home-banner" v-if="bannerImages.length">
+      <figure class="home-banner" v-if="bannerImages.length" :style="bannerStyle">
         <img
           v-for="(img, i) in bannerImages"
           :key="i"
           :src="img"
           alt="IBL Inmobiliaria"
           :class="{ visible: i === slide }"
+          @load="i === 0 && onBannerLoad($event)"
         />
       </figure>
 
@@ -191,6 +192,7 @@ export default {
 
       loading: true,
       slide: 0,
+      bannerRatio: null,
       timer: null,
     };
   },
@@ -209,6 +211,12 @@ export default {
     },
     isActive() {
       return !!(this._activated || this.activated);
+    },
+    bannerStyle() {
+      // en móvil se usa la proporción real de la imagen (acotada) para darle más alto sin deformarla
+      if (!this.bannerRatio) return {};
+      const ratio = Math.min(3.6, Math.max(3, this.bannerRatio));
+      return { "--banner-ratio-mobile": ratio };
     },
     bannerImages() {
       const b = this.banner || {};
@@ -233,6 +241,10 @@ export default {
     },
   },
   methods: {
+    onBannerLoad(e) {
+      const { naturalWidth: w, naturalHeight: h } = e.target;
+      if (w && h) this.bannerRatio = w / h;
+    },
     money(val) {
       return Number(val || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     },
@@ -728,6 +740,10 @@ p {
 }
 
 @media (max-width: 600px) {
+  .home-banner {
+    aspect-ratio: var(--banner-ratio-mobile, 3.4);
+  }
+
   .row-top,
   .row-stats {
     grid-template-columns: 1fr;
