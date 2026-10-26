@@ -30,7 +30,8 @@
           <p v-else>Todavía no has vendido membresías.</p>
         </div>
 
-        <div class="table-wrap" v-else>
+        <div class="table-card" v-else>
+        <div class="table-wrap">
           <table>
             <thead>
               <tr>
@@ -48,10 +49,10 @@
               <tr class="group-row">
                 <td colspan="8">{{ periodLabel(group.period) }}</td>
               </tr>
-              <tr v-for="sale in group.sales" :key="sale.id">
-                <td class="nowrap">{{ sale.date | date }}</td>
-                <td>{{ sale.name }}</td>
-                <td class="nowrap">{{ periodLabel(sale.period) }}</td>
+              <tr v-for="(sale, i) in group.sales" :key="sale.id" :class="{ alt: i % 2 === 1 }">
+                <td class="nowrap strong">{{ sale.date | date }}</td>
+                <td class="strong">{{ sale.name }}</td>
+                <td class="nowrap strong">{{ periodLabel(sale.period) }}</td>
                 <td class="buyer">
                   <strong>{{ sale.buyer.name || '—' }}</strong>
                   <span>DNI: {{ sale.buyer.dni || '—' }}</span>
@@ -85,13 +86,15 @@
           </table>
         </div>
 
-        <div class="table-foot" v-if="filtered.length">
-          <span>Mostrando {{ pageSales.length }} de {{ filtered.length }} {{ filtered.length === 1 ? 'venta' : 'ventas' }}</span>
-          <div class="pager" v-if="pages > 1">
+        <div class="table-foot">
+          <span v-if="pages === 1">Mostrando {{ filtered.length }} {{ filtered.length === 1 ? 'venta' : 'ventas' }}</span>
+          <span v-else>Mostrando {{ pageStart + 1 }}–{{ pageStart + pageSales.length }} de {{ filtered.length }} ventas</span>
+          <div class="pager">
             <button type="button" :disabled="page === 1" @click="page--" aria-label="Página anterior"><i class="fas fa-chevron-left"></i></button>
             <button type="button" v-for="n in pages" :key="n" :class="{ active: n === page }" @click="page = n">{{ n }}</button>
             <button type="button" :disabled="page === pages" @click="page++" aria-label="Página siguiente"><i class="fas fa-chevron-right"></i></button>
           </div>
+        </div>
         </div>
       </template>
     </div>
@@ -135,9 +138,11 @@ export default {
     pages() {
       return Math.max(1, Math.ceil(this.filtered.length / PAGE_SIZE));
     },
+    pageStart() {
+      return (this.page - 1) * PAGE_SIZE;
+    },
     pageSales() {
-      const start = (this.page - 1) * PAGE_SIZE;
-      return this.filtered.slice(start, start + PAGE_SIZE);
+      return this.filtered.slice(this.pageStart, this.pageStart + PAGE_SIZE);
     },
     groups() {
       const groups = [];
@@ -208,13 +213,12 @@ export default {
 .history {
   --navy: #10284a;
   --blue: #0d4fa1;
+  --link: #1c6fd1;
   --green: #1f8a3b;
   --muted: #5d6b7c;
+  --line: #e2e9f1;
+  --card-shadow: 0 4px 16px rgba(16, 40, 74, 0.07);
   color: var(--navy);
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(16, 40, 74, 0.07);
-  padding: 20px 22px;
   max-width: 1300px;
 }
 
@@ -222,6 +226,7 @@ p {
   margin: 0;
 }
 
+/* Encabezado */
 .history-head {
   display: flex;
   justify-content: space-between;
@@ -232,9 +237,10 @@ p {
 
 .history-head h2 {
   margin: 0;
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: var(--navy);
+  line-height: 1.2;
 }
 
 .history-head p {
@@ -249,32 +255,38 @@ p {
   background: var(--green);
   color: #fff;
   font-weight: 700;
-  padding: 10px 20px;
+  padding: 11px 22px;
   border-radius: 8px;
   text-decoration: none;
   white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(31, 138, 59, 0.25);
 }
 
 .sell-btn:hover {
   background: #197432;
 }
 
+/* Filtro */
 .filter-bar {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   margin: 18px 0;
-  padding: 14px 16px;
-  border: 1px solid #e3e9f0;
-  border-radius: 10px;
+  padding: 12px 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
 }
 
 .filter-bar label {
+  display: inline;
+  margin: 0;
   font-weight: 700;
+  color: var(--navy);
 }
 
 .filter-bar select {
-  min-width: 280px;
+  min-width: 320px;
   max-width: 100%;
   padding: 9px 12px;
   border: 1px solid #d3dce6;
@@ -293,6 +305,9 @@ p {
   text-align: center;
   color: var(--muted);
   padding: 40px 10px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
 }
 
 .empty i {
@@ -301,16 +316,27 @@ p {
   margin-bottom: 10px;
 }
 
+/* Tabla */
+.table-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
 .table-wrap {
   overflow-x: auto;
-  border-radius: 10px;
-  border: 1px solid #e3e9f0;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 960px;
+  min-width: 900px;
+  font-size: 0.9rem;
+}
+
+table td {
+  font-size: 0.9rem;
 }
 
 thead th {
@@ -318,28 +344,39 @@ thead th {
   color: #fff;
   font-weight: 700;
   text-align: left;
-  padding: 14px 16px;
+  padding: 14px 14px;
   white-space: nowrap;
 }
 
 td {
-  padding: 14px 16px;
-  border-bottom: 1px solid #edf1f5;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
   vertical-align: middle;
   text-align: left;
   color: var(--navy);
+  background: #fff;
 }
 
-thead th,
-.group-row td {
-  text-align: left;
+td:last-child {
+  border-right: none;
+}
+
+tr.alt td {
+  background: #f6f9fd;
 }
 
 .group-row td {
-  background: #e3effc;
+  background: #e2eefb;
   font-weight: 800;
   font-size: 1.05rem;
   padding: 10px 16px;
+  border-right: none;
+  text-align: left;
+}
+
+.strong {
+  font-weight: 600;
 }
 
 .num {
@@ -359,18 +396,14 @@ thead th,
   color: #8a97a8;
 }
 
-.buyer {
-  display: table-cell;
-}
-
 .buyer strong,
 .buyer span {
   display: block;
 }
 
 .buyer span {
-  color: var(--muted);
-  font-size: 0.9rem;
+  color: var(--navy);
+  font-size: 0.92rem;
 }
 
 .vouchers {
@@ -383,29 +416,34 @@ thead th,
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  color: #1c6fd1;
+  color: var(--link);
   font-size: 0.85rem;
   text-decoration: underline;
 }
 
 .vouchers img {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 56px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 3px;
   border: 1px solid #d3dce6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .status {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 7px 14px;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.status i {
+  font-size: 1rem;
 }
 
 .status.approved {
@@ -414,8 +452,8 @@ thead th,
 }
 
 .status.pending {
-  background: #fdf1d3;
-  color: #8a5a00;
+  background: #fdefc8;
+  color: #1a2b44;
 }
 
 .status.rejected {
@@ -426,14 +464,15 @@ thead th,
 .invoice-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: #1c6fd1;
+  gap: 10px;
+  background: var(--link);
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 9px 18px;
+  padding: 9px 20px;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
+  box-shadow: 0 2px 6px rgba(28, 111, 209, 0.25);
 }
 
 .invoice-btn:disabled {
@@ -446,43 +485,41 @@ thead th,
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 14px;
-  color: var(--muted);
+  padding: 14px 16px;
+  color: var(--navy);
+  font-size: 0.92rem;
 }
 
 .pager {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .pager button {
-  min-width: 34px;
-  height: 34px;
+  min-width: 32px;
+  height: 32px;
   border: 1px solid #d3dce6;
   border-radius: 6px;
   background: #fff;
   color: var(--navy);
+  font-weight: 700;
   cursor: pointer;
 }
 
 .pager button.active {
-  background: #1c6fd1;
-  border-color: #1c6fd1;
+  background: var(--link);
+  border-color: var(--link);
   color: #fff;
 }
 
 .pager button:disabled {
-  opacity: 0.4;
+  color: #8a97a8;
   cursor: default;
 }
 
 @media (max-width: 600px) {
-  .history {
-    padding: 16px;
-  }
-
   .history-head h2 {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
   }
 
   .sell-btn {
