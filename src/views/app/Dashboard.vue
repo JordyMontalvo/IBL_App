@@ -53,9 +53,11 @@
                 <i class="fas" :class="isActive ? 'fa-check-circle' : 'fa-times-circle'"></i>
                 <span>{{ isActive ? 'ACTIVO' : 'INACTIVO' }}</span>
               </div>
-              <p class="activation-type">Activación anual</p>
-              <p class="activation-expiry" v-if="isActive && expiryText">Vence en {{ expiryText }}</p>
-              <router-link to="/activation" class="activation-link" v-else-if="!isActive">Activar ahora</router-link>
+              <template v-if="isActive">
+                <p class="activation-type" v-if="activationMode">Activación {{ activationMode }}</p>
+                <p class="activation-expiry" v-if="activationMode === 'anual' && expiryText">Vence en {{ expiryText }}</p>
+              </template>
+              <router-link to="/activation" class="activation-link" v-else>Activar ahora</router-link>
             </div>
           </div>
         </div>
@@ -179,6 +181,7 @@ export default {
       rankPin: null,
       defaultPin: require("../../assets/img/insignias colores.png"),
       activationExpires: null,
+      activationMode: null,
       stats: {
         personalSales: 0,
         groupSales: 0,
@@ -228,10 +231,10 @@ export default {
       return Number(this.ins || 0) + Number(this.insVirtual || 0);
     },
     expiryText() {
-      if (!this.activationExpires) return null;
-      const d = new Date(this.activationExpires);
-      if (isNaN(d)) return null;
-      return `${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+      // llega como "YYYY-MM"
+      const [y, m] = String(this.activationExpires || "").split("-").map(Number);
+      if (!y || !m) return null;
+      return `${MONTHS[m - 1]} de ${y}`;
     },
     goalPercent() {
       const { current, target } = this.nextGoal;
@@ -284,7 +287,8 @@ export default {
     // campos de la nueva pantalla de inicio (se completan con la lógica del servidor)
     this.rankName = data.rankName || "Sin rango";
     this.rankPin = data.rankPin || null;
-    if (data.activationExpires) this.activationExpires = data.activationExpires;
+    this.activationMode = data.activationMode || null;
+    this.activationExpires = data.activationExpires || null;
     if (data.stats) this.stats = { ...this.stats, ...data.stats };
     if (data.nextGoal) this.nextGoal = { ...this.nextGoal, ...data.nextGoal };
 
