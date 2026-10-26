@@ -171,6 +171,7 @@ export default {
       banner: {},
       ins: 0,
       insVirtual: 0,
+      earned: null,
       balance: 0,
       _balance: 0,
 
@@ -223,6 +224,7 @@ export default {
       return [b.img, b.img2, b.img3].filter(Boolean);
     },
     totalEarned() {
+      if (this.earned != null) return this.earned;
       return Number(this.ins || 0) + Number(this.insVirtual || 0);
     },
     expiryText() {
@@ -275,6 +277,7 @@ export default {
     this.banner = data.banner || {};
     this.ins = data.ins;
     this.insVirtual = data.insVirtual;
+    this.earned = data.totalEarned != null ? Number(data.totalEarned) : null;
     this.balance = data.balance;
     this._balance = data._balance;
 
