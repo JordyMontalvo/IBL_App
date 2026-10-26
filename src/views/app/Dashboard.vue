@@ -23,9 +23,13 @@
               <i class="fas fa-award head-icon green"></i>
               <h3>Rango alcanzado</h3>
             </div>
-            <div class="badge">
-              <img src="../../assets/img/insignias colores.png" alt="Rango" />
+            <div class="badge" v-if="rankPin">
+              <img :src="rankPin" :alt="rankName" />
               <span class="badge-ribbon">{{ rankName }}</span>
+            </div>
+            <!-- espacio reservado para el pin mientras no haya rango -->
+            <div class="pin-empty" v-else>
+              <i class="fas fa-award"></i>
             </div>
             <p class="rank-name">{{ rankName }}</p>
           </div>
@@ -174,6 +178,7 @@ export default {
       _balance: 0,
 
       rankName: "Sin rango",
+      rankPin: null,
       activationExpires: null,
       stats: {
         personalSales: 0,
@@ -276,7 +281,8 @@ export default {
     this._balance = data._balance;
 
     // campos de la nueva pantalla de inicio (se completan con la lógica del servidor)
-    if (data.rankName) this.rankName = data.rankName;
+    this.rankName = data.rankName || "Sin rango";
+    this.rankPin = data.rankPin || null;
     if (data.activationExpires) this.activationExpires = data.activationExpires;
     if (data.stats) this.stats = { ...this.stats, ...data.stats };
     if (data.nextGoal) this.nextGoal = { ...this.nextGoal, ...data.nextGoal };
@@ -449,6 +455,20 @@ p {
 .badge.small img {
   width: 120px;
   height: 120px;
+}
+
+.pin-empty {
+  width: 92px;
+  height: 92px;
+  margin: 6px auto 2px;
+  border-radius: 50%;
+  border: 2px dashed #c9d3df;
+  background: #f4f7fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b4c0ce;
+  font-size: 2.4rem;
 }
 
 .rank-card {
