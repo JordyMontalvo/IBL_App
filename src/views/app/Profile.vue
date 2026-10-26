@@ -80,8 +80,8 @@
       v-model="age"> <br> -->
 
       <div class = "input-wrapper">
-      <input type="date" class="input" placeholder="Fecha de Nacimiento" readonly
-      v-model="birthdate">
+      <input type="date" class="input" placeholder="Fecha de Nacimiento"
+      min="1900-01-01" :max="today" v-model="birthdate">
     <i class ="fa fa-calendar icon "></i> 
   </div>
       
@@ -138,6 +138,7 @@
 
       <button class="button" v-show="!sending" @click="UPDATE">Guardar</button>
       <button class="button" v-show= "sending" disabled>Guardando datos ...</button>
+      <p v-if="message" :style="{ color: messageError ? '#c62828' : '#1f8a3b', marginTop: '8px' }">{{ message }}</p>
       <br>
       <br>
     </section>
@@ -165,6 +166,9 @@ export default {
       email:      null,
       phone:      null,
       birthdate:  null,
+      today:      new Date().toISOString().slice(0, 10),
+      message:      null,
+      messageError: false,
       address:    null,
       token:      null,
 
@@ -250,6 +254,9 @@ export default {
       }); console.log({ data })
 
       this.sending = false
+
+      this.messageError = !!data.error
+      this.message = data.error ? (data.msg || 'No se pudieron guardar los datos') : 'Datos guardados'
     },
     copy_token() {
       lib.copy('token')
