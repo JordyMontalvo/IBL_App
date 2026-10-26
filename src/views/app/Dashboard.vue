@@ -337,6 +337,10 @@ p {
   grid-template-columns: 1fr 1.6fr 1fr;
 }
 
+.row-top .home-card {
+  padding: 14px 20px;
+}
+
 .row-stats {
   grid-template-columns: repeat(4, 1fr);
 }
@@ -399,13 +403,13 @@ p {
 .badge {
   position: relative;
   width: 150px;
-  margin: 14px auto 6px;
+  margin: 6px auto 2px;
   text-align: center;
 }
 
 .badge img {
-  width: 130px;
-  height: 130px;
+  width: 92px;
+  height: 92px;
   object-fit: contain;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.18));
 }
@@ -447,7 +451,7 @@ p {
 }
 
 .rank-name {
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   font-weight: 700;
 }
 
@@ -460,7 +464,7 @@ p {
 }
 
 .earned-label {
-  margin-top: 40px;
+  margin-top: 14px;
   color: var(--muted);
   font-size: 1.15rem;
 }
@@ -480,8 +484,8 @@ p {
 
 .earned-art {
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 104px;
+  height: 104px;
   flex-shrink: 0;
   border-radius: 50%;
   background: radial-gradient(circle, #e3f4e7 0%, #f3faf5 70%, transparent 71%);
@@ -491,7 +495,7 @@ p {
 }
 
 .earned-art .fa-coins {
-  font-size: 4.5rem;
+  font-size: 3.2rem;
   color: #f2b705;
   filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.15));
 }
@@ -500,17 +504,17 @@ p {
   position: absolute;
   top: 6px;
   right: 10px;
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   color: #2aa84a;
   transform: rotate(35deg);
 }
 
 /* Activación */
 .activation-box {
-  margin-top: 16px;
+  margin-top: 10px;
   background: var(--green-soft);
   border-radius: 12px;
-  padding: 18px 12px;
+  padding: 10px 12px;
   text-align: center;
 }
 
@@ -523,22 +527,22 @@ p {
 }
 
 .activation-status i {
-  font-size: 3rem;
+  font-size: 2.2rem;
 }
 
 .activation-status span {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 800;
 }
 
 .activation-type {
-  margin-top: 10px;
+  margin-top: 4px;
   font-weight: 700;
   font-size: 1.05rem;
 }
 
 .activation-expiry {
-  margin-top: 6px;
+  margin-top: 2px;
   color: var(--muted);
 }
 
@@ -552,7 +556,7 @@ p {
 
 .activation-link {
   display: inline-block;
-  margin-top: 8px;
+  margin-top: 2px;
   color: #1c6fd1;
   font-weight: 600;
 }
