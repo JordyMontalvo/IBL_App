@@ -33,6 +33,7 @@ import Password     from './views/app/Password.vue'
 import Security     from './views/app/Security.vue'
 import Resume       from './views/app/Resume.vue'
 import Projects     from './views/app/Projects.vue'
+import SalesReceipt from './views/app/SalesReceipt.vue'
 
 
 Vue.use(Router)
@@ -182,6 +183,11 @@ const routes = [
   {
     path: '/resume',
     component: Resume,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/sales-history/:id/receipt',
+    component: SalesReceipt,
     meta: { requiresAuth: true }
   },
   {

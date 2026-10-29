@@ -162,6 +162,9 @@ class Sales {
   GET(session) {
     return axios.get(`/app/sales?session=${session}`)
   }
+  RECEIPT(session, id) {
+    return axios.get(`/app/sales?session=${session}&id=${id}`)
+  }
   POST(session, data) {
     return axios.post(`/app/sales?session=${session}`, data)
   }
