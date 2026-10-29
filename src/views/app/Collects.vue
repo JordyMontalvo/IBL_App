@@ -1,47 +1,59 @@
 <template>
-  <App :session="session">
+  <App :session="session" :title="title">
 
-    <h4 class="tabs">
-      <router-link class="tab" to="/collect">
-        Nuevo Retiro
-      </router-link> &nbsp;&nbsp;
-      <router-link class="tab" to="/collects">
-        Historial de Retiros
-      </router-link>
-    </h4>
+    <nav class="withdraw-tabs">
+      <router-link class="withdraw-tab" to="/collect">Nuevo retiro</router-link>
+      <router-link class="withdraw-tab" to="/collects">Historial de retiros</router-link>
+    </nav>
 
     <i class="load" v-if="loading"></i>
 
-    <div class="scroll" v-if="!loading">
-      <table>
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Cuenta</th>
-            <th>Monto</th>
-            <th>Oficina</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="collect in collects">
-            <td>{{ collect.date | date }}</td>
-            <td>
-              <div v-if="!collect.cash">
-                En efectivo
-              </div>
-              <div v-else>
-                Banco: {{ collect.bank }} <br>
-                Cuenta: {{ collect.account }} <br>
-                CCI: {{ collect.ink }}
-              </div>
-            </td>
-            <td>{{ collect.amount }}</td>
-            <td>{{ collect.office }}</td>
-            <td>{{ collect.status | status }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="withdraw-card" v-if="!loading">
+      <h2 class="withdraw-title">Historial de retiros</h2>
+      <p class="withdraw-subtitle">Revisa el detalle de tus solicitudes de retiro.</p>
+
+      <div class="scroll">
+        <table class="withdraw-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Cuenta bancaria</th>
+              <th>Monto</th>
+              <th>Oficina</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="collect in collects" :key="collect.id">
+              <td>{{ collect.date | date }}</td>
+              <td>
+                <div v-if="!collect.cash" class="bank-name">En efectivo</div>
+                <div v-else>
+                  <div class="bank-name">{{ collect.bank }}</div>
+                  <div class="bank-detail">Cuenta: {{ collect.account || 'No registrada' }}</div>
+                  <div class="bank-detail">CCI: {{ collect.ink || 'No registrado' }}</div>
+                </div>
+              </td>
+              <td class="amount">S/ {{ Number(collect.amount).toFixed(2) }}</td>
+              <td>{{ collect.office | office }}</td>
+              <td>
+                <span class="status-badge" :class="collect.status == 'approved' ? 'paid' : 'pending'">
+                  <i class="fas" :class="collect.status == 'approved' ? 'fa-check' : 'fa-clock'"></i>
+                  {{ collect.status | status }}
+                </span>
+              </td>
+            </tr>
+            <tr v-if="!collects.length">
+              <td colspan="5" class="withdraw-empty">Aún no tienes retiros.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="withdraw-note">
+        <i class="fas fa-info-circle"></i>
+        El estado se actualizará cuando se registre el pago de tu retiro.
+      </div>
     </div>
 
   </App>
@@ -57,12 +69,13 @@ export default {
   },
   data() {
     return {
-      collects: null,
+      collects: [],
       loading: true,
     }
   },
   computed: {
     session() { return this.$store.state.session },
+    title()   { return 'Retiros' },
   },
   filters: {
     date(val) {
@@ -70,8 +83,12 @@ export default {
       // return new Date(val).toLocaleString()
     },
     status(val) {
-      if (val == 'pending') return 'Pendiente'
-      if (val == 'approved') return 'Entregado'
+      return val == 'approved' ? 'Pagado' : 'Pendiente'
+    },
+    office(val) {
+      if (val == 'central') return 'Central'
+      if (val == 'secondary') return 'Ledezma'
+      return val
     },
   },
   async created() {
@@ -91,7 +108,7 @@ export default {
     this.$store.commit('SET_ACTIVATED', data.activated)
     this.$store.commit('SET__ACTIVATED', data._activated)
 
-    this.collects = data.collects.reverse()
+    this.collects = (data.collects || []).reverse()
 
   },
 };

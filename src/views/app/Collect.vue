@@ -1,14 +1,10 @@
 <template>
   <App :session="session" :title="title">
 <h4>Retiros</h4>
-    <h4 class="tabs">
-      <router-link class="tab" to="/collect">
-        Nuevo Retiro
-      </router-link> &nbsp;&nbsp;
-      <router-link class="tab" to="/collects">
-        Historial de Retiros
-      </router-link>
-    </h4>
+    <nav class="withdraw-tabs">
+      <router-link class="withdraw-tab" to="/collect">Nuevo retiro</router-link>
+      <router-link class="withdraw-tab" to="/collects">Historial de retiros</router-link>
+    </nav>
 
     <i class="load" v-if="loading"></i>
 
