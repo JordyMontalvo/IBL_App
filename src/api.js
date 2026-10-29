@@ -54,6 +54,9 @@ class API {
   bonuses(session) {
     return axios.get (`/app/bonuses?session=${session}`)
   }
+  projects(session) {
+    return axios.get (`/app/projects?session=${session}`)
+  }
   tools(session) {
     return axios.get (`/app/tools?session=${session}`)
   }
