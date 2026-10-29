@@ -635,6 +635,8 @@ export default {
       this.showSuccessModal = false;
     },
     async POST() {
+      if (this.sending) return;
+
       let { products, office, check, voucher, voucher2, pay_method, bank, date, voucher_number, voucher_number2 } = this;
 
       if (this.mode === "membership") {
