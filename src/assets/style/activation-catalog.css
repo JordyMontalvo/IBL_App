@@ -410,6 +410,8 @@
 
 .field .req {
   color: #e14b4b;
+  float: left;
+  margin-right: 4px;
 }
 
 .field input,
