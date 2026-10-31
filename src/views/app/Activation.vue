@@ -461,22 +461,30 @@ export default {
       return "vigente";
     },
     planBlurb(prod) {
+      if (prod.subtitle && String(prod.subtitle).trim()) return prod.subtitle;
       const vigencia = this.vigenciaText(prod);
       if (vigencia === "vigente") return "Mantén tu acceso vigente.";
       return "Mantén tu acceso vigente por " + vigencia + ".";
     },
     shortName(prod) {
+      if (prod.title && String(prod.title).trim()) return String(prod.title).trim();
       return String(prod.name || "")
         .replace(/membres[ií]a/gi, "")
         .replace(/activaci[oó]n/gi, "")
         .trim();
     },
     tagline(prod) {
+      if (prod.subtitle && String(prod.subtitle).trim()) return prod.subtitle;
       const name = this.norm(prod.name);
       if (name.includes("VIP")) return "Experiencia premium del club";
       return "Acceso a los beneficios del club";
     },
     featuresFor(prod) {
+      if (Array.isArray(prod.benefits)) {
+        const custom = prod.benefits.map((b) => String(b || "").trim()).filter(Boolean);
+        if (custom.length) return custom;
+      }
+
       if (this.isActivationProduct(prod)) {
         const items = [
           "Vigencia: " + this.vigenciaText(prod),
