@@ -168,7 +168,7 @@
 
         <!-- Proyectos -->
         <router-link
-          to="/tools"
+          to="/projects"
           exact
           class="menu-link"
           @click.native="close"

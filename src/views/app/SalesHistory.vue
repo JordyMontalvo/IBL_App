@@ -75,10 +75,9 @@
                   </span>
                 </td>
                 <td class="center">
-                  <!-- la boleta se habilitará más adelante -->
-                  <button v-if="sale.status === 'approved'" type="button" class="invoice-btn" disabled title="Disponible próximamente">
+                  <router-link v-if="sale.status === 'approved'" :to="`/sales-history/${sale.id}/receipt`" class="invoice-btn">
                     <i class="fas fa-file-alt"></i> Boleta
-                  </button>
+                  </router-link>
                   <span class="muted" v-else>—</span>
                 </td>
               </tr>
@@ -471,6 +470,7 @@ tr.alt td {
   padding: 9px 20px;
   font-weight: 700;
   font-size: 0.92rem;
+  text-decoration: none;
   box-shadow: 0 2px 6px rgba(28, 111, 209, 0.25);
 }
 

@@ -2,6 +2,7 @@
   <App :session="session" :office_id="office_id" :title="title">
 
     <h4>EQUIPO</h4>
+    <p class="tree-hint" v-if="!loading">Explora tu red y despliega más niveles con el botón +.</p>
 
     <i class="load" v-if="loading"></i>
 
@@ -12,58 +13,12 @@
         <div class="tree-container">
           <i v-if="node.parent && node.id != id" class="fas fa-arrow-left" @click="GET(node.parent)" style="position: absolute; right: 0; margin-right: 80px; z-index: 1;"></i>
           <ul class="tree">
-            <li>
-
-              <span @click="click(node)">
-                <i class="fas fa-user-tie" :class="{'act': node.activated, 'aff': node.affiliated}"></i>
-                <i class="fas fa-gem" :class="node.rank"></i> <br>
-                {{ node.name }}
-                <p>total: {{ node.closed_points_arr }}</p>
-              </span>
-
-              <ul v-if="node._childs">
-                <li v-for="_child1 in node._childs">
-
-                  <span @click="click(_child1)">
-                    <i class="fas fa-user-tie" :class="{'act': _child1.activated, 'aff': _child1.affiliated}"></i>
-                    <i class="fas fa-gem" :class="_child1.rank"></i> <br>
-                    {{ _child1.name }} <br>
-                    <small>compras: {{ _child1.points }}</small> <br>
-                    <small v-if="_child1.affiliation_points">afill: {{ _child1.affiliation_points }}</small>
-                  </span>
-
-                  <ul v-if="_child1._childs">
-                    <li v-for="_child2 in _child1._childs">
-
-                      <span @click="click(_child2)">
-                        <i class="fas fa-user-tie" :class="{'act': _child2.activated, 'aff': _child2.affiliated}"></i>
-                        <i class="fas fa-gem" :class="_child2.rank"></i> <br>
-                        {{ _child2.name }} <br>
-                        <small>compras: {{ _child2.points }}</small> <br>
-                        <small v-if="_child2.affiliation_points">afill: {{ _child2.affiliation_points }}</small>
-                      </span>
-
-                      <ul v-if="_child2._childs">
-                        <li v-for="_child3 in _child2._childs">
-
-                          <span @click="click(_child3)">
-                            <i class="fas fa-user-tie" :class="{'act': _child3.activated, 'aff': _child3.affiliated}"></i>
-                            <i class="fas fa-gem" :class="_child3.rank"></i> <br>
-                            {{ _child3.name }} <br>
-                            <small>compras: {{ _child3.points }}</small> <br>
-                            <small v-if="_child3.affiliation_points">afill: {{ _child3.affiliation_points }}</small>
-                          </span>
-
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
+            <tree-node :key="node.id" :node="node" :depth="0" @select="click" />
           </ul>
         </div>
       </div>
+
+      <p class="tree-hint">Pulsa + para mostrar el siguiente nivel de esa rama.</p>
 
       <div class="modal" :class="{ open }" @click="closed">
         <div class="inner" @click.stop="">
@@ -107,11 +62,13 @@
 
 <script>
 import App from '@/views/layouts/App'
+import TreeNode from '@/views/app/TreeNode'
 import api from '@/api'
 
 export default {
   components: {
     App,
+    TreeNode,
   },
   data() {
     return {
@@ -215,6 +172,11 @@ export default {
 </script>
 
 <style lang="stylus">
+  .tree-hint
+    color #5b6b82
+    font-size 14px
+    margin 6px 0 12px
+
   .modal
     background rgba(#000, 0.72)
     position absolute

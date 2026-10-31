@@ -54,6 +54,9 @@ class API {
   bonuses(session) {
     return axios.get (`/app/bonuses?session=${session}`)
   }
+  projects(session) {
+    return axios.get (`/app/projects?session=${session}`)
+  }
   tools(session) {
     return axios.get (`/app/tools?session=${session}`)
   }
@@ -158,6 +161,9 @@ class Transfers {
 class Sales {
   GET(session) {
     return axios.get(`/app/sales?session=${session}`)
+  }
+  RECEIPT(session, id) {
+    return axios.get(`/app/sales?session=${session}&id=${id}`)
   }
   POST(session, data) {
     return axios.post(`/app/sales?session=${session}`, data)
