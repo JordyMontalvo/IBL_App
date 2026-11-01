@@ -248,6 +248,13 @@
               </div>
             </div>
 
+            <!-- Vigencia de la activación -->
+            <div class="activation-validity" v-if="(activated || _activated) && closures_left > 0">
+              <span v-if="activation_plan">Plan <strong>{{ activation_plan }}</strong> &middot; </span>
+              <span>Te {{ closures_left === 1 ? 'queda' : 'quedan' }} <strong>{{ closures_left }}</strong> {{ closures_left === 1 ? 'cierre' : 'cierres' }}</span>
+              <span class="activation-renew" v-if="closures_left === 1"> &middot; Renueva tu activación</span>
+            </div>
+
             <!-- Overall Package Status -->
             <div class="package-summary" v-if="activated">
               <i class="fas fa-crown"></i>
@@ -370,6 +377,8 @@ export default {
   data() {
     return {
       banner: { img: null },
+      activation_plan: null,
+      closures_left: 0,
       ins: null,
       outs: null,
       balance: null,
@@ -453,6 +462,8 @@ export default {
     this.$store.commit("SET_TOKEN", data.token);
 
     this.banner = data.banner;
+    this.activation_plan = data.activation_plan;
+    this.closures_left = data.closures_left || 0;
     this.ins = data.ins;
     this.insVirtual = data.insVirtual;
     this.outs = data.outs.toFixed(2);
@@ -657,6 +668,18 @@ export default {
 
 .activation-badge.inactive {
   color: #999;
+}
+
+.activation-validity {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #1a3b5d;
+  margin-bottom: 0.6rem;
+}
+
+.activation-renew {
+  color: #c77700;
+  font-weight: 600;
 }
 
 .package-summary {
