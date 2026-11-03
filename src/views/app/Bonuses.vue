@@ -1,130 +1,96 @@
 <template>
   <App :session="session" :title="title">
 
-    <h4>BONIFICACIONES</h4>
-
     <i class="load" v-if="loading"></i>
 
-    <div class="scroll" v-if="!loading">
-<!--
-      <i class="icon fa-solid fa-briefcase"></i>
-      <select class="input">
-        <option disabled selected>Periodo de cálculo</option>
-        <option>30 Septiembre</option>
-        <option>31 Agosto</option>
-        <option>31 Julio</option>
-      </select>
-      <br>
-      <br>
-      <button class="button">Reporte</button> -->
+    <div class="rk" v-if="!loading && r">
 
+      <!-- cabecera: rango y activación por separado -->
+      <div class="rk-head">
+        <div class="rk-chip">
+          <span class="rk-label">Rango alcanzado</span>
+          <strong><i class="fas fa-medal"></i> {{ r.rankName }}</strong>
+        </div>
+        <div class="rk-chip">
+          <span class="rk-label">Activación</span>
+          <strong :class="r.activated ? 'ok' : 'off'">
+            <i :class="r.activated ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+            {{ r.activated ? 'Activo' : 'Inactivo' }}
+          </strong>
+        </div>
+      </div>
+      <p class="rk-hint" v-if="!r.activated">Para comisionar necesitas una activación vigente: mensual S/ 50 o anual S/ 500.</p>
 
-      <h4>Bono Logro</h4>
+      <!-- período actual -->
+      <h4 class="rk-title">Período actual de dos ciclos</h4>
+      <p class="rk-sub">
+        Desde {{ fmt(r.period.start) }}<span v-if="r.period.end"> hasta {{ fmt(r.period.end) }}</span>
+        · Ciclo {{ r.period.cycle }} de {{ r.period.of }}
+      </p>
 
-      <div v-for="(pay, i) in pays">
-
-        <spam v-if="pay.name == 'DOBLE DIAMANTE'">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
-          <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
-        </spam>
-
-        <spam v-else-if="pay.name == 'TRIPLE DIAMANTE'">
-          <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
-          <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
-          <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
-        </spam>
-
-        <spam v-else-if="pay.name == 'DIAMANTE ESTRELLA'">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <i class="icon fas fa-star" :class="{ green: pay.payed }"></i>
-        </spam>
-
-        <spam v-else>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
-        </spam>
-
-        <input class="input" readonly :value="pay._name" v-bind:style="{ width: 150 + 15 * i + 'px' }" :class="[pay.payed ? pay.name : '']"/> <br>
-
+      <div class="rk-cycles">
+        <div class="rk-cycle" v-for="c in r.period.cycles" :key="c.number" :class="c.status">
+          <span class="rk-label">Ciclo {{ c.number }} · {{ cycleStatus(c.status) }}</span>
+          <span>{{ c.personal }} personales · {{ c.group }} grupales</span>
+        </div>
       </div>
 
-      <br>
-      <br>
+      <div class="rk-stats">
+        <div class="rk-stat">
+          <span class="rk-label">Ventas personales del período</span>
+          <strong>{{ r.period.personal }}</strong>
+        </div>
+        <div class="rk-stat">
+          <span class="rk-label">Ventas grupales del período</span>
+          <strong>{{ r.period.group }}</strong>
+        </div>
+      </div>
 
-      <!-- <table>
-        <thead>
-          <tr>
-            <th>Rango</th>
-            <th>Pagado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="pay in pays">
-            <td>{{ pay.name }}</td>
-            <td>{{ pay.payed }}</td>
-          </tr>
-        </tbody>
-      </table> <br> -->
+      <!-- metas -->
+      <div class="rk-rank" v-for="rank in r.ranks" :key="rank.key" :class="rank.status">
+        <div class="rk-rank-top">
+          <strong>{{ rank.name }}</strong>
+          <span class="rk-badge" :class="rank.status">{{ rankStatus(rank.status) }}</span>
+        </div>
+        <p class="rk-sub">
+          Meta: {{ rank.goal }} ventas {{ rank.type == 'personal' ? 'personales' : 'grupales' }} en el período ·
+          Premio: {{ rank.prize }}
+        </p>
+        <div class="rk-bar"><div :style="{ width: rank.percent + '%' }"></div></div>
+        <p class="rk-sub">
+          {{ rank.progress }} de {{ rank.goal }} ({{ rank.percent }} %)
+          <span v-if="rank.missing"> · faltan {{ rank.missing }}</span>
+        </p>
+        <p class="rk-sub ok" v-if="rank.achieved_at">Alcanzado el {{ fmt(rank.achieved_at) }} · período {{ rank.achieved_period }}</p>
+        <a class="rk-link" @click="open = open == rank.key ? null : rank.key">Ver requisitos</a>
+        <ul class="rk-req" v-if="open == rank.key">
+          <li>{{ rank.goal }} ventas {{ rank.type == 'personal' ? 'personales' : 'grupales (niveles 1 al 7)' }} de membresías aprobadas, sumando los dos ciclos del período.</li>
+          <li>Al terminar el período el contador vuelve a 0; el rango alcanzado se conserva.</li>
+          <li v-if="rank.note">{{ rank.note }}</li>
+        </ul>
+      </div>
 
+      <!-- histórico -->
+      <h4 class="rk-title">Histórico general · Desde tu registro</h4>
+      <div class="rk-stats">
+        <div class="rk-stat">
+          <span class="rk-label">Ventas personales históricas</span>
+          <strong>{{ r.history.personal }}</strong>
+        </div>
+        <div class="rk-stat">
+          <span class="rk-label">Ventas grupales históricas</span>
+          <strong>{{ r.history.group }}</strong>
+        </div>
+      </div>
+      <p class="rk-hint">Incluye el período actual. Las ventas de períodos anteriores no suman para los premios actuales.</p>
 
-      <h4>Rango Zafiro: 6/9</h4>
-      <table>
-        <thead>
-          <tr>
-            <th v-for="(bonus, i) in sapphire">{{ i + 1 }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td v-for="bonus in sapphire">{{ bonus }}</td>
-          </tr>
-        </tbody>
-      </table> <br>
-
-      <h4>Rango Rubi: 6/12</h4>
-      <table>
-        <thead>
-          <tr>
-            <th v-for="(bonus, i) in ruby">{{ i + 1 }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td v-for="bonus in ruby">{{ bonus }}</td>
-          </tr>
-        </tbody>
-      </table> <br>
-
-      <h4>Rango ORO: 21/24</h4>
-      <table>
-        <thead>
-          <tr>
-            <th v-for="(bonus, i) in gold">{{ i + 1 }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td v-for="bonus in gold">{{ bonus }}</td>
-          </tr>
-        </tbody>
-      </table> <br>
-
-      <h4>Rango Diamante: 6/9</h4>
-      <table>
-        <thead>
-          <tr>
-            <th v-for="(bonus, i) in diamond">{{ i + 1 }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td v-for="bonus in diamond">{{ bonus }}</td>
-          </tr>
-        </tbody>
-      </table> <br>
+      <h4 class="rk-title" v-if="r.periods.length">Historial de períodos</h4>
+      <div class="rk-cycle" v-for="p in r.periods" :key="p.number">
+        <span class="rk-label">Período {{ p.number }} · {{ fmt(p.start) }} – {{ fmt(p.end) }}</span>
+        <span v-for="c in p.cycles" :key="c.number">Ciclo {{ c.number }}: {{ c.personal }} personales · {{ c.group }} grupales</span>
+        <span>Total: {{ p.personal }} personales · {{ p.group }} grupales</span>
+        <span class="ok" v-if="p.achieved.length">Logros: {{ p.achieved.join(', ') }}</span>
+      </div>
 
     </div>
   </App>
@@ -140,98 +106,65 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      pays: [],
-      sapphire: [],
-      ruby: [],
-      gold: [],
-      diamond: [],
+      loading: true,
+      r: null,
+      open: null,
     }
   },
   computed: {
     session() { return this.$store.state.session },
-    title() { return 'Resumen'; },
+    title() { return 'Bonificaciones' },
+  },
+  methods: {
+    fmt(d) {
+      if (!d) return '—'
+      return new Date(d).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'America/Lima' })
+    },
+    cycleStatus(s) {
+      return { closed: 'finalizado', current: 'en curso', next: 'próximo' }[s]
+    },
+    rankStatus(s) {
+      return { achieved: 'Alcanzado', next: 'Próxima meta', pending: 'Pendiente' }[s]
+    },
   },
   async created() {
-    const { data } = await api.bonuses(this.session); console.log({ data })
-    let n
-
-    this.pays     = data.pays
-
-    for(const pay of this.pays) {
-      if(pay.name == 'star')              pay._name = 'ESTRELLA $15'
-      if(pay.name == 'master')            pay._name = 'MASTER $30'
-      if(pay.name == 'silver')            pay._name = 'PLATA $45'
-      if(pay.name == 'gold')              pay._name = 'ORO $100'
-      if(pay.name == 'sapphire')          pay._name = 'ZAFIRO $200'
-      if(pay.name == 'RUBI')              pay._name = 'RUBI $300'
-      if(pay.name == 'DIAMANTE')          pay._name = 'DIAMANTE $5.000'
-      if(pay.name == 'DOBLE DIAMANTE')    pay._name = 'DOBLE DIAMANTE $10.000'
-      if(pay.name == 'TRIPLE DIAMANTE')   pay._name = 'TRIPLE DIAMANTE $15.000'
-      if(pay.name == 'DIAMANTE ESTRELLA') pay._name = 'DIAMANTE ESTRELLA $25.000'
-    }
-
-    this.sapphire = data.bonuses.sapphire
-    this.ruby     = data.bonuses.ruby
-    this.gold     = data.bonuses.gold
-    this.diamond  = data.bonuses.diamond
-
-    n = 9 - this.sapphire.length
-    for(let i = 0; i < n; i++) this.sapphire.push('-')
-
-    n = 12 - this.ruby.length
-    for(let i = 0; i < n; i++) this.ruby.push('-')
-
-    n = 24 - this.gold.length
-    for(let i = 0; i < n; i++) this.gold.push('-')
-
-    n = 9 - this.diamond.length
-    for(let i = 0; i < n; i++) this.diamond.push('-')
+    const { data } = await api.bonuses(this.session)
+    this.r = data.ranks
+    this.loading = false
   },
 }
 </script>
 
-
-<style>
-  .fa-gem.green {
-    color: #06d6a0;
+<style scoped>
+  .rk { max-width: 720px; padding-bottom: 24px; }
+  .rk-head, .rk-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rk-chip, .rk-stat, .rk-cycle, .rk-rank {
+    background: #fff; border-radius: 12px; padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    display: flex; flex-direction: column; gap: 4px;
   }
-
-  .input.green {
-    background-color: #06d6a0;
+  .rk-stat strong { font-size: 26px; color: #0b3558; }
+  .rk-label { font-size: 12px; color: #6b7a8c; text-transform: uppercase; letter-spacing: .03em; }
+  .rk-title { margin: 24px 0 4px; }
+  .rk-sub { margin: 2px 0; font-size: 13px; color: #44515f; }
+  .rk-hint { font-size: 12px; color: #6b7a8c; margin: 8px 0 0; }
+  .rk-cycles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 12px; }
+  .rk-cycle { margin-bottom: 10px; font-size: 14px; }
+  .rk-cycle.current { border-left: 4px solid #2e7d32; }
+  .rk-cycle.next { opacity: .6; }
+  .rk-rank { margin-top: 12px; }
+  .rk-rank.next { border: 2px solid #2e7d32; }
+  .rk-rank-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .rk-badge { font-size: 12px; padding: 2px 10px; border-radius: 999px; background: #eef1f5; color: #44515f; white-space: nowrap; }
+  .rk-badge.achieved { background: #e3f4e5; color: #2e7d32; }
+  .rk-badge.next { background: #2e7d32; color: #fff; }
+  .rk-bar { height: 8px; background: #eef1f5; border-radius: 999px; overflow: hidden; margin: 6px 0 2px; }
+  .rk-bar div { height: 100%; background: #2e7d32; }
+  .rk-link { font-size: 13px; color: #0b3558; text-decoration: underline; cursor: pointer; align-self: flex-start; }
+  .rk-req { margin: 4px 0 0 18px; font-size: 13px; color: #44515f; }
+  .ok { color: #2e7d32; }
+  .off { color: #c0392b; }
+  @media (max-width: 520px) {
+    .rk-head, .rk-stats, .rk-cycles { grid-template-columns: 1fr; }
   }
-
-  .input.star {
-    background-color: yellow;
-  }
-  .input.master {
-    background-color: #06d6a0;
-  }
-  .input.silver {
-    background-color: #aaa;
-  }
-  .input.gold {
-    background-color: #D4AF37;
-  }
-  .input.sapphire {
-    background-color: blue;
-  }
-  /*.input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }*/
 </style>
