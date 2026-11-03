@@ -3,6 +3,9 @@
 
     <h4>AFILIACIÓN</h4>
 
+    <!-- Pop-up de compra confirmada -->
+    <ThanksModal :show="thanks" @close="thanks = false" />
+
     <i class="load" v-if="loading"></i>
 
     <section v-if="!loading">
@@ -192,6 +195,7 @@
 import App from '@/views/layouts/App'
 import api from '@/api'
 import lib from '@/lib'
+import ThanksModal from '@/components/ThanksModal'
 
 const INVOICE_ROOT = process.env.VUE_APP_INVOICE_ROOT
 console.log({ INVOICE_ROOT })
@@ -200,11 +204,13 @@ console.log({ INVOICE_ROOT })
 export default {
   components: {
     App,
+    ThanksModal,
   },
   data() {
     return {
       loading: true,
       sending: false,
+      thanks: false,
 
       plans: null,
       selec_plan: null,
@@ -408,7 +414,14 @@ export default {
       console.log({ data })
 
       this.sending = false
+
+      if (data.error) {
+        this.error = data.msg || data.error
+        return
+      }
+
       this.pending = true
+      this.thanks = true
 
       this.affiliation = {
         plan: this.selec_plan,

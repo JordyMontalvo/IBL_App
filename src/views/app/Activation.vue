@@ -6,18 +6,8 @@
       {{ notification }}
     </div>
 
-    <!-- Pop-up Modal de Éxito -->
-    <div class="custom-modal-overlay" v-if="showSuccessModal">
-      <div class="custom-modal-content">
-        <i class="fas fa-check-circle success-icon"></i>
-        <h3>¡Gracias por su compra!</h3>
-        <p>La operación se ha procesado correctamente.</p>
-        <div class="custom-modal-actions">
-          <button @click="goToHome" class="btn-primary">Ir al inicio</button>
-          <button @click="closeModal" class="btn-secondary">Nueva operación</button>
-        </div>
-      </div>
-    </div>
+    <!-- Pop-up de compra confirmada -->
+    <ThanksModal :show="showSuccessModal" @close="showSuccessModal = false" />
 
     <section v-if="!loading" class="ibl-shop">
       <div class="mobile-page-head">
@@ -291,6 +281,7 @@
 import App from "@/views/layouts/App";
 import api from "@/api";
 import lib from "@/lib";
+import ThanksModal from "@/components/ThanksModal";
 
 const FALLBACK_PHOTOS = [
   "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=70",
@@ -300,6 +291,7 @@ const FALLBACK_PHOTOS = [
 export default {
   components: {
     App,
+    ThanksModal,
   },
   data() {
     return {
@@ -641,13 +633,6 @@ export default {
       this.success = false;
       this.selectDefault();
     },
-    goToHome() {
-      this.showSuccessModal = false;
-      this.$router.push('/dashboard');
-    },
-    closeModal() {
-      this.showSuccessModal = false;
-    },
     async POST() {
       if (this.sending) return;
 
@@ -759,64 +744,6 @@ export default {
   z-index 1000
   font-weight 500
 
-.custom-modal-overlay
-  position fixed
-  top 0
-  left 0
-  right 0
-  bottom 0
-  background rgba(0, 0, 0, 0.6)
-  display flex
-  align-items center
-  justify-content center
-  z-index 2000
-
-.custom-modal-content
-  background white
-  padding 30px 40px
-  border-radius 12px
-  text-align center
-  max-width 400px
-  width 90%
-  box-shadow 0 10px 25px rgba(0,0,0,0.2)
-
-  h3
-    margin 15px 0 10px
-    font-size 22px
-    color #2c3e50
-
-  p
-    color #7f8c8d
-    margin-bottom 25px
-
-  .success-icon
-    font-size 60px
-    color #2ecc71
-
-  .custom-modal-actions
-    display flex
-    gap 15px
-    justify-content center
-
-    button
-      padding 10px 20px
-      border none
-      border-radius 6px
-      cursor pointer
-      font-weight 600
-      transition all 0.2s
-
-    .btn-primary
-      background #08385c
-      color white
-      &:hover
-        background #062b47
-
-    .btn-secondary
-      background #ecf0f1
-      color #2c3e50
-      &:hover
-        background #bdc3c7
 </style>
 
 <style src="@/assets/style/activation-catalog.css"></style>
