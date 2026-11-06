@@ -371,10 +371,13 @@ export default {
       if (!this.products) return 0;
       return this.products.reduce((sum, item) => sum + item.total, 0);
     },
+    balancePool() {
+      return Math.max(Number(this.balance || 0), 0) + Math.max(Number(this._balance || 0), 0);
+    },
     remaining() {
       const price = Number(this.price) || 0;
       if (!this.check) return price;
-      const pool = Number(this.balance || 0) + Number(this._balance || 0);
+      const pool = this.balancePool;
       const left = price - pool;
       return left > 0 ? left : 0;
     },
@@ -558,7 +561,8 @@ export default {
         this.pay_method = null;
         return;
       }
-      this.check = false;
+      // transferencia/efectivo: si hay saldo se usa primero y se paga el resto (pago mixto)
+      this.check = this.balancePool > 0;
       this.pay_method = choice === "bank" ? "bank" : "cash";
     },
     onlyDigits(field) {
@@ -660,6 +664,9 @@ export default {
       }
 
       if (!this.total) return (this.error = "Seleccione productos");
+
+      // recalcular el uso de saldo (el saldo puede haber cargado después de elegir el método)
+      if (this.payChoice !== "balance") check = this.check = this.balancePool > 0;
 
       if (this.payChoice === "balance" && this.remaining > 0) {
         this.error = "El saldo no cubre el total. Elige transferencia o efectivo.";
